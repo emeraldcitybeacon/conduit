@@ -31,7 +31,7 @@ This implementation plan provides a step-by-step guide to building the Conduit a
 
 ## 2. User Management
 
-  - [ ] Step 3: Implement Custom User Model and Roles
+  - [x] Step 3: Implement Custom User Model and Roles
       - **Task**: Create a new `users` app and implement a custom `User` model that inherits from `AbstractUser`. Add a `role` field with choices for "Administrator", "Editor", and "Viewer".
       - **Files**:
           - `apps/users/models.py`: Define the `User` model with the `role` field.
@@ -43,7 +43,7 @@ This implementation plan provides a step-by-step guide to building the Conduit a
 
 ## 3. HSDS Core Data Models & API
 
-  - [ ] Step 4: Create Core HSDS Django Models
+  - [x] Step 4: Create Core HSDS Django Models
 
       - **Task**: Create the `hsds` app and define the primary Django models based on the HSDS schema: `Organization`, `Program`, `Service`, and `Location`. Use `UUIDField` for all primary keys.
       - **Files**:
@@ -53,7 +53,7 @@ This implementation plan provides a step-by-step guide to building the Conduit a
       - **Step Dependencies**: Step 3.
       - **User Instructions**: Run `docker-compose run --rm web python manage.py makemigrations hsds` and `docker-compose run --rm web python manage.py migrate`.
 
-  - [ ] Step 5: Create DRF Serializers and Viewsets for Core Models
+  - [x] Step 5: Create DRF Serializers and Viewsets for Core Models
 
       - **Task**: Implement DRF `ModelSerializer` and `ModelViewSet` classes for the `Organization`, `Program`, `Service`, and `Location` models. Set up the basic API routing.
       - **Files**:
@@ -66,7 +66,7 @@ This implementation plan provides a step-by-step guide to building the Conduit a
 
 ## 4. HSDS Relational Models & API Expansion
 
-  - [ ] Step 6: Implement Remaining HSDS Relational Models
+  - [x] Step 6: Implement Remaining HSDS Relational Models
 
       - **Task**: Add the remaining, more granular HSDS models to `apps/hsds/models.py`. This includes `Address`, `Phone`, `Contact`, `Schedule`, `Accessibility`, `Taxonomy`, `TaxonomyTerm`, and others from the `database_postgresql.sql` schema.
       - **Files**:
@@ -75,7 +75,7 @@ This implementation plan provides a step-by-step guide to building the Conduit a
       - **Step Dependencies**: Step 4.
       - **User Instructions**: Run `docker-compose run --rm web python manage.py makemigrations hsds` and `docker-compose run --rm web python manage.py migrate`.
 
-  - [ ] Step 7: Implement DRF Serializers and Viewsets for Relational Models
+  - [x] Step 7: Implement DRF Serializers and Viewsets for Relational Models
 
       - **Task**: Create the corresponding DRF `ModelSerializer` and `ModelViewSet` classes for all the relational models added in the previous step. Update the core serializers to use nested serializers for their relationships where appropriate (e.g., nesting `AddressSerializer` within `LocationSerializer`).
       - **Files**:
@@ -92,7 +92,6 @@ This implementation plan provides a step-by-step guide to building the Conduit a
       - **Files**:
           - `tailwind.config.js`: Configure Tailwind CSS.
           - `static/css/input.css`: Main CSS file for Tailwind directives.
-          - `static/css/output.css`: Generated CSS file.
           - `templates/base.html`: Main site template including CSS, HTMX, Alpine.js, and blocks for content and navigation.
           - `templates/nav.html`: A partial for the main navigation bar.
           - `conduit/settings.py`: Configure static files and template directories.
