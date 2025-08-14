@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     "apps.hsds",
     "rest_framework",
     "django_filters",
+    "django_components",
 ]
 
 MIDDLEWARE = [
@@ -60,13 +61,22 @@ TEMPLATES = [
         "BACKEND": "django.template.backends.django.DjangoTemplates",
         # Include project-level templates
         "DIRS": [BASE_DIR.parent.parent / "templates"],
-        "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
             ],
+            'loaders':[(
+                'django.template.loaders.cached.Loader', [
+                    # Default Django loader
+                    'django.template.loaders.filesystem.Loader',
+                    # Including this is the same as APP_DIRS=True
+                    'django.template.loaders.app_directories.Loader',
+                    # Components loader
+                    'django_components.template_loader.Loader',
+                ]
+            )],
         },
     },
 ]
