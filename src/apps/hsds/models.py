@@ -104,7 +104,7 @@ class Location(models.Model):
     url = models.URLField(blank=True, null=True)
     organization = models.ForeignKey(
         Organization, on_delete=models.SET_NULL, related_name="locations", blank=True, null=True
-    )
+    organization = models.ForeignKey(Organization, on_delete=models.SET_NULL, related_name="locations", blank=True, null=True)
     name = models.TextField(blank=True, null=True)
     alternate_name = models.TextField(blank=True, null=True)
     description = models.TextField(blank=True, null=True)
