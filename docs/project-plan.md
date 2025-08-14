@@ -17,7 +17,7 @@ This implementation plan provides a step-by-step guide to building the Conduit a
       - **Step Dependencies**: None.
       - **User Instructions**: Run `uv install` to create the virtual environment and install dependencies.
 
-  - [ ] Step 2: Dockerize the Development Environment
+  - [x] Step 2: Dockerize the Development Environment
 
       - **Task**: Create `Dockerfile` and `docker-compose.yml` to set up a containerized development environment with a Django service and a PostgreSQL database service. This ensures consistency for all developers.
       - **Files**:
