@@ -1,0 +1,81 @@
+# Development Dockerfile with Node.js and Python for autoreloading
+# This is separate from the production multi-stage build in Dockerfile
+
+FROM python:3.12-slim
+
+# Prevent Python from writing .pyc files and buffering output
+ENV PYTHONDONTWRITEBYTECODE=1 \
+  PYTHONUNBUFFERED=1 \
+  PIP_DISABLE_PIP_VERSION_CHECK=1 \
+  NODE_VERSION=20.11.0
+
+# Install system dependencies including Node.js and PostgreSQL
+RUN apt-get update && \
+  apt-get install -y --no-install-recommends \
+  build-essential \
+  pkg-config \
+  python3-dev \
+  libpq-dev \
+  gcc \
+  libxml2-dev \
+  libxslt1-dev \
+  python3-dev \
+  git \
+  curl \
+  ca-certificates \
+  gnupg \
+  postgresql-client \
+  postgresql-contrib \
+  && rm -rf /var/lib/apt/lists/*
+
+# Install Node.js
+RUN curl -fsSL https://deb.nodesource.com/setup_20.x | bash - && \
+  apt-get install -y nodejs && \
+  npm install -g npm@latest
+
+# Verify Node.js installation
+RUN node --version && npm --version
+
+# Create a non-root user for security and VS Code compatibility
+RUN useradd -m -u 1000 vscode && \
+  mkdir -p /home/vscode/.vscode-server/extensions && \
+  chown -R vscode:vscode /home/vscode
+
+# Set the working directory and fix ownership
+WORKDIR /app
+RUN chown -R vscode:vscode /app
+
+# Copy Python project files needed for installation
+COPY --chown=vscode:vscode pyproject.toml README.md ./
+COPY --chown=vscode:vscode src ./src
+
+# Copy package.json for Node.js dependencies (for better caching)
+COPY --chown=vscode:vscode package.json package-lock.json* .nvmrc ./
+
+# Switch to non-root user for installations
+USER vscode
+
+# Upgrade pip and install Python dependencies
+RUN pip install --upgrade pip setuptools wheel
+
+# Install Python dependencies
+RUN pip install --no-cache-dir --editable '.[dev]' --only-binary=lxml --pre
+
+# Install Node.js dependencies
+RUN npm ci
+
+# Copy the rest of the application code
+COPY --chown=vscode:vscode . .
+
+# Create directories for CSS output if they don't exist
+RUN mkdir -p static/css dist
+
+# Environment variables for Django development
+ENV DJANGO_SETTINGS_MODULE=conduit.settings.dev \
+  DEBUG=True \
+  DJANGO_LOG_LEVEL=DEBUG
+
+# Expose ports
+EXPOSE 8000
+
+CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]

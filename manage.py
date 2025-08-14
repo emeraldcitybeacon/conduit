@@ -3,6 +3,14 @@
 import os
 import sys
 
+# load .env file into environment
+from dotenv import load_dotenv
+
+load_dotenv()
+
+# add src to Python path for project modules
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), "src"))
+
 
 def main():
     """Run administrative tasks."""

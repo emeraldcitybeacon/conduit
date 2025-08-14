@@ -4,7 +4,7 @@ This implementation plan provides a step-by-step guide to building the Conduit a
 
 ## 1\. Project Setup & Foundation
 
-  - [ ] Step 1: Initialize Django Project and Dependencies
+  - [x] Step 1: Initialize Django Project and Dependencies
 
       - **Task**: Create the basic Django project structure, initialize uv for dependency management, and install core libraries like Django, Psycopg2, and Django REST Framework.
       - **Files**:

@@ -1,0 +1,106 @@
+services:
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    # Use Django dev server for development
+    command: python manage.py runserver 0.0.0.0:8000
+    volumes:
+      - ./:/app # Mounts your local project root to /app inside the container
+    env_file:
+      - ./.env # Load environment variables from .env file
+    # Remove network aliases since nginx will handle the domain routing
+    networks:
+      - default
+    ports:
+      - 8004:8000
+
+    # Explicitly define environment variables.
+    # For a dev container, consider setting DEBUG=True here or in .devcontainer.json's containerEnv.
+    # DJANGO_SETTINGS_MODULE for development can point to a specific settings file like 'lllreptile.settings.dev'.
+    environment:
+      - SECRET_KEY=${SECRET_KEY}
+      - DEBUG=${DEBUG:-True}
+      - DJANGO_LOG_LEVEL=${DJANGO_LOG_LEVEL:-INFO}
+      - DJANGO_SETTINGS_MODULE=${DJANGO_SETTINGS_MODULE:-lllreptile.settings.dev}
+      - DJANGO_SUPERUSER_EMAIL=${DJANGO_SUPERUSER_EMAIL}
+      - DJANGO_SUPERUSER_PASSWORD=${DJANGO_SUPERUSER_PASSWORD}
+      - REDIS_HOST=${REDIS_HOST:-redis}
+      - REDIS_PORT=${REDIS_PORT:-6379}
+    depends_on:
+      db:
+        condition: service_healthy # Wait until DB is healthy
+      redis:
+        condition: service_healthy # Wait until Redis is healthy
+    restart: unless-stopped # Automatically restart if it crashes
+
+  tailwind:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    command: bash -c "npx concurrently \"npx tailwindcss --input assets/tailwind/input.css --config assets/tailwind/tailwind.config.lllreptile.js --output dist/css/site_lllreptile.css --watch\" \"npx tailwindcss --input assets/tailwind/input.css --config assets/tailwind/tailwind.config.vistapetsupply.js --output dist/css/site_vistapetsupply.css --watch\""
+    volumes:
+      - ./:/app
+    env_file:
+      - ./.env
+    depends_on:
+      web:
+        condition: service_started
+    restart: unless-stopped
+    tty: true
+    stdin_open: true
+
+  db:
+    image: postgres:17-alpine
+    env_file:
+      - ./.env
+    environment:
+      - POSTGRES_DB=${POSTGRES_DB}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $$POSTGRES_USER -d $$POSTGRES_DB"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+
+  redis:
+    image: redis:7
+    volumes:
+      - redis-data:/data
+    healthcheck: # Health check for Redis
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+    restart: unless-stopped
+
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    env_file:
+      - ./.env
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=${PGADMIN_DEFAULT_EMAIL}
+      - PGADMIN_DEFAULT_PASSWORD=${PGADMIN_DEFAULT_PASSWORD}
+      - PGADMIN_LISTEN_PORT=80 # Ensure it listens on port 80 internally
+    ports:
+      - '5054:80'
+    volumes:
+      - pgadmin-data:/var/lib/pgadmin
+    depends_on:
+      db:
+        condition: service_healthy # Ensure DB is ready before pgAdmin tries to connect
+    restart: unless-stopped
+
+volumes:
+  db-data:
+  redis-data:
+  pgadmin-data:
+  legacy-db-data:
+  opensearch-data:
+  solr-data:
+  grafana-data:
+  prometheus-data:
