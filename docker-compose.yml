@@ -38,7 +38,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.dev
-    command: bash -c "npx concurrently \"npx tailwindcss --input assets/tailwind/input.css --config assets/tailwind/tailwind.config.lllreptile.js --output dist/css/site_lllreptile.css --watch\" \"npx tailwindcss --input assets/tailwind/input.css --config assets/tailwind/tailwind.config.vistapetsupply.js --output dist/css/site_vistapetsupply.css --watch\""
+    command: bash -c "npx @tailwindcss/cli --input assets/tailwind/input.css --config assets/tailwind/tailwind.config.js --output dist/css/site.css --watch"
     volumes:
       - ./:/app
     env_file:

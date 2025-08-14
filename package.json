@@ -18,6 +18,39 @@
     "doc": "docs"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "watch": "npx @tailwindcss/cli --input assets/tailwind/input.css --config assets/tailwind/tailwind.config.js --output dist/site.css --watch"
+  },
+  "devDependencies": {
+    "@tailwindcss/cli": "^4.1.12",
+    "tailwindcss": "^4.1.12"
+  },
+  "optionalDependencies": {
+    "@parcel/watcher-darwin-arm64": "^2.5.0",
+    "@parcel/watcher-darwin-x64": "^2.5.0",
+    "@parcel/watcher-linux-arm64": "^2.5.0",
+    "@parcel/watcher-linux-arm64-glibc": "^2.5.1",
+    "@parcel/watcher-linux-x64": "^2.5.0",
+    "@parcel/watcher-windows-x64": "^2.5.0"
+  },
+  "peerDependenciesMeta": {
+    "@parcel/watcher-linux-x64": {
+      "optional": true
+    },
+    "@parcel/watcher-linux-arm64": {
+      "optional": true
+    },
+    "@parcel/watcher-linux-arm64-glibc": {
+      "optional": true
+    },
+    "@parcel/watcher-darwin-x64": {
+      "optional": true
+    },
+    "@parcel/watcher-darwin-arm64": {
+      "optional": true
+    },
+    "@parcel/watcher-windows-x64": {
+      "optional": true
+    }
   }
 }
