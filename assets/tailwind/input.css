@@ -1,3 +1,8 @@
+/*
+ * Tailwind CSS entrypoint for the Conduit project.
+ * This file is processed by the Tailwind CLI to generate the
+ * compiled stylesheet served by Django.
+ */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
