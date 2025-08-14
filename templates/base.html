@@ -1,0 +1,24 @@
+{% load static %}
+<!-- Base layout for Conduit pages. Includes global CSS, HTMX, and Alpine.js. -->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{% block title %}Conduit{% endblock %}</title>
+    <!-- Compiled Tailwind CSS -->
+    <link rel="stylesheet" href="{% static 'site.css' %}" />
+    <!-- HTMX and Alpine.js from CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/htmx.org@1.9.12" integrity="sha384-LwqJGpV1wS3ZOmrqP0nUdsbnZD/+rT9Y/1YaL6VLdystD5nq2WEYLRh1SeDsICfu" crossorigin="anonymous" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
+  </head>
+  <body class="min-h-screen bg-gray-50">
+    {% block nav %}
+      {% include 'nav.html' %}
+    {% endblock %}
+    <main class="container mx-auto p-4">
+      {% block content %}{% endblock %}
+    </main>
+  </body>
+</html>
+
