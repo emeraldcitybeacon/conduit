@@ -4,7 +4,6 @@ import django
 
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "src.conduit.settings")
 django.setup()
-
 import pytest
 from apps.hsds.models import Organization, Program, Service, Location
 
