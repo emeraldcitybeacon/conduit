@@ -1,7 +1,29 @@
-"""Admin registrations for HSDS core models."""
+"""Admin registrations for HSDS models."""
 from django.contrib import admin
 
-from .models import Organization, Program, Service, Location
+from .models import (
+    Accessibility,
+    Address,
+    Contact,
+    CostOption,
+    Funding,
+    Language,
+    Location,
+    Organization,
+    OrganizationIdentifier,
+    Program,
+    RequiredDocument,
+    Schedule,
+    Service,
+    ServiceArea,
+    ServiceAtLocation,
+    ServiceCapacity,
+    Phone,
+    Unit,
+    URL,
+    Taxonomy,
+    TaxonomyTerm,
+)
 
 @admin.register(Organization)
 class OrganizationAdmin(admin.ModelAdmin):
@@ -31,3 +53,26 @@ class LocationAdmin(admin.ModelAdmin):
 
     list_display = ("name", "location_type", "organization")
     list_filter = ("location_type",)
+
+
+admin.site.register(
+    [
+        Accessibility,
+        Address,
+        ServiceAtLocation,
+        Contact,
+        Phone,
+        Schedule,
+        CostOption,
+        Funding,
+        Language,
+        OrganizationIdentifier,
+        RequiredDocument,
+        ServiceArea,
+        Unit,
+        ServiceCapacity,
+        URL,
+        Taxonomy,
+        TaxonomyTerm,
+    ]
+)
