@@ -59,7 +59,7 @@ TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
         # Include project-level templates
-        "DIRS": [BASE_DIR.parent / "templates"],
+        "DIRS": [BASE_DIR.parent.parent / "templates"],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -141,3 +141,8 @@ REST_FRAMEWORK = {
         "django_filters.rest_framework.DjangoFilterBackend",
     ],
 }
+
+# Authentication redirects
+LOGIN_URL = "users:login"
+LOGIN_REDIRECT_URL = "/"
+LOGOUT_REDIRECT_URL = "users:login"
