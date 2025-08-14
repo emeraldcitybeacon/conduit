@@ -3,7 +3,6 @@
 from __future__ import annotations
 
 from rest_framework.routers import DefaultRouter
-from django.urls import path
 
 from .api import (
     AccessibilityViewSet,
@@ -28,10 +27,7 @@ from .api import (
     UnitViewSet,
     PhoneViewSet,
 )
-from . import views
 
-
-app_name = "hsds"
 
 api_router = DefaultRouter()
 api_router.register(r"organizations", OrganizationViewSet)
@@ -57,26 +53,6 @@ api_router.register(r"taxonomies", TaxonomyViewSet)
 api_router.register(r"taxonomy-terms", TaxonomyTermViewSet)
 
 
-urlpatterns = [
-    path(
-        "manage/organizations/",
-        views.OrganizationListView.as_view(),
-        name="organization_list",
-    ),
-    path(
-        "manage/organizations/create/",
-        views.organization_create_view,
-        name="organization_create",
-    ),
-    path(
-        "manage/organizations/<uuid:pk>/",
-        views.OrganizationDetailView.as_view(),
-        name="organization_detail",
-    ),
-    path(
-        "manage/organizations/<uuid:pk>/edit/",
-        views.organization_edit_view,
-        name="organization_edit",
-    ),
-]
+# Placeholder for future non-API URL patterns (e.g., HTMX views).
+urlpatterns: list = []
 
