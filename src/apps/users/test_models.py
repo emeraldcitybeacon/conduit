@@ -1,10 +1,6 @@
 """Tests for the custom User model."""
 import os
 import django
-
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "src.conduit.settings")
-django.setup()
-
 from django.contrib.auth import get_user_model
 import pytest
 
