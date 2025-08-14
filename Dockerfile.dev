@@ -1,16 +1,25 @@
 FROM python:3.13-slim
 
+# Prevent Python from writing .pyc files and buffering output
+ENV PYTHONDONTWRITEBYTECODE=1 \
+  PYTHONUNBUFFERED=1 \
+  PIP_DISABLE_PIP_VERSION_CHECK=1 \
+  NODE_VERSION=20.11.0
+
 # System dependencies for Python, Node native module build, and Postgres client
 RUN apt-get update && apt-get install -y --no-install-recommends \
-  build-essential pkg-config python3 python3-dev libpq-dev \
-  gcc g++ make libxml2-dev libxslt1-dev git curl ca-certificates gnupg \
+  build-essential pkg-config python3-dev libpq-dev \
+  gcc git curl ca-certificates gnupg \
   postgresql-client postgresql-contrib \
   && rm -rf /var/lib/apt/lists/*
 
-# Install Node.js (version 20.x) and latest npm + node-gyp for native builds
+# Install Node.js (version 20.x) and latest npm
 RUN curl -fsSL https://deb.nodesource.com/setup_20.x | bash - && \
   apt-get install -y nodejs && \
-  npm install -g npm@latest node-gyp
+  npm install -g npm@latest
+
+# Verify Node.js installation
+RUN node --version && npm --version
 
 # Create a non-root user and set permissions for VSCode compatibility
 RUN useradd -m -u 1000 vscode && \
@@ -26,18 +35,12 @@ USER vscode
 COPY --chown=vscode:vscode package.json package-lock.json* pyproject.toml README.md ./
 COPY --chown=vscode:vscode src ./src
 
-# Install Node.js dependencies fresh inside the container (prevents @parcel/watcher platform specific binary issues)
-RUN npm install
-
-# Rebuild native modules (if needed) - usually safe but optional
-# RUN npm rebuild
-
-# Copy any remaining project files if required (ideally nothing affecting deps)
-# COPY --chown=vscode:vscode other-files* ./
-
 # Install Python dependencies, create output dirs, env vars, expose ports, etc.
 RUN pip install --upgrade pip setuptools wheel
-RUN pip install --no-cache-dir --editable '.[dev]' --only-binary=lxml --pre
+RUN pip install --no-cache-dir --editable '.[dev]' --pre
+
+# Install Node.js dependencies fresh inside the container (prevents @parcel/watcher platform specific binary issues)
+RUN npm install
 
 RUN mkdir -p static/css dist
 
