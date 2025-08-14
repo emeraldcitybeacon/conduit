@@ -64,8 +64,12 @@ class Service(models.Model):
         Organization, on_delete=models.CASCADE, related_name="services"
     )
     program = models.ForeignKey(
-        Program, on_delete=models.SET_NULL, related_name="services", blank=True, null=True
-    program = models.ForeignKey(Program, on_delete=models.SET_NULL, related_name="services", blank=True, null=True)
+        Program,
+        on_delete=models.SET_NULL,
+        related_name="services",
+        blank=True,
+        null=True,
+    )
     name = models.TextField()
     alternate_name = models.TextField(blank=True, null=True)
     description = models.TextField(blank=True, null=True)
@@ -103,8 +107,12 @@ class Location(models.Model):
     location_type = models.CharField(max_length=8, choices=LocationType.choices)
     url = models.URLField(blank=True, null=True)
     organization = models.ForeignKey(
-        Organization, on_delete=models.SET_NULL, related_name="locations", blank=True, null=True
-    organization = models.ForeignKey(Organization, on_delete=models.SET_NULL, related_name="locations", blank=True, null=True)
+        Organization,
+        on_delete=models.SET_NULL,
+        related_name="locations",
+        blank=True,
+        null=True,
+    )
     name = models.TextField(blank=True, null=True)
     alternate_name = models.TextField(blank=True, null=True)
     description = models.TextField(blank=True, null=True)
