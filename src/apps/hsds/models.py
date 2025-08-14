@@ -65,7 +65,7 @@ class Service(models.Model):
     )
     program = models.ForeignKey(
         Program, on_delete=models.SET_NULL, related_name="services", blank=True, null=True
-    )
+    program = models.ForeignKey(Program, on_delete=models.SET_NULL, related_name="services", blank=True, null=True)
     name = models.TextField()
     alternate_name = models.TextField(blank=True, null=True)
     description = models.TextField(blank=True, null=True)
