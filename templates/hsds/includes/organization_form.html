@@ -1,0 +1,23 @@
+<form
+  id="organization-form"
+  method="post"
+  action="{{ action }}"
+  hx-post="{{ action }}"
+  hx-target="#dialog"
+  hx-swap="outerHTML"
+  class="space-y-4"
+>
+  {% csrf_token %}
+  {% for field in form %}
+  <div>
+    <label class="block text-sm font-medium text-gray-700">{{ field.label }}</label>
+    {{ field }}
+    {% if field.errors %}
+    <p class="text-red-600 text-sm">{{ field.errors|striptags }}</p>
+    {% endif %}
+  </div>
+  {% endfor %}
+  <div class="flex space-x-2">
+    <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded">Save</button>
+  </div>
+</form>
