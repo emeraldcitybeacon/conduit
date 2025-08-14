@@ -2,7 +2,7 @@
 
 This implementation plan provides a step-by-step guide to building the Conduit application. The plan is structured to build the application from the core backend components outwards to the user-facing frontend, ensuring a stable foundation at each stage.
 
-## 1\. Project Setup & Foundation
+## 1. Project Setup & Foundation
 
   - [x] Step 1: Initialize Django Project and Dependencies
 
@@ -29,7 +29,7 @@ This implementation plan provides a step-by-step guide to building the Conduit a
       - **Step Dependencies**: Step 1.
       - **User Instructions**: Create a `.env` file from the example and run `docker-compose up --build` to start the development environment.
 
-## 2\. User Management
+## 2. User Management
 
   - [ ] Step 3: Implement Custom User Model and Roles
       - **Task**: Create a new `users` app and implement a custom `User` model that inherits from `AbstractUser`. Add a `role` field with choices for "Administrator", "Editor", and "Viewer".
@@ -41,7 +41,7 @@ This implementation plan provides a step-by-step guide to building the Conduit a
       - **Step Dependencies**: Step 2.
       - **User Instructions**: Run `docker-compose run --rm web python manage.py makemigrations users` and `docker-compose run --rm web python manage.py migrate` to apply the new user model.
 
-## 3\. HSDS Core Data Models & API
+## 3. HSDS Core Data Models & API
 
   - [ ] Step 4: Create Core HSDS Django Models
 
@@ -64,7 +64,7 @@ This implementation plan provides a step-by-step guide to building the Conduit a
       - **Step Dependencies**: Step 4.
       - **User Instructions**: Verify the new API endpoints are browsable at `http://localhost:8000/api/v1/`.
 
-## 4\. HSDS Relational Models & API Expansion
+## 4. HSDS Relational Models & API Expansion
 
   - [ ] Step 6: Implement Remaining HSDS Relational Models
 
@@ -84,7 +84,7 @@ This implementation plan provides a step-by-step guide to building the Conduit a
       - **Step Dependencies**: Step 5, Step 6.
       - **User Instructions**: Check the browsable API to ensure nested data is appearing correctly on detail views.
 
-## 5\. Frontend Setup & UI Shell
+## 5. Frontend Setup & UI Shell
 
   - [ ] Step 8: Configure Frontend Tooling and Base Templates
 
@@ -110,7 +110,7 @@ This implementation plan provides a step-by-step guide to building the Conduit a
           - `conduit/settings.py`: Set `LOGIN_URL`, `LOGIN_REDIRECT_URL`, and `LOGOUT_REDIRECT_URL`.
       - **Step Dependencies**: Step 3, Step 8.
 
-## 6\. Data Management CRUD Interface (HTMX)
+## 6. Data Management CRUD Interface (HTMX)
 
   - [ ] Step 10: Build Organization CRUD Interface
 
@@ -143,7 +143,7 @@ This implementation plan provides a step-by-step guide to building the Conduit a
           - `templates/hsds/...`: Corresponding list, detail, and form partial templates for each model.
       - **Step Dependencies**: Step 11.
 
-## 7\. Final Features & Polish
+## 7. Final Features & Polish
 
   - [ ] Step 13: Centralize Validation and API Filtering
 
@@ -174,7 +174,7 @@ This implementation plan provides a step-by-step guide to building the Conduit a
       - **Step Dependencies**: Step 12.
       - **User Instructions**: Run `makemessages` and compile language files.
 
-## 8\. Testing & Deployment
+## 8. Testing & Deployment
 
   - [ ] Step 16: Write Tests
 

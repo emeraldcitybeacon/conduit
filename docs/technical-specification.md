@@ -2,7 +2,7 @@
 
 -----
 
-## 1\. Planning & Discovery
+## 1. Planning & Discovery
 
 ### 1.1 Core Purpose & Success
 
@@ -69,7 +69,7 @@
 
 -----
 
-## 2\. System Architecture & Technology
+## 2. System Architecture & Technology
 
 ### 2.1 Tech Stack
 
@@ -156,7 +156,7 @@ A monolithic Django project structure is recommended.
 
 -----
 
-## 3\. Database & Server Logic
+## 3. Database & Server Logic
 
 ### 3.1 Database Schema
 
@@ -216,7 +216,7 @@ class Service(models.Model):
 
 -----
 
-## 4\. Feature Specifications
+## 4. Feature Specifications
 
 ### User Management
 
@@ -250,7 +250,7 @@ class Service(models.Model):
 
 -----
 
-## 5\. Design System
+## 5. Design System
 
 ### 5.1 Visual Tone & Identity
 
@@ -283,7 +283,7 @@ class Service(models.Model):
 
 -----
 
-## 6\. Security & Compliance
+## 6. Security & Compliance
 
   * **Authentication**: Use Django's built-in session authentication for the web interface and token authentication (e.g., `TokenAuthentication`) for the DRF API.
   * **Permissions**: As defined in the User Management section, view-level permission checks will be enforced.
@@ -292,7 +292,7 @@ class Service(models.Model):
 
 -----
 
-## 8\. Environment Configuration & Deployment
+## 8. Environment Configuration & Deployment
 
   * **Local Setup**: A `docker-compose.yml` file will orchestrate the Django application container and a PostgreSQL database container. A `.env.example` file will document required environment variables.
   * **Staging / Production Environments**: Docker images will be built by the CI/CD pipeline and deployed to a container hosting service (e.g., AWS ECS, Heroku, or DigitalOcean App Platform).
@@ -304,7 +304,7 @@ class Service(models.Model):
 
 -----
 
-## 9\. Testing & Quality Assurance
+## 9. Testing & Quality Assurance
 
   * **Unit Testing**: `pytest-django` will be used to test models, validators, and utility functions.
   * **Integration Testing**: Tests will cover the interaction between views, serializers, and models. API endpoints will be tested to ensure they return the correct data structure and status codes.
@@ -312,7 +312,7 @@ class Service(models.Model):
 
 -----
 
-## 10\. Edge Cases, Implementation Considerations & Reflection
+## 10. Edge Cases, Implementation Considerations & Reflection
 
   * **Potential Obstacles**:
       * **Schema Complexity**: The HSDS schema is large and has many interconnected tables. Ensuring all relationships are correctly modeled and handled in forms and serializers will be complex.
@@ -326,7 +326,7 @@ class Service(models.Model):
 
 -----
 
-## 11\. Summary & Next Steps
+## 11. Summary & Next Steps
 
   * **Recap**: This specification outlines a Django application, "Conduit," for managing HSDS data. It features a dual interface: a data management UI built with HTMX and a DRF-powered API. The core architectural principle is to use the API's serializers as the single source of truth for validation and business logic, which the HTMX views will consume, thus minimizing code duplication and preventing synchronization drift. The project includes role-based access control, localization support, and a plan for future data import/export features.
   * **Open Questions**:
