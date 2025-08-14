@@ -5,7 +5,14 @@ import django
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "src.conduit.settings")
 django.setup()
 import pytest
-from apps.hsds.models import Organization, Program, Service, Location
+from apps.hsds.models import (
+    Address,
+    Organization,
+    Program,
+    Service,
+    Location,
+    Phone,
+)
 
 @pytest.mark.django_db
 def test_program_belongs_to_organization() -> None:
@@ -44,3 +51,30 @@ def test_location_association() -> None:
         organization=org,
     )
     assert location.organization == org
+
+
+@pytest.mark.django_db
+def test_address_links_to_location() -> None:
+    """Address should be tied to its location."""
+    location = Location.objects.create(
+        name="Main",
+        location_type=Location.LocationType.PHYSICAL,
+    )
+    address = Address.objects.create(
+        location=location,
+        address_1="123 St",
+        city="City",
+        state_province="State",
+        postal_code="12345",
+        country="US",
+        address_type=Address.AddressType.PHYSICAL,
+    )
+    assert address.location == location
+
+
+@pytest.mark.django_db
+def test_phone_links_to_organization() -> None:
+    """Phone may belong to an organization."""
+    org = Organization.objects.create(name="Org", description="Desc")
+    phone = Phone.objects.create(number="123", organization=org)
+    assert phone.organization == org
