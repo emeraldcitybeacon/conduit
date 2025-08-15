@@ -43,9 +43,13 @@ INSTALLED_APPS = [
     "conduit",
     "users",
     "hsds",
+    "hsds_ext",
+    "resources",
+    "pulse",
     "rest_framework",
     "django_filters",
     "django_components",
+    "django_htmx",
 ]
 
 MIDDLEWARE = [
@@ -53,6 +57,7 @@ MIDDLEWARE = [
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.locale.LocaleMiddleware",
     "django.middleware.common.CommonMiddleware",
+    "django_htmx.middleware.HtmxMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
