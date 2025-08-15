@@ -1,16 +1,21 @@
-<div class="border p-2 rounded address-form">
+{% load i18n %}
+<div class="card card-bordered p-4 space-y-2 address-form">
   {% for field in form.visible_fields %}
-  <div class="mb-2">
-    <label class="block text-sm" for="{{ field.id_for_label }}">{{ field.label }}</label>
+  <div class="form-control">
+    <label for="{{ field.id_for_label }}" class="label">
+      <span class="label-text">{{ field.label }}</span>
+    </label>
     {{ field }}
     {% if field.errors %}
-    <p class="text-red-500 text-xs">{{ field.errors|striptags }}</p>
+    <p class="text-error text-xs">{{ field.errors|striptags }}</p>
     {% endif %}
   </div>
   {% endfor %}
   {% if form.DELETE %}
-  <div class="mb-2">
-    <label class="text-sm" for="{{ form.DELETE.id_for_label }}">Remove</label>
+  <div class="form-control">
+    <label for="{{ form.DELETE.id_for_label }}" class="label">
+      <span class="label-text">{% trans "Remove" %}</span>
+    </label>
     {{ form.DELETE }}
   </div>
   {% endif %}

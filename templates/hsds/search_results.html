@@ -18,41 +18,41 @@
 {% if query %}
   <section class="mb-6">
     <h2 class="text-xl font-semibold mb-2">{% trans "Organizations" %}</h2>
-    <ul class="list-disc pl-5">
+    <ul class="list">
     {% for org in organizations %}
-      <li><a href="{% url 'hsds:organization-detail' org.id %}" class="text-blue-600">{{ org.name }}</a></li>
+      <li class="list-row"><a href="{% url 'hsds:organization-detail' org.id %}" class="link link-primary">{{ org.name }}</a></li>
     {% empty %}
-      <li>{% trans "No organizations found." %}</li>
+      <li class="list-row">{% trans "No organizations found." %}</li>
     {% endfor %}
     </ul>
   </section>
   <section class="mb-6">
     <h2 class="text-xl font-semibold mb-2">{% trans "Services" %}</h2>
-    <ul class="list-disc pl-5">
+    <ul class="list">
     {% for svc in services %}
-      <li><a href="{% url 'hsds:service-detail' svc.id %}" class="text-blue-600">{{ svc.name }}</a></li>
+      <li class="list-row"><a href="{% url 'hsds:service-detail' svc.id %}" class="link link-primary">{{ svc.name }}</a></li>
     {% empty %}
-      <li>{% trans "No services found." %}</li>
+      <li class="list-row">{% trans "No services found." %}</li>
     {% endfor %}
     </ul>
   </section>
   <section class="mb-6">
     <h2 class="text-xl font-semibold mb-2">{% trans "Locations" %}</h2>
-    <ul class="list-disc pl-5">
+    <ul class="list">
     {% for loc in locations %}
-      <li><a href="{% url 'hsds:location-detail' loc.id %}" class="text-blue-600">{{ loc.name }}</a></li>
+      <li class="list-row"><a href="{% url 'hsds:location-detail' loc.id %}" class="link link-primary">{{ loc.name }}</a></li>
     {% empty %}
-      <li>{% trans "No locations found." %}</li>
+      <li class="list-row">{% trans "No locations found." %}</li>
     {% endfor %}
     </ul>
   </section>
   <section>
     <h2 class="text-xl font-semibold mb-2">{% trans "Contacts" %}</h2>
-    <ul class="list-disc pl-5">
+    <ul class="list">
     {% for contact in contacts %}
-      <li><a href="{% url 'hsds:contact-detail' contact.id %}" class="text-blue-600">{{ contact.name }}</a></li>
+      <li class="list-row"><a href="{% url 'hsds:contact-detail' contact.id %}" class="link link-primary">{{ contact.name }}</a></li>
     {% empty %}
-      <li>{% trans "No contacts found." %}</li>
+      <li class="list-row">{% trans "No contacts found." %}</li>
     {% endfor %}
     </ul>
   </section>

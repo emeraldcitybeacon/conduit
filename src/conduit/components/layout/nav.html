@@ -1,25 +1,18 @@
 {% load i18n %}
-<!-- Main navigation bar partial used across the Conduit interface. -->
-<nav class="bg-white shadow mb-4">
-  <div class="container mx-auto px-4 py-4 flex items-center justify-between">
-    <a href="/" class="text-xl font-semibold text-gray-900">{% trans "Conduit" %}</a>
-    <div class="flex items-center space-x-4">
-      <ul class="flex space-x-4 text-sm">
-        <li><a href="/" class="text-gray-700 hover:text-gray-900">{% trans "Home" %}</a></li>
-        <li><a href="{% url 'hsds:organization-list' %}" class="text-gray-700 hover:text-gray-900">{% trans "Organizations" %}</a></li>
-        <li><a href="{% url 'hsds:service-list' %}" class="text-gray-700 hover:text-gray-900">{% trans "Services" %}</a></li>
-        <li><a href="{% url 'hsds:location-list' %}" class="text-gray-700 hover:text-gray-900">{% trans "Locations" %}</a></li>
-        <li><a href="{% url 'hsds:contact-list' %}" class="text-gray-700 hover:text-gray-900">{% trans "Contacts" %}</a></li>
-        {# Link for taxonomies will be added once taxonomy management views exist #}
-      </ul>
-      <form action="{% url 'hsds:search' %}" method="get" class="hidden sm:block">
-        <input
-          type="text"
-          name="q"
-          placeholder="{% trans 'Search...' %}"
-          class="border rounded px-2 py-1 text-sm"
-        />
-      </form>
-    </div>
+<nav class="navbar bg-base-100 shadow mb-4">
+  <div class="flex-1">
+    <a href="/" class="btn btn-ghost text-xl">{% trans "Conduit" %}</a>
+  </div>
+  <div class="flex-none gap-2">
+    <ul class="menu menu-horizontal px-1 text-sm">
+      <li><a href="/">{% trans "Home" %}</a></li>
+      <li><a href="{% url 'hsds:organization-list' %}">{% trans "Organizations" %}</a></li>
+      <li><a href="{% url 'hsds:service-list' %}">{% trans "Services" %}</a></li>
+      <li><a href="{% url 'hsds:location-list' %}">{% trans "Locations" %}</a></li>
+      <li><a href="{% url 'hsds:contact-list' %}">{% trans "Contacts" %}</a></li>
+    </ul>
+    <form action="{% url 'hsds:search' %}" method="get" class="hidden sm:block">
+      <input type="text" name="q" placeholder="{% trans 'Search...' %}" class="input input-bordered w-full max-w-xs" />
+    </form>
   </div>
 </nav>
