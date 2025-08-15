@@ -22,3 +22,11 @@ def test_role_choices() -> None:
     """Role choices should include administrator, editor, and viewer."""
     assert set(User.Role.values) == {"administrator", "editor", "viewer"}
 
+
+@pytest.mark.django_db
+def test_default_role_is_viewer() -> None:
+    """Users without an explicit role default to ``viewer``."""
+
+    user = User.objects.create_user(username="eve", password="password123")
+    assert user.role == User.Role.VIEWER
+
