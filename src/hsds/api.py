@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+from django_filters import rest_framework as filters
 from rest_framework import serializers, viewsets
 
 from .models import (
@@ -233,148 +234,166 @@ class ServiceSerializer(serializers.ModelSerializer):
         model = Service
         fields = "__all__"
 
+class FilteredModelViewSet(viewsets.ModelViewSet):
+    """Base viewset that enables django-filter on all model fields."""
 
-class OrganizationViewSet(viewsets.ModelViewSet):
+    filterset_fields = "__all__"
+
+
+class ServiceFilterSet(filters.FilterSet):
+    """Filter services by organization, status, or name."""
+
+    class Meta:
+        model = Service
+        fields = {
+            "organization": ["exact"],
+            "status": ["exact"],
+            "name": ["icontains"],
+        }
+
+
+class OrganizationViewSet(FilteredModelViewSet):
     """API endpoint for :class:`Organization` objects."""
 
     queryset = Organization.objects.all()
     serializer_class = OrganizationSerializer
 
 
-class ProgramViewSet(viewsets.ModelViewSet):
+class ProgramViewSet(FilteredModelViewSet):
     """API endpoint for :class:`Program` objects."""
 
     queryset = Program.objects.all()
     serializer_class = ProgramSerializer
 
 
-class ServiceViewSet(viewsets.ModelViewSet):
+class ServiceViewSet(FilteredModelViewSet):
     """API endpoint for :class:`Service` objects."""
 
     queryset = Service.objects.all()
     serializer_class = ServiceSerializer
+    filterset_class = ServiceFilterSet
 
 
-class LocationViewSet(viewsets.ModelViewSet):
+class LocationViewSet(FilteredModelViewSet):
     """API endpoint for :class:`Location` objects."""
 
     queryset = Location.objects.all()
     serializer_class = LocationSerializer
 
 
-class AccessibilityViewSet(viewsets.ModelViewSet):
+class AccessibilityViewSet(FilteredModelViewSet):
     """API endpoint for :class:`Accessibility` objects."""
 
     queryset = Accessibility.objects.all()
     serializer_class = AccessibilitySerializer
 
 
-class AddressViewSet(viewsets.ModelViewSet):
+class AddressViewSet(FilteredModelViewSet):
     """API endpoint for :class:`Address` objects."""
 
     queryset = Address.objects.all()
     serializer_class = AddressSerializer
 
 
-class ContactViewSet(viewsets.ModelViewSet):
+class ContactViewSet(FilteredModelViewSet):
     """API endpoint for :class:`Contact` objects."""
 
     queryset = Contact.objects.all()
     serializer_class = ContactSerializer
 
 
-class PhoneViewSet(viewsets.ModelViewSet):
+class PhoneViewSet(FilteredModelViewSet):
     """API endpoint for :class:`Phone` objects."""
 
     queryset = Phone.objects.all()
     serializer_class = PhoneSerializer
 
 
-class ScheduleViewSet(viewsets.ModelViewSet):
+class ScheduleViewSet(FilteredModelViewSet):
     """API endpoint for :class:`Schedule` objects."""
 
     queryset = Schedule.objects.all()
     serializer_class = ScheduleSerializer
 
 
-class ServiceAtLocationViewSet(viewsets.ModelViewSet):
+class ServiceAtLocationViewSet(FilteredModelViewSet):
     """API endpoint for :class:`ServiceAtLocation` objects."""
 
     queryset = ServiceAtLocation.objects.all()
     serializer_class = ServiceAtLocationSerializer
 
 
-class ServiceAreaViewSet(viewsets.ModelViewSet):
+class ServiceAreaViewSet(FilteredModelViewSet):
     """API endpoint for :class:`ServiceArea` objects."""
 
     queryset = ServiceArea.objects.all()
     serializer_class = ServiceAreaSerializer
 
 
-class CostOptionViewSet(viewsets.ModelViewSet):
+class CostOptionViewSet(FilteredModelViewSet):
     """API endpoint for :class:`CostOption` objects."""
 
     queryset = CostOption.objects.all()
     serializer_class = CostOptionSerializer
 
 
-class FundingViewSet(viewsets.ModelViewSet):
+class FundingViewSet(FilteredModelViewSet):
     """API endpoint for :class:`Funding` objects."""
 
     queryset = Funding.objects.all()
     serializer_class = FundingSerializer
 
 
-class LanguageViewSet(viewsets.ModelViewSet):
+class LanguageViewSet(FilteredModelViewSet):
     """API endpoint for :class:`Language` objects."""
 
     queryset = Language.objects.all()
     serializer_class = LanguageSerializer
 
 
-class OrganizationIdentifierViewSet(viewsets.ModelViewSet):
+class OrganizationIdentifierViewSet(FilteredModelViewSet):
     """API endpoint for :class:`OrganizationIdentifier` objects."""
 
     queryset = OrganizationIdentifier.objects.all()
     serializer_class = OrganizationIdentifierSerializer
 
 
-class RequiredDocumentViewSet(viewsets.ModelViewSet):
+class RequiredDocumentViewSet(FilteredModelViewSet):
     """API endpoint for :class:`RequiredDocument` objects."""
 
     queryset = RequiredDocument.objects.all()
     serializer_class = RequiredDocumentSerializer
 
 
-class UnitViewSet(viewsets.ModelViewSet):
+class UnitViewSet(FilteredModelViewSet):
     """API endpoint for :class:`Unit` objects."""
 
     queryset = Unit.objects.all()
     serializer_class = UnitSerializer
 
 
-class ServiceCapacityViewSet(viewsets.ModelViewSet):
+class ServiceCapacityViewSet(FilteredModelViewSet):
     """API endpoint for :class:`ServiceCapacity` objects."""
 
     queryset = ServiceCapacity.objects.all()
     serializer_class = ServiceCapacitySerializer
 
 
-class URLViewSet(viewsets.ModelViewSet):
+class URLViewSet(FilteredModelViewSet):
     """API endpoint for :class:`URL` objects."""
 
     queryset = URL.objects.all()
     serializer_class = URLSerializer
 
 
-class TaxonomyViewSet(viewsets.ModelViewSet):
+class TaxonomyViewSet(FilteredModelViewSet):
     """API endpoint for :class:`Taxonomy` objects."""
 
     queryset = Taxonomy.objects.all()
     serializer_class = TaxonomySerializer
 
 
-class TaxonomyTermViewSet(viewsets.ModelViewSet):
+class TaxonomyTermViewSet(FilteredModelViewSet):
     """API endpoint for :class:`TaxonomyTerm` objects."""
 
     queryset = TaxonomyTerm.objects.all()
