@@ -39,7 +39,6 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "src.users",
     "src.hsds",
-    "components"
     "rest_framework",
     "django_filters",
     "django_components",

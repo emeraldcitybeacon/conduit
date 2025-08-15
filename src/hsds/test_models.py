@@ -1,18 +1,21 @@
 """Tests for HSDS core models."""
 import os
+
 import django
 
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "src.conduit.settings")
 django.setup()
 import pytest
-from apps.hsds.models import (
+
+from src.hsds.models import (
     Address,
+    Location,
     Organization,
+    Phone,
     Program,
     Service,
-    Location,
-    Phone,
 )
+
 
 @pytest.mark.django_db
 def test_program_belongs_to_organization() -> None:

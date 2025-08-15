@@ -22,7 +22,7 @@ from src.hsds.urls import api_router
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    path("accounts/", include("apps.users.urls")),
+    path("accounts/", include("src.users.urls")),
     path("accounts/", include("django.contrib.auth.urls")),
     path("api/v1/", include(api_router.urls)),
     path("", include("django_components.urls")),
