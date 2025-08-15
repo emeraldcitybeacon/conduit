@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load i18n %}
 {% block title %}{{ location.name }}{% endblock %}
 {% block content %}
 <h1 class="text-2xl font-bold mb-4">{{ location.name }}</h1>
@@ -9,31 +10,31 @@
     hx-get="{% url 'hsds:location-edit' location.id %}"
     hx-target="#dialog"
     hx-swap="innerHTML"
-  >Edit</button>
-  <a href="{% url 'hsds:location-list' %}" class="text-blue-600">Back to list</a>
+  >{% trans "Edit" %}</button>
+  <a href="{% url 'hsds:location-list' %}" class="text-blue-600">{% trans "Back to list" %}</a>
 </div>
-<h2 class="text-xl font-semibold">Addresses</h2>
+<h2 class="text-xl font-semibold">{% trans "Addresses" %}</h2>
 <ul class="mb-4">
   {% for address in location.addresses.all %}
   <li>{{ address.address_1 }}, {{ address.city }}</li>
   {% empty %}
-  <li>No addresses available.</li>
+  <li>{% trans "No addresses available." %}</li>
   {% endfor %}
 </ul>
-<h2 class="text-xl font-semibold">Phones</h2>
+<h2 class="text-xl font-semibold">{% trans "Phones" %}</h2>
 <ul class="mb-4">
   {% for phone in location.phones.all %}
   <li>{{ phone.number }}{% if phone.type %} ({{ phone.get_type_display }}){% endif %}</li>
   {% empty %}
-  <li>No phones available.</li>
+  <li>{% trans "No phones available." %}</li>
   {% endfor %}
 </ul>
-<h2 class="text-xl font-semibold">Schedules</h2>
+<h2 class="text-xl font-semibold">{% trans "Schedules" %}</h2>
 <ul class="mb-4">
   {% for schedule in location.schedules.all %}
   <li>{% if schedule.description %}{{ schedule.description }}{% else %}{{ schedule.opens_at }} - {{ schedule.closes_at }}{% endif %}</li>
   {% empty %}
-  <li>No schedules available.</li>
+  <li>{% trans "No schedules available." %}</li>
   {% endfor %}
 </ul>
 <div id="dialog"></div>

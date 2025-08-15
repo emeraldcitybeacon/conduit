@@ -1,7 +1,8 @@
 {% extends "base.html" %}
-{% block title %}Organizations{% endblock %}
+{% load i18n %}
+{% block title %}{% trans "Organizations" %}{% endblock %}
 {% block content %}
-<h1 class="text-2xl font-bold mb-4">Organizations</h1>
+<h1 class="text-2xl font-bold mb-4">{% trans "Organizations" %}</h1>
 <div class="mb-4">
   <button
     class="bg-blue-600 text-white px-4 py-2 rounded"
@@ -9,12 +10,12 @@
     hx-target="#dialog"
     hx-swap="innerHTML"
   >
-    New Organization
+    {% trans "New Organization" %}
   </button>
 </div>
 <table class="min-w-full bg-white">
   <thead>
-    <tr><th class="text-left p-2">Name</th></tr>
+    <tr><th class="text-left p-2">{% trans "Name" %}</th></tr>
   </thead>
   <tbody>
     {% for organization in organizations %}
@@ -24,7 +25,7 @@
       </td>
     </tr>
     {% empty %}
-    <tr><td class="p-2">No organizations found.</td></tr>
+    <tr><td class="p-2">{% trans "No organizations found." %}</td></tr>
     {% endfor %}
   </tbody>
 </table>
