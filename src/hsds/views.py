@@ -1,6 +1,8 @@
 """Management views for HSDS organizations and services."""
 from __future__ import annotations
 
+from typing import Iterable, Mapping, Type
+
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.forms import ModelForm, inlineformset_factory
@@ -8,16 +10,64 @@ from django.http import HttpRequest, HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
 from django.views.generic import DetailView, ListView
+from django.db import models
+from rest_framework.exceptions import ValidationError
+from rest_framework.serializers import Serializer
 
-from .models import (
-    Organization,
-    Service,
-    Phone,
-    Schedule,
-    Location,
-    Address,
-    Contact,
+from .api import (
+    AddressSerializer,
+    ContactSerializer,
+    LocationSerializer,
+    OrganizationSerializer,
+    PhoneSerializer,
+    ScheduleSerializer,
+    ServiceSerializer,
 )
+from .models import Address, Contact, Location, Organization, Phone, Schedule, Service
+
+
+def _apply_serializer_errors(form, errors: Mapping[str, Iterable[str]]) -> None:
+    """Attach serializer validation errors to a Django form."""
+
+    for field, field_errors in errors.items():
+        for error in field_errors:
+            form.add_error(field, error)
+
+
+def _validate_formset(formset, serializer_class: Type[Serializer]) -> bool:
+    """Validate each form in a formset using a DRF serializer."""
+
+    valid = True
+    for form in formset.forms:
+        form.is_valid()  # Populate ``cleaned_data`` for serializer usage.
+        form.errors.clear()
+        if formset.can_delete and formset._should_delete_form(form):
+            continue
+        field_names = serializer_class().fields.keys()
+        data = {}
+        for field in field_names:
+            if field not in form.cleaned_data:
+                continue
+            value = form.cleaned_data.get(field)
+            if value in (None, ""):
+                continue
+            if isinstance(value, models.Model) and not getattr(value, "pk", None):
+                continue
+            data[field] = value
+        try:
+            serializer = serializer_class(data=data)
+            serializer.is_valid(raise_exception=True)
+        except ValidationError as exc:  # pragma: no cover - exercised via views
+            _apply_serializer_errors(form, exc.detail)
+            valid = False
+    return valid
+
+
+def _serializer_data(data, serializer_class: Type[Serializer]) -> dict[str, str]:
+    """Extract only fields relevant to ``serializer_class`` from ``data``."""
+
+    field_names = serializer_class().fields.keys()
+    return {field: data.get(field) for field in field_names if field in data}
 
 
 class OrganizationListView(LoginRequiredMixin, ListView):
@@ -49,22 +99,35 @@ class OrganizationForm(ModelForm):
 
 @login_required
 def organization_create_view(request: HttpRequest) -> HttpResponse:
-    """Create a new organization."""
+    """Create a new organization using DRF serializer validation."""
 
     if request.method == "POST":
         form = OrganizationForm(request.POST)
-        if form.is_valid():
-            org = form.save()
-            if request.headers.get("HX-Request"):
-                response = HttpResponse(status=204)
-                response["HX-Redirect"] = reverse(
-                    "hsds:organization-detail", args=[org.pk]
-                )
-                return response
-            return redirect("hsds:organization-detail", pk=org.pk)
-    else:
-        form = OrganizationForm()
+        serializer = OrganizationSerializer(
+            data=_serializer_data(request.POST, OrganizationSerializer)
+        )
+        try:
+            serializer.is_valid(raise_exception=True)
+        except ValidationError as exc:
+            _apply_serializer_errors(form, exc.detail)
+            context = {
+                "form": form,
+                "action": reverse("hsds:organization-create"),
+            }
+            return render(
+                request,
+                "hsds/includes/organization_form.html",
+                context,
+                status=400,
+            )
+        org = serializer.save()
+        if request.headers.get("HX-Request"):
+            response = HttpResponse(status=204)
+            response["HX-Redirect"] = reverse("hsds:organization-detail", args=[org.pk])
+            return response
+        return redirect("hsds:organization-detail", pk=org.pk)
 
+    form = OrganizationForm()
     context = {
         "form": form,
         "action": reverse("hsds:organization-create"),
@@ -74,24 +137,38 @@ def organization_create_view(request: HttpRequest) -> HttpResponse:
 
 @login_required
 def organization_edit_view(request: HttpRequest, pk: str) -> HttpResponse:
-    """Edit an existing organization."""
+    """Edit an existing organization using serializer validation."""
 
     organization = get_object_or_404(Organization, pk=pk)
 
     if request.method == "POST":
         form = OrganizationForm(request.POST, instance=organization)
-        if form.is_valid():
-            org = form.save()
-            if request.headers.get("HX-Request"):
-                response = HttpResponse(status=204)
-                response["HX-Redirect"] = reverse(
-                    "hsds:organization-detail", args=[org.pk]
-                )
-                return response
-            return redirect("hsds:organization-detail", pk=org.pk)
-    else:
-        form = OrganizationForm(instance=organization)
+        serializer = OrganizationSerializer(
+            instance=organization,
+            data=_serializer_data(request.POST, OrganizationSerializer),
+        )
+        try:
+            serializer.is_valid(raise_exception=True)
+        except ValidationError as exc:
+            _apply_serializer_errors(form, exc.detail)
+            context = {
+                "form": form,
+                "action": reverse("hsds:organization-edit", args=[organization.pk]),
+            }
+            return render(
+                request,
+                "hsds/includes/organization_form.html",
+                context,
+                status=400,
+            )
+        org = serializer.save()
+        if request.headers.get("HX-Request"):
+            response = HttpResponse(status=204)
+            response["HX-Redirect"] = reverse("hsds:organization-detail", args=[org.pk])
+            return response
+        return redirect("hsds:organization-detail", pk=org.pk)
 
+    form = OrganizationForm(instance=organization)
     context = {
         "form": form,
         "action": reverse("hsds:organization-edit", args=[organization.pk]),
@@ -151,8 +228,23 @@ def service_create_view(request: HttpRequest) -> HttpResponse:
         form = ServiceForm(request.POST)
         phone_formset = PhoneFormSet(request.POST, prefix="phones")
         schedule_formset = ScheduleFormSet(request.POST, prefix="schedules")
-        if form.is_valid() and phone_formset.is_valid() and schedule_formset.is_valid():
-            service = form.save()
+        serializer = ServiceSerializer(
+            data=_serializer_data(request.POST, ServiceSerializer)
+        )
+        has_errors = False
+        try:
+            serializer.is_valid(raise_exception=True)
+        except ValidationError as exc:
+            _apply_serializer_errors(form, exc.detail)
+            has_errors = True
+
+        if not _validate_formset(phone_formset, PhoneSerializer):
+            has_errors = True
+        if not _validate_formset(schedule_formset, ScheduleSerializer):
+            has_errors = True
+
+        if not has_errors:
+            service = serializer.save()
             phone_formset.instance = service
             schedule_formset.instance = service
             phone_formset.save()
@@ -173,7 +265,8 @@ def service_create_view(request: HttpRequest) -> HttpResponse:
         "schedule_formset": schedule_formset,
         "action": reverse("hsds:service-create"),
     }
-    return render(request, "hsds/includes/service_form.html", context)
+    status_code = 400 if request.method == "POST" else 200
+    return render(request, "hsds/includes/service_form.html", context, status=status_code)
 
 
 @login_required
@@ -186,8 +279,24 @@ def service_edit_view(request: HttpRequest, pk: str) -> HttpResponse:
         form = ServiceForm(request.POST, instance=service)
         phone_formset = PhoneFormSet(request.POST, instance=service, prefix="phones")
         schedule_formset = ScheduleFormSet(request.POST, instance=service, prefix="schedules")
-        if form.is_valid() and phone_formset.is_valid() and schedule_formset.is_valid():
-            service = form.save()
+        serializer = ServiceSerializer(
+            instance=service,
+            data=_serializer_data(request.POST, ServiceSerializer),
+        )
+        has_errors = False
+        try:
+            serializer.is_valid(raise_exception=True)
+        except ValidationError as exc:
+            _apply_serializer_errors(form, exc.detail)
+            has_errors = True
+
+        if not _validate_formset(phone_formset, PhoneSerializer):
+            has_errors = True
+        if not _validate_formset(schedule_formset, ScheduleSerializer):
+            has_errors = True
+
+        if not has_errors:
+            service = serializer.save()
             phone_formset.save()
             schedule_formset.save()
             if request.headers.get("HX-Request"):
@@ -206,7 +315,8 @@ def service_edit_view(request: HttpRequest, pk: str) -> HttpResponse:
         "schedule_formset": schedule_formset,
         "action": reverse("hsds:service-edit", args=[service.pk]),
     }
-    return render(request, "hsds/includes/service_form.html", context)
+    status_code = 400 if request.method == "POST" else 200
+    return render(request, "hsds/includes/service_form.html", context, status=status_code)
 
 
 @login_required
@@ -310,13 +420,25 @@ def location_create_view(request: HttpRequest) -> HttpResponse:
         address_formset = AddressFormSet(request.POST, prefix="addresses")
         phone_formset = LocationPhoneFormSet(request.POST, prefix="phones")
         schedule_formset = LocationScheduleFormSet(request.POST, prefix="schedules")
-        if (
-            form.is_valid()
-            and address_formset.is_valid()
-            and phone_formset.is_valid()
-            and schedule_formset.is_valid()
-        ):
-            location = form.save()
+        serializer = LocationSerializer(
+            data=_serializer_data(request.POST, LocationSerializer)
+        )
+        has_errors = False
+        try:
+            serializer.is_valid(raise_exception=True)
+        except ValidationError as exc:
+            _apply_serializer_errors(form, exc.detail)
+            has_errors = True
+
+        if not _validate_formset(address_formset, AddressSerializer):
+            has_errors = True
+        if not _validate_formset(phone_formset, PhoneSerializer):
+            has_errors = True
+        if not _validate_formset(schedule_formset, ScheduleSerializer):
+            has_errors = True
+
+        if not has_errors:
+            location = serializer.save()
             address_formset.instance = location
             phone_formset.instance = location
             schedule_formset.instance = location
@@ -343,7 +465,8 @@ def location_create_view(request: HttpRequest) -> HttpResponse:
         "schedule_formset": schedule_formset,
         "action": reverse("hsds:location-create"),
     }
-    return render(request, "hsds/includes/location_form.html", context)
+    status_code = 400 if request.method == "POST" else 200
+    return render(request, "hsds/includes/location_form.html", context, status=status_code)
 
 
 @login_required
@@ -363,13 +486,26 @@ def location_edit_view(request: HttpRequest, pk: str) -> HttpResponse:
         schedule_formset = LocationScheduleFormSet(
             request.POST, instance=location, prefix="schedules"
         )
-        if (
-            form.is_valid()
-            and address_formset.is_valid()
-            and phone_formset.is_valid()
-            and schedule_formset.is_valid()
-        ):
-            location = form.save()
+        serializer = LocationSerializer(
+            instance=location,
+            data=_serializer_data(request.POST, LocationSerializer),
+        )
+        has_errors = False
+        try:
+            serializer.is_valid(raise_exception=True)
+        except ValidationError as exc:
+            _apply_serializer_errors(form, exc.detail)
+            has_errors = True
+
+        if not _validate_formset(address_formset, AddressSerializer):
+            has_errors = True
+        if not _validate_formset(phone_formset, PhoneSerializer):
+            has_errors = True
+        if not _validate_formset(schedule_formset, ScheduleSerializer):
+            has_errors = True
+
+        if not has_errors:
+            location = serializer.save()
             address_formset.save()
             phone_formset.save()
             schedule_formset.save()
@@ -395,7 +531,8 @@ def location_edit_view(request: HttpRequest, pk: str) -> HttpResponse:
         "schedule_formset": schedule_formset,
         "action": reverse("hsds:location-edit", args=[location.pk]),
     }
-    return render(request, "hsds/includes/location_form.html", context)
+    status_code = 400 if request.method == "POST" else 200
+    return render(request, "hsds/includes/location_form.html", context, status=status_code)
 
 
 @login_required
@@ -460,46 +597,70 @@ class ContactForm(ModelForm):
 
 @login_required
 def contact_create_view(request: HttpRequest) -> HttpResponse:
-    """Create a new contact."""
+    """Create a new contact using serializer validation."""
 
     if request.method == "POST":
         form = ContactForm(request.POST)
-        if form.is_valid():
-            contact = form.save()
-            if request.headers.get("HX-Request"):
-                response = HttpResponse(status=204)
-                response["HX-Redirect"] = reverse(
-                    "hsds:contact-detail", args=[contact.pk]
-                )
-                return response
-            return redirect("hsds:contact-detail", pk=contact.pk)
-    else:
-        form = ContactForm()
+        serializer = ContactSerializer(
+            data=_serializer_data(request.POST, ContactSerializer)
+        )
+        try:
+            serializer.is_valid(raise_exception=True)
+        except ValidationError as exc:
+            _apply_serializer_errors(form, exc.detail)
+            context = {"form": form, "action": reverse("hsds:contact-create")}
+            return render(
+                request,
+                "hsds/includes/contact_form.html",
+                context,
+                status=400,
+            )
+        contact = serializer.save()
+        if request.headers.get("HX-Request"):
+            response = HttpResponse(status=204)
+            response["HX-Redirect"] = reverse("hsds:contact-detail", args=[contact.pk])
+            return response
+        return redirect("hsds:contact-detail", pk=contact.pk)
 
+    form = ContactForm()
     context = {"form": form, "action": reverse("hsds:contact-create")}
     return render(request, "hsds/includes/contact_form.html", context)
 
 
 @login_required
 def contact_edit_view(request: HttpRequest, pk: str) -> HttpResponse:
-    """Edit an existing contact."""
+    """Edit an existing contact using serializer validation."""
 
     contact = get_object_or_404(Contact, pk=pk)
 
     if request.method == "POST":
         form = ContactForm(request.POST, instance=contact)
-        if form.is_valid():
-            contact = form.save()
-            if request.headers.get("HX-Request"):
-                response = HttpResponse(status=204)
-                response["HX-Redirect"] = reverse(
-                    "hsds:contact-detail", args=[contact.pk]
-                )
-                return response
-            return redirect("hsds:contact-detail", pk=contact.pk)
-    else:
-        form = ContactForm(instance=contact)
+        serializer = ContactSerializer(
+            instance=contact,
+            data=_serializer_data(request.POST, ContactSerializer),
+        )
+        try:
+            serializer.is_valid(raise_exception=True)
+        except ValidationError as exc:
+            _apply_serializer_errors(form, exc.detail)
+            context = {
+                "form": form,
+                "action": reverse("hsds:contact-edit", args=[contact.pk]),
+            }
+            return render(
+                request,
+                "hsds/includes/contact_form.html",
+                context,
+                status=400,
+            )
+        contact = serializer.save()
+        if request.headers.get("HX-Request"):
+            response = HttpResponse(status=204)
+            response["HX-Redirect"] = reverse("hsds:contact-detail", args=[contact.pk])
+            return response
+        return redirect("hsds:contact-detail", pk=contact.pk)
 
+    form = ContactForm(instance=contact)
     context = {
         "form": form,
         "action": reverse("hsds:contact-edit", args=[contact.pk]),
