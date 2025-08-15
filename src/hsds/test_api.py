@@ -79,3 +79,24 @@ def test_service_detail_returns_nested_location_address() -> None:
     nested_address = response.data["service_at_locations"][0]["location"]["addresses"][0]
     assert nested_address["address_1"] == "123 Main St"
 
+
+@pytest.mark.django_db
+def test_service_filter_by_status() -> None:
+    """Filtering the service list by status returns only matching services."""
+
+    org = Organization.objects.create(name="Org", description="Desc")
+    active = Service.objects.create(
+        organization=org, name="Active", status=Service.Status.ACTIVE
+    )
+    Service.objects.create(
+        organization=org, name="Inactive", status=Service.Status.INACTIVE
+    )
+
+    client = APIClient()
+    url = reverse("service-list")
+    response = client.get(url, {"status": Service.Status.ACTIVE})
+
+    assert response.status_code == 200
+    assert len(response.data) == 1
+    assert response.data[0]["id"] == str(active.id)
+

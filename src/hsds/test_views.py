@@ -30,6 +30,17 @@ def test_logged_in_user_sees_organization_list(client) -> None:
 
 
 @pytest.mark.django_db
+def test_organization_create_requires_login(client) -> None:
+    """Unauthenticated users should be redirected when posting to create."""
+
+    response = client.post(
+        reverse("hsds:organization-create"), {"name": "Nope", "description": "Desc"}
+    )
+    assert response.status_code == 302
+    assert "/accounts/login/" in response.headers["Location"]
+
+
+@pytest.mark.django_db
 def test_user_can_create_organization(client) -> None:
     """Posting valid data creates an organization."""
     User.objects.create_user(username="bob", password="secret")
@@ -43,6 +54,20 @@ def test_user_can_create_organization(client) -> None:
     assert response.headers["Location"] == reverse(
         "hsds:organization-detail", args=[org.id]
     )
+
+
+@pytest.mark.django_db
+def test_invalid_organization_returns_errors(client) -> None:
+    """Invalid POST should return errors and 400 status."""
+
+    User.objects.create_user(username="barb", password="secret")
+    client.login(username="barb", password="secret")
+    response = client.post(
+        reverse("hsds:organization-create"),
+        {"description": "Missing name"},
+    )
+    assert response.status_code == 400
+    assert b"This field is required" in response.content
 
 
 @pytest.mark.django_db
