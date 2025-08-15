@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% block title %}Search{% if query %}: {{ query }}{% endif %}{% endblock %}
+{% block content %}
+<h1 class="text-2xl font-bold mb-4">Search Results{% if query %} for "{{ query }}"{% endif %}</h1>
+{% if query %}
+  <section class="mb-6">
+    <h2 class="text-xl font-semibold mb-2">Organizations</h2>
+    <ul class="list-disc pl-5">
+    {% for org in organizations %}
+      <li><a href="{% url 'hsds:organization-detail' org.id %}" class="text-blue-600">{{ org.name }}</a></li>
+    {% empty %}
+      <li>No organizations found.</li>
+    {% endfor %}
+    </ul>
+  </section>
+  <section class="mb-6">
+    <h2 class="text-xl font-semibold mb-2">Services</h2>
+    <ul class="list-disc pl-5">
+    {% for svc in services %}
+      <li><a href="{% url 'hsds:service-detail' svc.id %}" class="text-blue-600">{{ svc.name }}</a></li>
+    {% empty %}
+      <li>No services found.</li>
+    {% endfor %}
+    </ul>
+  </section>
+  <section class="mb-6">
+    <h2 class="text-xl font-semibold mb-2">Locations</h2>
+    <ul class="list-disc pl-5">
+    {% for loc in locations %}
+      <li><a href="{% url 'hsds:location-detail' loc.id %}" class="text-blue-600">{{ loc.name }}</a></li>
+    {% empty %}
+      <li>No locations found.</li>
+    {% endfor %}
+    </ul>
+  </section>
+  <section>
+    <h2 class="text-xl font-semibold mb-2">Contacts</h2>
+    <ul class="list-disc pl-5">
+    {% for contact in contacts %}
+      <li><a href="{% url 'hsds:contact-detail' contact.id %}" class="text-blue-600">{{ contact.name }}</a></li>
+    {% empty %}
+      <li>No contacts found.</li>
+    {% endfor %}
+    </ul>
+  </section>
+{% else %}
+  <p>Enter a search term in the navigation bar.</p>
+{% endif %}
+{% endblock %}

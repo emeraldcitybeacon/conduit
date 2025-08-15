@@ -206,3 +206,24 @@ def test_user_can_create_contact(client) -> None:
     assert response.headers["Location"] == reverse(
         "hsds:contact-detail", args=[contact.id]
     )
+
+
+@pytest.mark.django_db
+def test_search_requires_login(client) -> None:
+    """Search view should redirect unauthenticated users."""
+
+    response = client.get(reverse("hsds:search"), {"q": "Org"})
+    assert response.status_code == 302
+    assert "/accounts/login/" in response.headers["Location"]
+
+
+@pytest.mark.django_db
+def test_search_returns_results(client) -> None:
+    """Logged-in users receive search results."""
+
+    User.objects.create_user(username="zara", password="secret")
+    Organization.objects.create(name="Helpful Org", description="Desc")
+    client.login(username="zara", password="secret")
+    response = client.get(reverse("hsds:search"), {"q": "Helpful"})
+    assert response.status_code == 200
+    assert b"Helpful Org" in response.content

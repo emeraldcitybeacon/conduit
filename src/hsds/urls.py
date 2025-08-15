@@ -29,6 +29,7 @@ from .api import (
     PhoneViewSet,
 )
 from .views import (
+    SearchView,
     OrganizationDetailView,
     OrganizationListView,
     organization_create_view,
@@ -79,6 +80,7 @@ api_router.register(r"taxonomy-terms", TaxonomyTermViewSet)
 app_name = "hsds"
 
 urlpatterns = [
+    path("manage/search/", SearchView.as_view(), name="search"),
     path("manage/organizations/", OrganizationListView.as_view(), name="organization-list"),
     path("manage/organizations/create/", organization_create_view, name="organization-create"),
     path("manage/organizations/<uuid:pk>/", OrganizationDetailView.as_view(), name="organization-detail"),

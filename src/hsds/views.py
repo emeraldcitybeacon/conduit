@@ -9,8 +9,9 @@ from django.forms import ModelForm, inlineformset_factory
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
-from django.views.generic import DetailView, ListView
+from django.views.generic import DetailView, ListView, TemplateView
 from django.db import models
+from django.db.models import Q
 from rest_framework.exceptions import ValidationError
 from rest_framework.serializers import Serializer
 
@@ -68,6 +69,38 @@ def _serializer_data(data, serializer_class: Type[Serializer]) -> dict[str, str]
 
     field_names = serializer_class().fields.keys()
     return {field: data.get(field) for field in field_names if field in data}
+
+
+class SearchView(LoginRequiredMixin, TemplateView):
+    """Perform simple keyword search across core HSDS models."""
+
+    template_name = "hsds/search_results.html"
+
+    def get_context_data(self, **kwargs):
+        """Return context with search results for the query string."""
+
+        context = super().get_context_data(**kwargs)
+        query = self.request.GET.get("q", "").strip()
+        organizations = services = locations = contacts = []
+        if query:
+            organizations = Organization.objects.filter(
+                Q(name__icontains=query) | Q(description__icontains=query)
+            )[:25]
+            services = Service.objects.filter(
+                Q(name__icontains=query) | Q(description__icontains=query)
+            )[:25]
+            locations = Location.objects.filter(name__icontains=query)[:25]
+            contacts = Contact.objects.filter(name__icontains=query)[:25]
+        context.update(
+            {
+                "query": query,
+                "organizations": organizations,
+                "services": services,
+                "locations": locations,
+                "contacts": contacts,
+            }
+        )
+        return context
 
 
 class OrganizationListView(LoginRequiredMixin, ListView):
