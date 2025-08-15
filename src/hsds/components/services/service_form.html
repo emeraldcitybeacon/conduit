@@ -7,6 +7,7 @@
   class="space-y-4"
 >
   {% csrf_token %}
+  {% component "form_title" form=form model_name=model_name %}{% endcomponent %}
   {% for field in form %}
   <div class="form-control">
     <label for="{{ field.id_for_label }}" class="label">

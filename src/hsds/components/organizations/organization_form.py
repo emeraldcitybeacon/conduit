@@ -11,4 +11,9 @@ class OrganizationForm(Component):
         public = True
 
     def get_template_data(self, args, kwargs, slots, context):  # pragma: no cover - simple
-        return {"form": kwargs["form"], "action": kwargs.get("action", "")}
+        form = kwargs["form"]
+        return {
+            "form": form,
+            "action": kwargs.get("action", ""),
+            "model_name": form._meta.model._meta.verbose_name,
+        }
