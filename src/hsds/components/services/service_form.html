@@ -7,57 +7,59 @@
   class="space-y-4"
 >
   {% csrf_token %}
-  {% component "form_title" form=form model_name=model_name %}{% endcomponent %}
-  {% for field in form %}
-  <div class="form-control">
-    <label for="{{ field.id_for_label }}" class="label">
-      <span class="label-text">{{ field.label }}</span>
-    </label>
-    {{ field }}
-    {% if field.errors %}
-    <p class="text-error text-xs">{{ field.errors|striptags }}</p>
-    {% endif %}
-  </div>
-  {% endfor %}
-  <div>
-    <h3 class="font-semibold">{% trans "Phones" %}</h3>
-    <div id="phones" class="space-y-2">
-      {{ phone_formset.management_form }}
-      {% for pform in phone_formset.forms %}
-        {% component "phone_form" form=pform %}{% endcomponent %}
-      {% endfor %}
+  <fieldset>
+    {% component "form_title" form=form model_name=model_name %}{% endcomponent %}
+    {% for field in form %}
+    <div class="form-control">
+      <label for="{{ field.id_for_label }}" class="label">
+        <span class="label-text">{{ field.label }}</span>
+      </label>
+      {{ field }}
+      {% if field.errors %}
+      <p class="text-error text-xs">{{ field.errors|striptags }}</p>
+      {% endif %}
     </div>
-    <button
-      type="button"
-      class="btn btn-success btn-sm mt-2"
-      hx-get="{% url 'hsds:phone-form' %}?form_count={{ phone_formset.total_form_count }}"
-      hx-target="#phones"
-      hx-swap="beforeend"
-      onclick="document.getElementById('id_phones-TOTAL_FORMS').value = parseInt(document.getElementById('id_phones-TOTAL_FORMS').value) + 1"
-    >
-      {% trans "Add Phone" %}
-    </button>
-  </div>
-  <div>
-    <h3 class="font-semibold">{% trans "Schedules" %}</h3>
-    <div id="schedules" class="space-y-2">
-      {{ schedule_formset.management_form }}
-      {% for sform in schedule_formset.forms %}
-        {% component "schedule_form" form=sform %}{% endcomponent %}
-      {% endfor %}
+    {% endfor %}
+    <div>
+      <h3 class="font-semibold">{% trans "Phones" %}</h3>
+      <div id="phones" class="space-y-2">
+        {{ phone_formset.management_form }}
+        {% for pform in phone_formset.forms %}
+          {% component "phone_form" form=pform %}{% endcomponent %}
+        {% endfor %}
+      </div>
+      <button
+        type="button"
+        class="btn btn-success btn-sm mt-2"
+        hx-get="{% url 'hsds:phone-form' %}?form_count={{ phone_formset.total_form_count }}"
+        hx-target="#phones"
+        hx-swap="beforeend"
+        onclick="document.getElementById('id_phones-TOTAL_FORMS').value = parseInt(document.getElementById('id_phones-TOTAL_FORMS').value) + 1"
+      >
+        {% trans "Add Phone" %}
+      </button>
     </div>
-    <button
-      type="button"
-      class="btn btn-success btn-sm mt-2"
-      hx-get="{% url 'hsds:schedule-form' %}?form_count={{ schedule_formset.total_form_count }}"
-      hx-target="#schedules"
-      hx-swap="beforeend"
-      onclick="document.getElementById('id_schedules-TOTAL_FORMS').value = parseInt(document.getElementById('id_schedules-TOTAL_FORMS').value) + 1"
-    >
-      {% trans "Add Schedule" %}
-    </button>
-  </div>
-  <div class="flex gap-2">
+    <div>
+      <h3 class="font-semibold">{% trans "Schedules" %}</h3>
+      <div id="schedules" class="space-y-2">
+        {{ schedule_formset.management_form }}
+        {% for sform in schedule_formset.forms %}
+          {% component "schedule_form" form=sform %}{% endcomponent %}
+        {% endfor %}
+      </div>
+      <button
+        type="button"
+        class="btn btn-success btn-sm mt-2"
+        hx-get="{% url 'hsds:schedule-form' %}?form_count={{ schedule_formset.total_form_count }}"
+        hx-target="#schedules"
+        hx-swap="beforeend"
+        onclick="document.getElementById('id_schedules-TOTAL_FORMS').value = parseInt(document.getElementById('id_schedules-TOTAL_FORMS').value) + 1"
+      >
+        {% trans "Add Schedule" %}
+      </button>
+    </div>
+  </fieldset>
+  <div class="form-actions">
     <button type="submit" class="btn btn-primary">{% trans "Save" %}</button>
   </div>
 </form>

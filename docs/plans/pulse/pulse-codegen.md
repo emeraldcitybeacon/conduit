@@ -269,7 +269,7 @@ Provide one authoritative source for product designers and front‑end engineers
 
 ## Phase 0 — Project wiring & scaffolding
 
-* [ ] Step 0.1: Add new apps and settings
+* [x] Step 0.1: Add new apps and settings
 
   * **Task**: Create `hsds_ext`, `resources`, and `pulse` apps; register in settings; wire URLs. Create base templates/layout for Pulse. Ensure `django-components` is enabled and set up a component registry pattern under `src/[app]/components/…`.
   * **Files**:
@@ -288,7 +288,7 @@ Provide one authoritative source for product designers and front‑end engineers
   * **Step Dependencies**: None
   * **User Instructions**: Confirm `INSTALLED_APPS` contains `django_components`, `rest_framework`, `hsds_ext`, `resources`, `pulse`. Ensure Tailwind build runs as in your current setup.
 
-* [ ] Step 0.2: Database extension & env sanity
+* [x] Step 0.2: Database extension & env sanity
 
   * **Task**: Enable `pg_trgm` and add a migration to create it if not present. Ensure env vars present (`DATABASE_URL`, `SECRET_KEY`, etc.).
   * **Files**:
