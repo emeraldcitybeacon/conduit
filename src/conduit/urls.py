@@ -24,7 +24,10 @@ from hsds.urls import api_router
 
 # Register custom components
 from conduit.components.layout import nav as _nav  # noqa: F401
-from conduit.components.hsds import organization_form as _organization_form  # noqa: F401
+from hsds.components.organizations import organization_form as _organization_form  # noqa: F401
+from hsds.components.services import service_form as _service_form  # noqa: F401
+from hsds.components.services import phone_form as _phone_form  # noqa: F401
+from hsds.components.services import schedule_form as _schedule_form  # noqa: F401
 
 django_components.autodiscover()
 
