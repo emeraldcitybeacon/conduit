@@ -11,4 +11,8 @@ class AddressForm(Component):
         public = True
 
     def get_template_data(self, args, kwargs, slots, context):  # pragma: no cover - simple
-        return {"form": kwargs["form"]}
+        form = kwargs["form"]
+        return {
+            "form": form,
+            "model_name": form._meta.model._meta.verbose_name,
+        }

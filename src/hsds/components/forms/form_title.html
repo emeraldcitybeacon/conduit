@@ -1,0 +1,8 @@
+{% load i18n %}
+<{{ tag }} class="{{ classes }}">
+  {% if form.instance.pk %}
+    {% blocktrans with model=model_name|capfirst %}Edit {{ model }}{% endblocktrans %}
+  {% else %}
+    {% blocktrans with model=model_name|capfirst %}Create {{ model }}{% endblocktrans %}
+  {% endif %}
+</{{ tag }}>
