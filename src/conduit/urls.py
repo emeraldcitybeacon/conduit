@@ -39,7 +39,9 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     path("accounts/", include("users.urls")),
     path("accounts/", include("django.contrib.auth.urls")),
+    path("pulse/", include("pulse.urls")),
     path("api/v1/", include(api_router.urls)),
+    path("api/", include("resources.urls")),
     path("", include("hsds.urls")),
     path("", include("django_components.urls")),
 ]
