@@ -13,6 +13,7 @@ module.exports = {
   ],
   plugins: [
     require('@tailwindcss/forms'),
+    require('daisyui'),
     plugin(function ({ addComponents, theme }) {
       addComponents({
         '.dashboard-card': {
