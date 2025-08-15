@@ -78,7 +78,14 @@ python manage.py createsuperuser
   - The system uses a custom `User` model (`apps.users.User`) with a `role` field (`Administrator`, `Editor`, `Viewer`).
   - Authorization logic in views should respect these roles.
 
-## 6. Testing Strategy
+## 6. Frontend Workflow
+
+  - **Tailwind CSS**: Use the `npm run watch` command (via `docker-compose exec node`) to compile CSS during development.
+  - **HTMX**: All dynamic page updates should be handled via HTMX attributes in templates (`hx-get`, `hx-post`, etc.).
+  - **Alpine.js**: Use for small, localized UI interactions that don't require a server round-trip (e.g., toggling a dropdown, managing modal visibility). Use the `x-data`, `x-show`, and `@click` directives. See `docs/frameworks/alpine-js.md`.
+  - **Daisy UI**: Our primary component library. Use pre-built components whenever possible. See `docs/frameworks/daisyui.md`.
+
+## 7. Testing Strategy
 
 ```bash
 # Run the full test suite from within the container
@@ -97,7 +104,7 @@ pytest --cov=apps --cov-report=html
   - API tests should validate response structure, status codes, and permissions.
   - Model tests should validate custom methods and validation logic.
 
-## 7. Common References
+## 8. Common References
 
   - **Technical Specification**: The authoritative guide for project architecture and features.
   - **Implementation Plan**: The step-by-step development sequence.
@@ -107,7 +114,7 @@ pytest --cov=apps --cov-report=html
   - **Django Rest Framework**: [https://www.django-rest-framework.org/](https://www.django-rest-framework.org/)
   - **HTMX**: [https://htmx.org/](https://htmx.org/)
 
-## 8. Troubleshooting
+## 9. Troubleshooting
 
 ### Common Commands
 
@@ -125,7 +132,7 @@ docker-compose logs -f web
 docker-compose exec web python manage.py migrate
 ```
 
-## 9. Next Actions
+## 10. Next Actions
 
 Before implementing a feature, verify:
 

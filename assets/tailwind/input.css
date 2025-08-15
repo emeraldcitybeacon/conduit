@@ -1,4 +1,7 @@
 @import 'tailwindcss';
+@source "./public/*.{html,js}";
+@plugin '@tailwindcss/forms';
+@plugin "daisyui";
 
 @theme {
   /* true primary is #50C878 (300) */

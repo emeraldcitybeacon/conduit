@@ -1,9 +1,9 @@
 {% extends "base.html" %}
 {% load i18n %}
-{% block title %}{% trans "Login" %} - Conduit{% endblock %}
+{% block title %}{% trans "Login" %}{% endblock %}
 
 {% block content %}
-  <div class="max-w-md mx-auto bg-white p-6 shadow rounded">
+  <div class="max-w-screen-md mx-auto bg-white p-6 shadow rounded">
     <h1 class="text-xl font-semibold mb-4">{% trans "Sign in" %}</h1>
     <form method="post">
       {% csrf_token %}
