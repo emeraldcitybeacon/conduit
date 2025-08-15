@@ -39,6 +39,17 @@ from .views import (
     service_edit_view,
     phone_form_view,
     schedule_form_view,
+    LocationListView,
+    LocationDetailView,
+    location_create_view,
+    location_edit_view,
+    location_address_form_view,
+    location_phone_form_view,
+    location_schedule_form_view,
+    ContactListView,
+    ContactDetailView,
+    contact_create_view,
+    contact_edit_view,
 )
 
 
@@ -78,4 +89,15 @@ urlpatterns = [
     path("manage/services/<uuid:pk>/edit/", service_edit_view, name="service-edit"),
     path("manage/services/phone-form/", phone_form_view, name="phone-form"),
     path("manage/services/schedule-form/", schedule_form_view, name="schedule-form"),
+    path("manage/locations/", LocationListView.as_view(), name="location-list"),
+    path("manage/locations/create/", location_create_view, name="location-create"),
+    path("manage/locations/<uuid:pk>/", LocationDetailView.as_view(), name="location-detail"),
+    path("manage/locations/<uuid:pk>/edit/", location_edit_view, name="location-edit"),
+    path("manage/locations/address-form/", location_address_form_view, name="location-address-form"),
+    path("manage/locations/phone-form/", location_phone_form_view, name="location-phone-form"),
+    path("manage/locations/schedule-form/", location_schedule_form_view, name="location-schedule-form"),
+    path("manage/contacts/", ContactListView.as_view(), name="contact-list"),
+    path("manage/contacts/create/", contact_create_view, name="contact-create"),
+    path("manage/contacts/<uuid:pk>/", ContactDetailView.as_view(), name="contact-detail"),
+    path("manage/contacts/<uuid:pk>/edit/", contact_edit_view, name="contact-edit"),
 ]
