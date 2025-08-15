@@ -17,7 +17,7 @@
     <p class="text-error text-xs">{{ field.errors|striptags }}</p>
     {% endif %}
   </div>
-  </fieldset>
+  {% endfor %}
   <div class="flex gap-2">
     <button type="submit" class="btn btn-primary">{% trans "Save" %}</button>
   </div>
