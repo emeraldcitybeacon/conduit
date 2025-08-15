@@ -12,6 +12,7 @@ module.exports = {
     './templates/**/*.html',
   ],
   plugins: [
+    require('@tailwindcss/forms'),
     plugin(function ({ addComponents, theme }) {
       addComponents({
         '.dashboard-card': {

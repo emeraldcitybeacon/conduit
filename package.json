@@ -23,8 +23,9 @@
   },
   "devDependencies": {
     "@tailwindcss/cli": "^4.1.12",
-    "daisyui": "^5.0.50",
-    "tailwindcss": "^4.1.12"
+    "tailwindcss": "^4.1.12",
+    "@tailwindcss/forms": "^0.5.10",
+    "daisyui": "^5.0.50"
   },
   "optionalDependencies": {
     "@parcel/watcher-darwin-arm64": "^2.5.0",
@@ -53,5 +54,7 @@
     "@parcel/watcher-windows-x64": {
       "optional": true
     }
+  },
+  "dependencies": {
   }
 }
