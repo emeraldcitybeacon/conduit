@@ -37,8 +37,9 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    "src.users",
-    "src.hsds",
+    "conduit",
+    "users",
+    "hsds",
     "rest_framework",
     "django_filters",
     "django_components",
@@ -77,6 +78,7 @@ TEMPLATES = [
                     'django_components.template_loader.Loader',
                 ]
             )],
+            'builtins': ['django_components.templatetags.component_tags'],
         },
     },
 ]

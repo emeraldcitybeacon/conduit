@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block title %}{{ organization.name }}{% endblock %}
+{% block content %}
+<h1 class="text-2xl font-bold mb-4">{{ organization.name }}</h1>
+<p class="mb-4">{{ organization.description }}</p>
+<div class="space-x-2 mb-4">
+  <button
+    class="bg-blue-600 text-white px-4 py-2 rounded"
+    hx-get="{% url 'hsds:organization-edit' organization.id %}"
+    hx-target="#dialog"
+    hx-swap="innerHTML"
+  >Edit</button>
+  <a href="{% url 'hsds:organization-list' %}" class="text-blue-600">Back to list</a>
+</div>
+<ul class="mb-4">
+  {% if organization.email %}<li>Email: {{ organization.email }}</li>{% endif %}
+  {% if organization.website %}<li>Website: <a href="{{ organization.website }}" class="text-blue-600">{{ organization.website }}</a></li>{% endif %}
+</ul>
+<div id="dialog"></div>
+{% endblock %}

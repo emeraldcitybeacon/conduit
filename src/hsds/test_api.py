@@ -6,7 +6,7 @@ import pytest
 from django.urls import reverse
 from rest_framework.test import APIClient
 
-from .models import Address, Location, Organization, Service, ServiceAtLocation
+from hsds.models import Address, Location, Organization, Service, ServiceAtLocation
 
 
 @pytest.mark.django_db
