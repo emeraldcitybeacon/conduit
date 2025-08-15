@@ -151,8 +151,15 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
 
 STATIC_URL = "static/"
-STATICFILES_DIRS = [BASE_DIR.parent.parent / "dist"]
+STATICFILES_DIRS = [BASE_DIR.parent.parent / "dist", BASE_DIR.parent.parent / "static"]
 STATIC_ROOT = BASE_DIR.parent.parent / "staticfiles"
+STATICFILES_FINDERS = [
+    # Default finders
+    "django.contrib.staticfiles.finders.FileSystemFinder",
+    "django.contrib.staticfiles.finders.AppDirectoriesFinder",
+    # Django components
+    "django_components.finders.ComponentsFileSystemFinder",
+]
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field

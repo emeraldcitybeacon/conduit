@@ -13,5 +13,5 @@
   >{% trans "Edit" %}</button>
   <a href="{% url 'hsds:contact-list' %}" class="link link-primary">{% trans "Back to list" %}</a>
 </div>
-<div id="dialog"></div>
+{% component "dialog" id="dialog" %}{% endcomponent %}
 {% endblock %}

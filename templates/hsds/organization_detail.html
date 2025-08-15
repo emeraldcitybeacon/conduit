@@ -17,5 +17,5 @@
   {% if organization.email %}<li class="list-row">{% trans "Email" %}: {{ organization.email }}</li>{% endif %}
   {% if organization.website %}<li class="list-row">{% trans "Website" %}: <a href="{{ organization.website }}" class="link link-primary">{{ organization.website }}</a></li>{% endif %}
 </ul>
-<div id="dialog"></div>
+{% component "dialog" id="dialog" %}{% endcomponent %}
 {% endblock %}
