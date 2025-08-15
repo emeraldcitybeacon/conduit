@@ -41,6 +41,7 @@ services:
     command: bash -c "npx @tailwindcss/cli --input assets/tailwind/input.css --config assets/tailwind/tailwind.config.js --output dist/css/site.css --watch"
     volumes:
       - ./:/app
+      - /app/node_modules  # Anonymous volume to preserve container's node_modules
     env_file:
       - ./.env
     depends_on:
@@ -99,8 +100,3 @@ volumes:
   db-data:
   redis-data:
   pgadmin-data:
-  legacy-db-data:
-  opensearch-data:
-  solr-data:
-  grafana-data:
-  prometheus-data:
