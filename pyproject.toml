@@ -14,6 +14,7 @@ dependencies = [
   "django-components>=0.141.3",
   "django-modeltranslation>=0.19.16",
   "django-htmx>=1.17.0",
+  "jsonpatch>=1.33",
 ]
 
 [project.optional-dependencies]
