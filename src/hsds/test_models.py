@@ -3,11 +3,11 @@ import os
 
 import django
 
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "src.conduit.settings")
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "conduit.settings")
 django.setup()
 import pytest
 
-from src.hsds.models import (
+from hsds.models import (
     Address,
     Location,
     Organization,

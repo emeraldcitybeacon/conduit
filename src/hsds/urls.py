@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+from django.urls import path
 from rest_framework.routers import DefaultRouter
 
 from .api import (
@@ -26,6 +27,12 @@ from .api import (
     URLViewSet,
     UnitViewSet,
     PhoneViewSet,
+)
+from .views import (
+    OrganizationDetailView,
+    OrganizationListView,
+    organization_create_view,
+    organization_edit_view,
 )
 
 
@@ -52,7 +59,28 @@ api_router.register(r"urls", URLViewSet)
 api_router.register(r"taxonomies", TaxonomyViewSet)
 api_router.register(r"taxonomy-terms", TaxonomyTermViewSet)
 
+app_name = "hsds"
 
-# Placeholder for future non-API URL patterns (e.g., HTMX views).
-urlpatterns: list = []
+urlpatterns = [
+    path(
+        "manage/organizations/",
+        OrganizationListView.as_view(),
+        name="organization-list",
+    ),
+    path(
+        "manage/organizations/create/",
+        organization_create_view,
+        name="organization-create",
+    ),
+    path(
+        "manage/organizations/<uuid:pk>/",
+        OrganizationDetailView.as_view(),
+        name="organization-detail",
+    ),
+    path(
+        "manage/organizations/<uuid:pk>/edit/",
+        organization_edit_view,
+        name="organization-edit",
+    ),
+]
 

@@ -18,12 +18,22 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import include, path
 
-from src.hsds.urls import api_router
+import django_components
+
+from hsds.urls import api_router
+
+# Register custom components
+from conduit.components.layout import nav as _nav  # noqa: F401
+from conduit.components.hsds import organization_form as _organization_form  # noqa: F401
+
+django_components.autodiscover()
+
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    path("accounts/", include("src.users.urls")),
+    path("accounts/", include("users.urls")),
     path("accounts/", include("django.contrib.auth.urls")),
     path("api/v1/", include(api_router.urls)),
+    path("", include("hsds.urls")),
     path("", include("django_components.urls")),
 ]

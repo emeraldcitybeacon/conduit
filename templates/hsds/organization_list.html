@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block title %}Organizations{% endblock %}
+{% block content %}
+<h1 class="text-2xl font-bold mb-4">Organizations</h1>
+<div class="mb-4">
+  <button
+    class="bg-blue-600 text-white px-4 py-2 rounded"
+    hx-get="{% url 'hsds:organization-create' %}"
+    hx-target="#dialog"
+    hx-swap="innerHTML"
+  >
+    New Organization
+  </button>
+</div>
+<table class="min-w-full bg-white">
+  <thead>
+    <tr><th class="text-left p-2">Name</th></tr>
+  </thead>
+  <tbody>
+    {% for organization in organizations %}
+    <tr class="border-t">
+      <td class="p-2">
+        <a href="{% url 'hsds:organization-detail' organization.id %}" class="text-blue-600">{{ organization.name }}</a>
+      </td>
+    </tr>
+    {% empty %}
+    <tr><td class="p-2">No organizations found.</td></tr>
+    {% endfor %}
+  </tbody>
+</table>
+<div id="dialog"></div>
+{% endblock %}
