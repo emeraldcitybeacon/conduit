@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% load static %}
+{# Page displaying all organizations in a simple table. #}
+
+{% block title %}Organizations{% endblock %}
+
+{% block content %}
+<h1 class="text-2xl font-semibold mb-4">Organizations</h1>
+<div class="mb-4">
+  <button
+    class="px-4 py-2 bg-blue-600 text-white rounded"
+    hx-get="{% url 'hsds:organization-create' %}"
+    hx-target="#organization-form"
+    hx-swap="outerHTML"
+  >
+    New Organization
+  </button>
+</div>
+<table class="min-w-full bg-white shadow rounded">
+  <thead>
+    <tr class="bg-gray-100 text-left">
+      <th class="p-2">Name</th>
+      <th class="p-2">Email</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for organization in organizations %}
+    <tr class="border-t">
+      <td class="p-2">
+        <a href="{% url 'hsds:organization-detail' organization.pk %}" class="text-blue-600 hover:underline">
+          {{ organization.name }}
+        </a>
+      </td>
+      <td class="p-2">{{ organization.email|default:"--" }}</td>
+    </tr>
+    {% empty %}
+    <tr>
+      <td colspan="2" class="p-2 text-center text-gray-500">No organizations available.</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+<div id="organization-form" class="mt-4"></div>
+{% endblock %}

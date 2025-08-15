@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{# Detail view for a single organization. #}
+
+{% block title %}{{ organization.name }}{% endblock %}
+
+{% block content %}
+<div id="organization-detail">
+  <h1 class="text-2xl font-semibold mb-2">{{ organization.name }}</h1>
+  <p class="mb-4 text-gray-700">{{ organization.description }}</p>
+  <dl class="mb-4">
+    <dt class="font-semibold">Email</dt>
+    <dd class="mb-2">{{ organization.email|default:"--" }}</dd>
+    <dt class="font-semibold">Website</dt>
+    <dd><a href="{{ organization.website }}" class="text-blue-600 hover:underline">{{ organization.website|default:"--" }}</a></dd>
+  </dl>
+  <button
+    class="px-4 py-2 bg-blue-600 text-white rounded"
+    hx-get="{% url 'hsds:organization-edit' organization.pk %}"
+    hx-target="#organization-detail"
+    hx-swap="outerHTML"
+  >
+    Edit
+  </button>
+</div>
+{% endblock %}
