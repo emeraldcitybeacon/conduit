@@ -37,8 +37,9 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    "apps.users",
-    "apps.hsds",
+    "src.users",
+    "src.hsds",
+    "components"
     "rest_framework",
     "django_filters",
     "django_components",

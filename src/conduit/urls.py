@@ -18,7 +18,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import include, path
 
-from apps.hsds.urls import api_router
+from src.hsds.urls import api_router
 
 urlpatterns = [
     path("admin/", admin.site.urls),

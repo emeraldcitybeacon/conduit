@@ -6,5 +6,5 @@ class HsdsConfig(AppConfig):
     """Configuration for the HSDS app."""
 
     default_auto_field = "django.db.models.BigAutoField"
-    name = "apps.hsds"
+    name = "src.hsds"
     verbose_name = "HSDS Core"
