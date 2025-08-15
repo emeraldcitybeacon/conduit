@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block title %}{{ contact.name }}{% endblock %}
+{% block content %}
+<h1 class="text-2xl font-bold mb-4">{{ contact.name }}</h1>
+<p class="mb-4">{{ contact.email }}</p>
+<div class="space-x-2 mb-4">
+  <button
+    class="bg-blue-600 text-white px-4 py-2 rounded"
+    hx-get="{% url 'hsds:contact-edit' contact.id %}"
+    hx-target="#dialog"
+    hx-swap="innerHTML"
+  >Edit</button>
+  <a href="{% url 'hsds:contact-list' %}" class="text-blue-600">Back to list</a>
+</div>
+<div id="dialog"></div>
+{% endblock %}

@@ -1,0 +1,78 @@
+<form
+  method="post"
+  hx-post="{{ action }}"
+  hx-target="#dialog"
+  hx-swap="outerHTML"
+  class="space-y-4"
+>
+  {% csrf_token %}
+  {% for field in form %}
+  <div>
+    <label class="block text-sm font-medium" for="{{ field.id_for_label }}">{{ field.label }}</label>
+    {{ field }}
+    {% if field.errors %}
+    <p class="text-red-500 text-xs">{{ field.errors|striptags }}</p>
+    {% endif %}
+  </div>
+  {% endfor %}
+  <div>
+    <h3 class="font-semibold">Addresses</h3>
+    <div id="addresses" class="space-y-2">
+      {{ address_formset.management_form }}
+      {% for aform in address_formset.forms %}
+        {% component "address_form" form=aform %}{% endcomponent %}
+      {% endfor %}
+    </div>
+    <button
+      type="button"
+      class="bg-green-600 text-white px-2 py-1 rounded mt-2"
+      hx-get="{% url 'hsds:location-address-form' %}?form_count={{ address_formset.total_form_count }}"
+      hx-target="#addresses"
+      hx-swap="beforeend"
+      onclick="document.getElementById('id_addresses-TOTAL_FORMS').value = parseInt(document.getElementById('id_addresses-TOTAL_FORMS').value) + 1"
+    >
+      Add Address
+    </button>
+  </div>
+  <div>
+    <h3 class="font-semibold">Phones</h3>
+    <div id="phones" class="space-y-2">
+      {{ phone_formset.management_form }}
+      {% for pform in phone_formset.forms %}
+        {% component "phone_form" form=pform %}{% endcomponent %}
+      {% endfor %}
+    </div>
+    <button
+      type="button"
+      class="bg-green-600 text-white px-2 py-1 rounded mt-2"
+      hx-get="{% url 'hsds:location-phone-form' %}?form_count={{ phone_formset.total_form_count }}"
+      hx-target="#phones"
+      hx-swap="beforeend"
+      onclick="document.getElementById('id_phones-TOTAL_FORMS').value = parseInt(document.getElementById('id_phones-TOTAL_FORMS').value) + 1"
+    >
+      Add Phone
+    </button>
+  </div>
+  <div>
+    <h3 class="font-semibold">Schedules</h3>
+    <div id="schedules" class="space-y-2">
+      {{ schedule_formset.management_form }}
+      {% for sform in schedule_formset.forms %}
+        {% component "schedule_form" form=sform %}{% endcomponent %}
+      {% endfor %}
+    </div>
+    <button
+      type="button"
+      class="bg-green-600 text-white px-2 py-1 rounded mt-2"
+      hx-get="{% url 'hsds:location-schedule-form' %}?form_count={{ schedule_formset.total_form_count }}"
+      hx-target="#schedules"
+      hx-swap="beforeend"
+      onclick="document.getElementById('id_schedules-TOTAL_FORMS').value = parseInt(document.getElementById('id_schedules-TOTAL_FORMS').value) + 1"
+    >
+      Add Schedule
+    </button>
+  </div>
+  <div class="flex space-x-2">
+    <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded">Save</button>
+  </div>
+</form>

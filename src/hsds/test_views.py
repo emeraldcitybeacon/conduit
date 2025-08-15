@@ -5,7 +5,7 @@ import pytest
 from django.contrib.auth import get_user_model
 from django.urls import reverse
 
-from hsds.models import Organization, Service
+from hsds.models import Organization, Service, Location, Contact
 
 User = get_user_model()
 
@@ -115,3 +115,94 @@ def test_user_can_view_service_detail(client) -> None:
     response = client.get(reverse("hsds:service-detail", args=[svc.id]))
     assert response.status_code == 200
     assert b"Svc" in response.content
+
+
+@pytest.mark.django_db
+def test_location_list_requires_login(client) -> None:
+    """Unauthenticated users should be redirected to login for locations."""
+
+    response = client.get(reverse("hsds:location-list"))
+    assert response.status_code == 302
+    assert "/accounts/login/" in response.headers["Location"]
+
+
+@pytest.mark.django_db
+def test_logged_in_user_sees_location_list(client) -> None:
+    """Logged-in users can access the location list."""
+
+    User.objects.create_user(username="gina", password="secret")
+    Location.objects.create(location_type="physical", name="Loc")
+    client.login(username="gina", password="secret")
+    response = client.get(reverse("hsds:location-list"))
+    assert response.status_code == 200
+    assert b"Loc" in response.content
+
+
+@pytest.mark.django_db
+def test_user_can_create_location(client) -> None:
+    """Posting valid data creates a location."""
+
+    User.objects.create_user(username="henry", password="secret")
+    client.login(username="henry", password="secret")
+    response = client.post(
+        reverse("hsds:location-create"),
+        {
+            "location_type": "physical",
+            "name": "Loc",
+            "addresses-TOTAL_FORMS": "0",
+            "addresses-INITIAL_FORMS": "0",
+            "addresses-MIN_NUM_FORMS": "0",
+            "addresses-MAX_NUM_FORMS": "1000",
+            "phones-TOTAL_FORMS": "0",
+            "phones-INITIAL_FORMS": "0",
+            "phones-MIN_NUM_FORMS": "0",
+            "phones-MAX_NUM_FORMS": "1000",
+            "schedules-TOTAL_FORMS": "0",
+            "schedules-INITIAL_FORMS": "0",
+            "schedules-MIN_NUM_FORMS": "0",
+            "schedules-MAX_NUM_FORMS": "1000",
+        },
+    )
+    assert response.status_code == 302
+    loc = Location.objects.get(name="Loc")
+    assert response.headers["Location"] == reverse(
+        "hsds:location-detail", args=[loc.id]
+    )
+
+
+@pytest.mark.django_db
+def test_contact_list_requires_login(client) -> None:
+    """Unauthenticated users should be redirected to login for contacts."""
+
+    response = client.get(reverse("hsds:contact-list"))
+    assert response.status_code == 302
+    assert "/accounts/login/" in response.headers["Location"]
+
+
+@pytest.mark.django_db
+def test_logged_in_user_sees_contact_list(client) -> None:
+    """Logged-in users can access the contact list."""
+
+    User.objects.create_user(username="irene", password="secret")
+    Contact.objects.create(name="Alice")
+    client.login(username="irene", password="secret")
+    response = client.get(reverse("hsds:contact-list"))
+    assert response.status_code == 200
+    assert b"Alice" in response.content
+
+
+@pytest.mark.django_db
+def test_user_can_create_contact(client) -> None:
+    """Posting valid data creates a contact."""
+
+    User.objects.create_user(username="john", password="secret")
+    client.login(username="john", password="secret")
+    response = client.post(
+        reverse("hsds:contact-create"),
+        {"name": "Bob"},
+    )
+    assert response.status_code == 302
+    contact = Contact.objects.get(name="Bob")
+    assert response.headers["Location"] == reverse(
+        "hsds:contact-detail", args=[contact.id]
+    )
