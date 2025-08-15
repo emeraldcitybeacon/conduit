@@ -16,6 +16,28 @@ from django.db.models import Q
 from rest_framework.exceptions import ValidationError
 from rest_framework.serializers import Serializer
 
+from hsds.components.organizations.organization_form import (
+    OrganizationForm as OrganizationFormComponent,
+)
+from hsds.components.services.service_form import (
+    ServiceForm as ServiceFormComponent,
+)
+from hsds.components.services.phone_form import (
+    PhoneForm as PhoneFormComponent,
+)
+from hsds.components.services.schedule_form import (
+    ScheduleForm as ScheduleFormComponent,
+)
+from hsds.components.locations.location_form import (
+    LocationForm as LocationFormComponent,
+)
+from hsds.components.locations.address_form import (
+    AddressForm as AddressFormComponent,
+)
+from hsds.components.contacts.contact_form import (
+    ContactForm as ContactFormComponent,
+)
+
 from .api import (
     AddressSerializer,
     ContactSerializer,
@@ -167,10 +189,9 @@ def organization_create_view(request: HttpRequest) -> HttpResponse:
                 "form": form,
                 "action": reverse("hsds:organization-create"),
             }
-            return render(
-                request,
-                "hsds/includes/organization_form.html",
-                context,
+            return OrganizationFormComponent.render_to_response(
+                kwargs=context,
+                request=request,
                 status=400,
             )
         org = serializer.save()
@@ -185,7 +206,10 @@ def organization_create_view(request: HttpRequest) -> HttpResponse:
         "form": form,
         "action": reverse("hsds:organization-create"),
     }
-    return render(request, "hsds/includes/organization_form.html", context)
+    return OrganizationFormComponent.render_to_response(
+        kwargs=context,
+        request=request,
+    )
 
 
 @login_required
@@ -208,10 +232,9 @@ def organization_edit_view(request: HttpRequest, pk: str) -> HttpResponse:
                 "form": form,
                 "action": reverse("hsds:organization-edit", args=[organization.pk]),
             }
-            return render(
-                request,
-                "hsds/includes/organization_form.html",
-                context,
+            return OrganizationFormComponent.render_to_response(
+                kwargs=context,
+                request=request,
                 status=400,
             )
         org = serializer.save()
@@ -226,7 +249,10 @@ def organization_edit_view(request: HttpRequest, pk: str) -> HttpResponse:
         "form": form,
         "action": reverse("hsds:organization-edit", args=[organization.pk]),
     }
-    return render(request, "hsds/includes/organization_form.html", context)
+    return OrganizationFormComponent.render_to_response(
+        kwargs=context,
+        request=request,
+    )
 
 
 class ServiceListView(LoginRequiredMixin, ListView):
@@ -323,7 +349,11 @@ def service_create_view(request: HttpRequest) -> HttpResponse:
         "action": reverse("hsds:service-create"),
     }
     status_code = 400 if request.method == "POST" else 200
-    return render(request, "hsds/includes/service_form.html", context, status=status_code)
+    return ServiceFormComponent.render_to_response(
+        kwargs=context,
+        request=request,
+        status=status_code,
+    )
 
 
 @login_required
@@ -373,7 +403,11 @@ def service_edit_view(request: HttpRequest, pk: str) -> HttpResponse:
         "action": reverse("hsds:service-edit", args=[service.pk]),
     }
     status_code = 400 if request.method == "POST" else 200
-    return render(request, "hsds/includes/service_form.html", context, status=status_code)
+    return ServiceFormComponent.render_to_response(
+        kwargs=context,
+        request=request,
+        status=status_code,
+    )
 
 
 @login_required
@@ -384,7 +418,10 @@ def phone_form_view(request: HttpRequest) -> HttpResponse:
     formset = PhoneFormSet(prefix="phones")
     form = formset.empty_form
     form.prefix = f"phones-{form_count}"
-    return render(request, "hsds/includes/phone_form.html", {"form": form})
+    return PhoneFormComponent.render_to_response(
+        kwargs={"form": form},
+        request=request,
+    )
 
 
 @login_required
@@ -395,7 +432,10 @@ def schedule_form_view(request: HttpRequest) -> HttpResponse:
     formset = ScheduleFormSet(prefix="schedules")
     form = formset.empty_form
     form.prefix = f"schedules-{form_count}"
-    return render(request, "hsds/includes/schedule_form.html", {"form": form})
+    return ScheduleFormComponent.render_to_response(
+        kwargs={"form": form},
+        request=request,
+    )
 
 
 class LocationListView(LoginRequiredMixin, ListView):
@@ -527,7 +567,11 @@ def location_create_view(request: HttpRequest) -> HttpResponse:
         "action": reverse("hsds:location-create"),
     }
     status_code = 400 if request.method == "POST" else 200
-    return render(request, "hsds/includes/location_form.html", context, status=status_code)
+    return LocationFormComponent.render_to_response(
+        kwargs=context,
+        request=request,
+        status=status_code,
+    )
 
 
 @login_required
@@ -593,7 +637,11 @@ def location_edit_view(request: HttpRequest, pk: str) -> HttpResponse:
         "action": reverse("hsds:location-edit", args=[location.pk]),
     }
     status_code = 400 if request.method == "POST" else 200
-    return render(request, "hsds/includes/location_form.html", context, status=status_code)
+    return LocationFormComponent.render_to_response(
+        kwargs=context,
+        request=request,
+        status=status_code,
+    )
 
 
 @login_required
@@ -604,7 +652,10 @@ def location_address_form_view(request: HttpRequest) -> HttpResponse:
     formset = AddressFormSet(prefix="addresses")
     form = formset.empty_form
     form.prefix = f"addresses-{form_count}"
-    return render(request, "hsds/includes/address_form.html", {"form": form})
+    return AddressFormComponent.render_to_response(
+        kwargs={"form": form},
+        request=request,
+    )
 
 
 @login_required
@@ -615,7 +666,10 @@ def location_phone_form_view(request: HttpRequest) -> HttpResponse:
     formset = LocationPhoneFormSet(prefix="phones")
     form = formset.empty_form
     form.prefix = f"phones-{form_count}"
-    return render(request, "hsds/includes/phone_form.html", {"form": form})
+    return PhoneFormComponent.render_to_response(
+        kwargs={"form": form},
+        request=request,
+    )
 
 
 @login_required
@@ -626,7 +680,10 @@ def location_schedule_form_view(request: HttpRequest) -> HttpResponse:
     formset = LocationScheduleFormSet(prefix="schedules")
     form = formset.empty_form
     form.prefix = f"schedules-{form_count}"
-    return render(request, "hsds/includes/schedule_form.html", {"form": form})
+    return ScheduleFormComponent.render_to_response(
+        kwargs={"form": form},
+        request=request,
+    )
 
 
 class ContactListView(LoginRequiredMixin, ListView):
@@ -674,10 +731,9 @@ def contact_create_view(request: HttpRequest) -> HttpResponse:
         except ValidationError as exc:
             _apply_serializer_errors(form, exc.detail)
             context = {"form": form, "action": reverse("hsds:contact-create")}
-            return render(
-                request,
-                "hsds/includes/contact_form.html",
-                context,
+            return ContactFormComponent.render_to_response(
+                kwargs=context,
+                request=request,
                 status=400,
             )
         contact = serializer.save()
@@ -689,7 +745,10 @@ def contact_create_view(request: HttpRequest) -> HttpResponse:
 
     form = ContactForm()
     context = {"form": form, "action": reverse("hsds:contact-create")}
-    return render(request, "hsds/includes/contact_form.html", context)
+    return ContactFormComponent.render_to_response(
+        kwargs=context,
+        request=request,
+    )
 
 
 @login_required
@@ -712,10 +771,9 @@ def contact_edit_view(request: HttpRequest, pk: str) -> HttpResponse:
                 "form": form,
                 "action": reverse("hsds:contact-edit", args=[contact.pk]),
             }
-            return render(
-                request,
-                "hsds/includes/contact_form.html",
-                context,
+            return ContactFormComponent.render_to_response(
+                kwargs=context,
+                request=request,
                 status=400,
             )
         contact = serializer.save()
@@ -730,4 +788,7 @@ def contact_edit_view(request: HttpRequest, pk: str) -> HttpResponse:
         "form": form,
         "action": reverse("hsds:contact-edit", args=[contact.pk]),
     }
-    return render(request, "hsds/includes/contact_form.html", context)
+    return ContactFormComponent.render_to_response(
+        kwargs=context,
+        request=request,
+    )

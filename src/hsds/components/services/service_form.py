@@ -7,6 +7,9 @@ class ServiceForm(Component):
 
     template_file = "service_form.html"
 
+    class View:  # pragma: no cover - simple configuration
+        public = True
+
     def get_template_data(self, args, kwargs, slots, context):  # pragma: no cover - simple
         return {
             "form": kwargs["form"],
