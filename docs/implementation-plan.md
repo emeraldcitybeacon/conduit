@@ -122,7 +122,7 @@ This implementation plan provides a step-by-step guide to building the Conduit a
           - `templates/hsds/components/organization_form.html`: A partial template for the create/edit form.
       - **Step Dependencies**: Step 7, Step 9.
 
-  - [ ] Step 11: Build Service CRUD Interface with Nested Forms
+  - [z] Step 11: Build Service CRUD Interface with Nested Forms
 
       - **Task**: Implement the CRUD interface for the `Service` model. This is more complex and will require handling related objects like `Phone` and `Schedule` using HTMX to dynamically add/remove nested forms.
       - **Files**:
