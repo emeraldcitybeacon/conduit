@@ -5,6 +5,7 @@ from typing import Iterable, Mapping, Type
 
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django import forms
 from django.forms import ModelForm, inlineformset_factory
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
@@ -71,6 +72,21 @@ def _serializer_data(data, serializer_class: Type[Serializer]) -> dict[str, str]
     return {field: data.get(field) for field in field_names if field in data}
 
 
+def _apply_daisyui_classes(fields: Mapping[str, forms.Field]) -> None:
+    """Add daisyUI classes to form fields."""
+
+    for field in fields.values():
+        widget = field.widget
+        if isinstance(widget, forms.Select):
+            classes = "select select-bordered w-full"
+        elif isinstance(widget, forms.Textarea):
+            classes = "textarea textarea-bordered w-full"
+        else:
+            classes = "input input-bordered w-full"
+        existing = widget.attrs.get("class", "")
+        widget.attrs["class"] = f"{existing} {classes}".strip()
+
+
 class SearchView(LoginRequiredMixin, TemplateView):
     """Perform simple keyword search across core HSDS models."""
 
@@ -128,6 +144,10 @@ class OrganizationForm(ModelForm):
     class Meta:
         model = Organization
         fields = ["name", "description", "email", "website"]
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        _apply_daisyui_classes(self.fields)
 
 
 @login_required
@@ -234,6 +254,10 @@ class ServiceForm(ModelForm):
     class Meta:
         model = Service
         fields = ["organization", "name", "description", "status", "email"]
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        _apply_daisyui_classes(self.fields)
 
 
 PhoneFormSet = inlineformset_factory(
@@ -406,6 +430,10 @@ class LocationForm(ModelForm):
             "latitude",
             "longitude",
         ]
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        _apply_daisyui_classes(self.fields)
 
 
 AddressFormSet = inlineformset_factory(
@@ -626,6 +654,10 @@ class ContactForm(ModelForm):
     class Meta:
         model = Contact
         fields = ["organization", "service", "location", "name", "title", "email"]
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        _apply_daisyui_classes(self.fields)
 
 
 @login_required

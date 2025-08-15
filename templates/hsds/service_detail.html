@@ -4,29 +4,29 @@
 {% block content %}
 <h1 class="text-2xl font-bold mb-4">{{ service.name }}</h1>
 <p class="mb-4">{{ service.description }}</p>
-<div class="space-x-2 mb-4">
+<div class="flex gap-2 mb-4">
   <button
-    class="bg-blue-600 text-white px-4 py-2 rounded"
+    class="btn btn-primary"
     hx-get="{% url 'hsds:service-edit' service.id %}"
     hx-target="#dialog"
     hx-swap="innerHTML"
   >{% trans "Edit" %}</button>
-  <a href="{% url 'hsds:service-list' %}" class="text-blue-600">{% trans "Back to list" %}</a>
+  <a href="{% url 'hsds:service-list' %}" class="link link-primary">{% trans "Back to list" %}</a>
 </div>
 <h2 class="text-xl font-semibold">{% trans "Phones" %}</h2>
-<ul class="mb-4">
+<ul class="list mb-4">
   {% for phone in service.phones.all %}
-  <li>{{ phone.number }}{% if phone.type %} ({{ phone.get_type_display }}){% endif %}</li>
+  <li class="list-row">{{ phone.number }}{% if phone.type %} ({{ phone.get_type_display }}){% endif %}</li>
   {% empty %}
-  <li>{% trans "No phones available." %}</li>
+  <li class="list-row">{% trans "No phones available." %}</li>
   {% endfor %}
 </ul>
 <h2 class="text-xl font-semibold">{% trans "Schedules" %}</h2>
-<ul class="mb-4">
+<ul class="list mb-4">
   {% for schedule in service.schedules.all %}
-  <li>{% if schedule.description %}{{ schedule.description }}{% else %}{{ schedule.opens_at }} - {{ schedule.closes_at }}{% endif %}</li>
+  <li class="list-row">{% if schedule.description %}{{ schedule.description }}{% else %}{{ schedule.opens_at }} - {{ schedule.closes_at }}{% endif %}</li>
   {% empty %}
-  <li>{% trans "No schedules available." %}</li>
+  <li class="list-row">{% trans "No schedules available." %}</li>
   {% endfor %}
 </ul>
 <div id="dialog"></div>

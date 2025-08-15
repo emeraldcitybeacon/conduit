@@ -5,7 +5,7 @@
 <h1 class="text-2xl font-bold mb-4">{% trans "Locations" %}</h1>
 <div class="mb-4">
   <button
-    class="bg-blue-600 text-white px-4 py-2 rounded"
+    class="btn btn-primary"
     hx-get="{% url 'hsds:location-create' %}"
     hx-target="#dialog"
     hx-swap="innerHTML"
@@ -13,21 +13,23 @@
     {% trans "New Location" %}
   </button>
 </div>
-<table class="min-w-full bg-white">
-  <thead>
-    <tr><th class="text-left p-2">{% trans "Name" %}</th></tr>
-  </thead>
-  <tbody>
-    {% for location in locations %}
-    <tr class="border-t">
-      <td class="p-2">
-        <a href="{% url 'hsds:location-detail' location.id %}" class="text-blue-600">{{ location.name }}</a>
-      </td>
-    </tr>
-    {% empty %}
-    <tr><td class="p-2">{% trans "No locations found." %}</td></tr>
-    {% endfor %}
-  </tbody>
-</table>
+<div class="overflow-x-auto">
+  <table class="table">
+    <thead>
+      <tr><th class="text-left">{% trans "Name" %}</th></tr>
+    </thead>
+    <tbody>
+      {% for location in locations %}
+      <tr>
+        <td>
+          <a href="{% url 'hsds:location-detail' location.id %}" class="link link-primary">{{ location.name }}</a>
+        </td>
+      </tr>
+      {% empty %}
+      <tr><td>{% trans "No locations found." %}</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
 <div id="dialog"></div>
 {% endblock %}

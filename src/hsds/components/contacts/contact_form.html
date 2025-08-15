@@ -8,15 +8,17 @@
 >
   {% csrf_token %}
   {% for field in form %}
-  <div>
-    <label class="block text-sm font-medium" for="{{ field.id_for_label }}">{{ field.label }}</label>
+  <div class="form-control">
+    <label for="{{ field.id_for_label }}" class="label">
+      <span class="label-text">{{ field.label }}</span>
+    </label>
     {{ field }}
     {% if field.errors %}
-    <p class="text-red-500 text-xs">{{ field.errors|striptags }}</p>
+    <p class="text-error text-xs">{{ field.errors|striptags }}</p>
     {% endif %}
   </div>
   {% endfor %}
-  <div class="flex space-x-2">
-    <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded">{% trans "Save" %}</button>
+  <div class="flex gap-2">
+    <button type="submit" class="btn btn-primary">{% trans "Save" %}</button>
   </div>
 </form>
