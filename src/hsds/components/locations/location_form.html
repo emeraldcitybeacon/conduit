@@ -1,3 +1,4 @@
+{% load i18n %}
 <form
   method="post"
   hx-post="{{ action }}"
@@ -16,7 +17,7 @@
   </div>
   {% endfor %}
   <div>
-    <h3 class="font-semibold">Addresses</h3>
+    <h3 class="font-semibold">{% trans "Addresses" %}</h3>
     <div id="addresses" class="space-y-2">
       {{ address_formset.management_form }}
       {% for aform in address_formset.forms %}
@@ -31,11 +32,11 @@
       hx-swap="beforeend"
       onclick="document.getElementById('id_addresses-TOTAL_FORMS').value = parseInt(document.getElementById('id_addresses-TOTAL_FORMS').value) + 1"
     >
-      Add Address
+      {% trans "Add Address" %}
     </button>
   </div>
   <div>
-    <h3 class="font-semibold">Phones</h3>
+    <h3 class="font-semibold">{% trans "Phones" %}</h3>
     <div id="phones" class="space-y-2">
       {{ phone_formset.management_form }}
       {% for pform in phone_formset.forms %}
@@ -50,11 +51,11 @@
       hx-swap="beforeend"
       onclick="document.getElementById('id_phones-TOTAL_FORMS').value = parseInt(document.getElementById('id_phones-TOTAL_FORMS').value) + 1"
     >
-      Add Phone
+      {% trans "Add Phone" %}
     </button>
   </div>
   <div>
-    <h3 class="font-semibold">Schedules</h3>
+    <h3 class="font-semibold">{% trans "Schedules" %}</h3>
     <div id="schedules" class="space-y-2">
       {{ schedule_formset.management_form }}
       {% for sform in schedule_formset.forms %}
@@ -69,10 +70,10 @@
       hx-swap="beforeend"
       onclick="document.getElementById('id_schedules-TOTAL_FORMS').value = parseInt(document.getElementById('id_schedules-TOTAL_FORMS').value) + 1"
     >
-      Add Schedule
+      {% trans "Add Schedule" %}
     </button>
   </div>
   <div class="flex space-x-2">
-    <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded">Save</button>
+    <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded">{% trans "Save" %}</button>
   </div>
 </form>

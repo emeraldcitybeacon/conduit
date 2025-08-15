@@ -12,6 +12,7 @@ dependencies = [
   "psycopg2-binary>=2.9.10",
   "python-dotenv>=1.1.1",
   "django-components>=0.141.3",
+  "django-modeltranslation>=0.19.16",
 ]
 
 [project.optional-dependencies]

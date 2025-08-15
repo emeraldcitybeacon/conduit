@@ -1,21 +1,22 @@
+{% load i18n %}
 <!-- Main navigation bar partial used across the Conduit interface. -->
 <nav class="bg-white shadow mb-4">
   <div class="container mx-auto px-4 py-4 flex items-center justify-between">
-    <a href="/" class="text-xl font-semibold text-gray-900">Conduit</a>
+    <a href="/" class="text-xl font-semibold text-gray-900">{% trans "Conduit" %}</a>
     <div class="flex items-center space-x-4">
       <ul class="flex space-x-4 text-sm">
-        <li><a href="/" class="text-gray-700 hover:text-gray-900">Home</a></li>
-        <li><a href="{% url 'hsds:organization-list' %}" class="text-gray-700 hover:text-gray-900">Organizations</a></li>
-        <li><a href="{% url 'hsds:service-list' %}" class="text-gray-700 hover:text-gray-900">Services</a></li>
-        <li><a href="{% url 'hsds:location-list' %}" class="text-gray-700 hover:text-gray-900">Locations</a></li>
-        <li><a href="{% url 'hsds:contact-list' %}" class="text-gray-700 hover:text-gray-900">Contacts</a></li>
+        <li><a href="/" class="text-gray-700 hover:text-gray-900">{% trans "Home" %}</a></li>
+        <li><a href="{% url 'hsds:organization-list' %}" class="text-gray-700 hover:text-gray-900">{% trans "Organizations" %}</a></li>
+        <li><a href="{% url 'hsds:service-list' %}" class="text-gray-700 hover:text-gray-900">{% trans "Services" %}</a></li>
+        <li><a href="{% url 'hsds:location-list' %}" class="text-gray-700 hover:text-gray-900">{% trans "Locations" %}</a></li>
+        <li><a href="{% url 'hsds:contact-list' %}" class="text-gray-700 hover:text-gray-900">{% trans "Contacts" %}</a></li>
         {# Link for taxonomies will be added once taxonomy management views exist #}
       </ul>
       <form action="{% url 'hsds:search' %}" method="get" class="hidden sm:block">
         <input
           type="text"
           name="q"
-          placeholder="Search..."
+          placeholder="{% trans 'Search...' %}"
           class="border rounded px-2 py-1 text-sm"
         />
       </form>
