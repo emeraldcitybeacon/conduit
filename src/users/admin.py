@@ -9,8 +9,8 @@ from .models import User
 class UserAdmin(BaseUserAdmin):
     """Define admin model for custom User with role field."""
 
-    fieldsets = BaseUserAdmin.fieldsets + (("Role", {"fields": ("role",)}),)
-    add_fieldsets = BaseUserAdmin.add_fieldsets + ((None, {"fields": ("role",)}),)
+    fieldsets = list(BaseUserAdmin.fieldsets) + [("Role", {"fields": ("role",)})]
+    add_fieldsets = list(BaseUserAdmin.add_fieldsets) + [(None, {"fields": ("role",)})]
     list_display = ("username", "email", "role", "is_staff")
     list_filter = (*BaseUserAdmin.list_filter, "role")
     search_fields = ("username", "email")
