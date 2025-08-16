@@ -19,7 +19,6 @@ def user_client(client) -> tuple[User, Any]:
 
 
 @pytest.fixture
-@pytest.mark.django_db
 def services() -> tuple[Service, Service]:
     """Create two services belonging to different orgs."""
 
