@@ -80,7 +80,7 @@ python manage.py createsuperuser
 
 ## 6. Frontend Workflow
 
-  - **Django Coomponents**: We have `django-components` and should make the most use out of it. Components go in `src/[app]/components/[meta component or purpose]/[component name].{py,html}`. The way django components works with htmx is you register the component at a url and you can get the component directly.
+  - **Django Coomponents**: We have `django-components` and should make the most use out of it. Components go in `src/[app name]/components/[component name].{py,html}`. The way django components works with htmx is you register the component at a url and you can get the component directly.
   - **Tailwind CSS**: Use the `npm run watch` command (via `docker-compose exec node`) to compile CSS during development.
   - **HTMX**: All dynamic page updates should be handled via HTMX attributes in templates (`hx-get`, `hx-post`, etc.).
   - **Alpine.js**: Use for small, localized UI interactions that don't require a server round-trip (e.g., toggling a dropdown, managing modal visibility). Use the `x-data`, `x-show`, and `@click` directives. See `docs/frameworks/alpine-js.md`.
