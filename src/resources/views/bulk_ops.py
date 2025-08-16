@@ -109,7 +109,7 @@ class BulkOperationCommitView(APIView):
 
         op.status = BulkOperation.Status.COMMITTED
         op.committed_at = timezone.now()
-        op.undo_token = secrets.token_urlsafe(16)
+        op.undo_token = secrets.token_urlsafe(32)
         op.save(update_fields=["status", "committed_at", "undo_token"])
 
         html = render_to_string(
