@@ -69,6 +69,22 @@ def test_patch_autopublish_field_updates_service(user_client, service):
 
 
 @pytest.mark.django_db
+def test_patch_accepts_dotted_form_keys(user_client, service):
+    user, client = user_client
+    response = client.get(f"/api/resource/{service.id}/")
+    etag = response.headers["ETag"]
+
+    response = client.patch(
+        f"/api/resource/{service.id}/",
+        data={"service.url": "https://example.com/form"},
+        HTTP_IF_MATCH=etag,
+    )
+    assert response.status_code == 200
+    service.refresh_from_db()
+    assert service.url == "https://example.com/form"
+
+
+@pytest.mark.django_db
 def test_patch_review_required_field_rejected(user_client, service):
     user, client = user_client
     response = client.get(f"/api/resource/{service.id}/")
