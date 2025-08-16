@@ -2,12 +2,12 @@
 import os
 
 import django
+import pytest
 
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "conduit.settings")
 django.setup()
-import pytest
 
-from hsds.models import (
+from hsds.models import (  # noqa: E402
     Address,
     Location,
     Organization,
