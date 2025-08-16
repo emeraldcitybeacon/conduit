@@ -1,0 +1,17 @@
+{% extends "pulse/base.html" %}
+{% load i18n %}
+
+{% block title %}{% trans "New Resource" %}{% endblock %}
+
+{% block content %}
+<div class="max-w-xl mx-auto space-y-8">
+  <ul class="steps w-full">
+    <li class="step step-primary">{% trans "Org" %}</li>
+    <li class="step">{% trans "Location" %}</li>
+    <li class="step">{% trans "Service" %}</li>
+  </ul>
+  <div class="text-center">
+    <a href="{% url 'pulse:wizard-org' %}" class="btn btn-primary">{% trans "Begin" %}</a>
+  </div>
+</div>
+{% endblock %}
