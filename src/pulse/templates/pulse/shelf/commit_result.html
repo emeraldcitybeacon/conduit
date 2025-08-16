@@ -9,6 +9,14 @@
           hx-target="#bulk-modal"
           hx-swap="outerHTML">
     Undo
-  </button>
+  <form hx-post="/api/bulk-ops/{{ operation.id }}/undo/"
+        hx-target="#bulk-modal"
+        hx-swap="outerHTML"
+        style="display:inline;">
+    <input type="hidden" name="undo_token" value="{{ operation.undo_token }}">
+    <button type="submit" class="btn btn-outline">
+      Undo
+    </button>
+  </form>
   {% endif %}
 </div>
