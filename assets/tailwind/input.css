@@ -74,6 +74,14 @@
     }
   }
 
+  .form-subform {
+    @apply my-3;
+
+    .form-subform-title {
+      @apply mb-1 font-semibold;
+    }
+  }
+
   .form-actions {
     @apply flex gap-2 mt-4;
   }

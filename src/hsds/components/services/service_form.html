@@ -20,8 +20,8 @@
       {% endif %}
     </div>
     {% endfor %}
-    <div>
-      <h3 class="font-semibold">{% trans "Phones" %}</h3>
+    <div class="form-subform">
+      <header class="form-subform-title">{% trans "Phones" %}</header>
       <div id="phones" class="space-y-2">
         {{ phone_formset.management_form }}
         {% for pform in phone_formset.forms %}
@@ -39,8 +39,8 @@
         {% trans "Add Phone" %}
       </button>
     </div>
-    <div>
-      <h3 class="font-semibold">{% trans "Schedules" %}</h3>
+    <div class="form-subform">
+      <header class="form-subform-title">{% trans "Schedules" %}</header>
       <div id="schedules" class="space-y-2">
         {{ schedule_formset.management_form }}
         {% for sform in schedule_formset.forms %}
