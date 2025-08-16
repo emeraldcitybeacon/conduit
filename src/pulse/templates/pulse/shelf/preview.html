@@ -1,0 +1,23 @@
+{% comment %}Preview table for staged bulk operation{% endcomment %}
+<div id="bulk-modal" class="p-4 space-y-4">
+  <h3 class="font-bold text-lg">Preview Bulk Operation</h3>
+  <table class="table table-sm">
+    <thead>
+      <tr><th>Entity</th><th>Status</th></tr>
+    </thead>
+    <tbody>
+      {% for item in operation.preview %}
+      <tr>
+        <td>{{ item.entity_type }} {{ item.entity_id }}</td>
+        <td>{{ item.status }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  <button class="btn btn-primary"
+          hx-post="/api/bulk-ops/{{ operation.id }}/commit/"
+          hx-target="#bulk-modal"
+          hx-swap="outerHTML">
+    Commit
+  </button>
+</div>

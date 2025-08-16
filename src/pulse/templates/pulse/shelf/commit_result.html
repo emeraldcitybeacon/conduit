@@ -1,0 +1,22 @@
+{% comment %}Result view after committing a bulk operation{% endcomment %}
+<div id="bulk-modal" class="p-4 space-y-4">
+  <h3 class="font-bold text-lg">Bulk Operation Committed</h3>
+  <p>{{ operation.preview|length }} resources updated.</p>
+  {% if operation.status == 'committed' %}
+  <button class="btn btn-outline"
+          hx-post="/api/bulk-ops/{{ operation.id }}/undo/"
+          hx-vals='{"undo_token":"{{ operation.undo_token }}"}'
+          hx-target="#bulk-modal"
+          hx-swap="outerHTML">
+    Undo
+  <form hx-post="/api/bulk-ops/{{ operation.id }}/undo/"
+        hx-target="#bulk-modal"
+        hx-swap="outerHTML"
+        style="display:inline;">
+    <input type="hidden" name="undo_token" value="{{ operation.undo_token }}">
+    <button type="submit" class="btn btn-outline">
+      Undo
+    </button>
+  </form>
+  {% endif %}
+</div>

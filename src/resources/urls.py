@@ -14,6 +14,12 @@ from resources.views.shelves import (
     ShelfMemberAddView,
     ShelfMemberRemoveView,
 )
+from resources.views.bulk_ops import (
+    BulkOperationStageView,
+    BulkOperationPreviewView,
+    BulkOperationCommitView,
+    BulkOperationUndoView,
+)
 
 app_name = "resources"
 
@@ -43,5 +49,21 @@ urlpatterns = [
         "shelves/<uuid:id>/remove/",
         ShelfMemberRemoveView.as_view(),
         name="shelf-remove",
+    ),
+    path("bulk-ops/", BulkOperationStageView.as_view(), name="bulk-op-stage"),
+    path(
+        "bulk-ops/<uuid:id>/preview/",
+        BulkOperationPreviewView.as_view(),
+        name="bulk-op-preview",
+    ),
+    path(
+        "bulk-ops/<uuid:id>/commit/",
+        BulkOperationCommitView.as_view(),
+        name="bulk-op-commit",
+    ),
+    path(
+        "bulk-ops/<uuid:id>/undo/",
+        BulkOperationUndoView.as_view(),
+        name="bulk-op-undo",
     ),
 ]
