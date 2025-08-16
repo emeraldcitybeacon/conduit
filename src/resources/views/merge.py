@@ -101,7 +101,7 @@ class MergeView(APIView):
             {
                 "service": survivor,
                 "organization": survivor.organization,
-                "location": next(iter(survivor.locations.all()), None),
+                "location": survivor.locations.first(),
             },
             context={"versions": versions},
         ).data
