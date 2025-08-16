@@ -52,7 +52,7 @@ class VerifyFieldView(APIView):
             entity_id=id,
             field_path=field_path,
             method=method,
-            note=note or None,
+            note=note if note else None,
             verified_by=request.user,
         )
         return Response(

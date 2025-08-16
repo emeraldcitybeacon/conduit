@@ -55,7 +55,11 @@ document.body.addEventListener('htmx:responseError', function (evt) {
   for (const path in flat) {
     const el = document.querySelector('.validator[data-field="' + path + '"]');
     if (el) {
-      el.innerHTML = '<span class="label-text-alt text-error">' + flat[path] + '</span>';
+      el.textContent = ''; // Clear previous content
+      const span = document.createElement('span');
+      span.className = 'label-text-alt text-error';
+      span.textContent = flat[path];
+      el.appendChild(span);
     }
   }
 });

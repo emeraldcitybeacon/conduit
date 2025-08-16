@@ -31,7 +31,7 @@ class OctetStreamParser(BaseParser):
         if raw.strip().startswith("{"):
             try:
                 return json.loads(raw.replace("'", '"'))
-            except Exception:  # pragma: no cover - defensive
+            except (json.JSONDecodeError, UnicodeDecodeError):  # pragma: no cover - defensive
                 return {}
         return QueryDict(raw)
 

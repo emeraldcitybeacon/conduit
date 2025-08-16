@@ -35,7 +35,7 @@ class DraftApproveView(APIView):
             description=org_data.get("description", ""),
         )
 
-        loc_data = payload.get("location") or {}
+        loc_data = payload.get("location", {})
         location = None
         if loc_data:
             location = Location.objects.create(
@@ -93,7 +93,7 @@ class DraftApproveView(APIView):
             )
 
         draft.status = DraftResource.Status.APPROVED
-        draft.review_note = request.data.get("note")
+        draft.review_note = request.data.get("note", "")
         draft.save(update_fields=["status", "review_note"])
 
         return Response(
@@ -114,6 +114,6 @@ class DraftRejectView(APIView):
             DraftResource, id=id, status=DraftResource.Status.DRAFT
         )
         draft.status = DraftResource.Status.REJECTED
-        draft.review_note = request.data.get("note")
+        draft.review_note = request.data.get("note", "")
         draft.save(update_fields=["status", "review_note"])
         return Response({"status": draft.status}, status=status.HTTP_200_OK)

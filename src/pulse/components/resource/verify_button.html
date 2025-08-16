@@ -2,7 +2,6 @@
 <button
   class="btn btn-xs"
   hx-post="{% url 'resources:resource-verify' resource_id %}?field_path={{ field_path|urlencode }}&method={{ method }}"
-  hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'
   hx-swap="none"
 >
   {{ label }}

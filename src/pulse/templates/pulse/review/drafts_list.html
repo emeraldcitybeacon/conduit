@@ -13,7 +13,7 @@
   <tbody>
     {% for draft in drafts %}
     <tr>
-      <td>{{ draft.payload.service.name }}</td>
+      <td>{{ draft.payload.service.name|default:"No name" }}</td>
       <td>{{ draft.created_by.username }}</td>
       <td>{{ draft.created_at }}</td>
     </tr>

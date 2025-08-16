@@ -9,7 +9,7 @@
 >
   {% csrf_token %}
   <div class="flex items-center gap-2">
-    {% component 'form_field' name='service.hours' field_type='textarea' label=_('Hours') value='' %}{% endcomponent %}
+    {% component 'form_field' name='service.hours' field_type='textarea' label=_('Hours') value=resource.service.hours %}{% endcomponent %}
     {% with events=resource.verifications.service.hours %}
       {% if events %}
         {% component 'freshness_badge' status=events.0.verified_at|timesince %}{% endcomponent %}
