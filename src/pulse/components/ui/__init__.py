@@ -21,3 +21,4 @@ from . import form_field  # noqa: F401,E402
 from . import diff  # noqa: F401,E402
 from . import validator  # noqa: F401,E402
 from . import modal  # noqa: F401,E402
+from . import toast_card  # noqa: F401,E402
