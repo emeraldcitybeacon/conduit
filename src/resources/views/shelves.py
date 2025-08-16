@@ -13,6 +13,8 @@ from rest_framework.views import APIView
 from hsds_ext.models import Shelf, ShelfMember
 from resources.permissions import IsVolunteer
 
+VALID_ENTITY_TYPES = {"organization", "location", "service"}
+
 
 class ShelfListCreateView(APIView):
     """List shelves for the current user or create a new shelf."""
@@ -92,11 +94,23 @@ class ShelfMemberAddView(APIView):
     parser_classes = [JSONParser, FormParser, MultiPartParser]
 
     def post(self, request: Request, id: str) -> Response:
-        """Add the specified entity to the shelf."""
+        """Add the specified entity to the shelf.
+
+        Validates the entity type and identifier before creating or returning an
+        existing :class:`ShelfMember` entry. The rendered ``shelf_member_row``
+        component is returned so HTMX can insert it into the drawer.
+        """
 
         shelf = get_object_or_404(Shelf, id=id, owner=request.user)
         entity_type = request.data.get("entity_type")
         entity_id = request.data.get("entity_id")
+
+        if entity_type not in VALID_ENTITY_TYPES:
+            return Response(
+                {"detail": "Invalid entity_type."},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+
         try:
             entity_uuid = uuid.UUID(str(entity_id))
         except (ValueError, TypeError):  # pragma: no cover - defensive
@@ -132,14 +146,32 @@ class ShelfMemberRemoveView(APIView):
     parser_classes = [JSONParser, FormParser, MultiPartParser]
 
     def post(self, request: Request, id: str) -> Response:
-        """Remove the specified entity from the shelf."""
+        """Remove the specified entity from the shelf.
+
+        If the entity does not exist on the shelf, the operation is silently
+        ignored so that ``204`` can still be returned for idempotence.
+        """
 
         shelf = get_object_or_404(Shelf, id=id, owner=request.user)
         entity_type = request.data.get("entity_type")
         entity_id = request.data.get("entity_id")
 
+        if entity_type not in VALID_ENTITY_TYPES:
+            return Response(
+                {"detail": "Invalid entity_type."},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+
+        try:
+            entity_uuid = uuid.UUID(str(entity_id))
+        except (ValueError, TypeError):  # pragma: no cover - defensive
+            return Response(
+                {"detail": "Invalid entity_id"},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+
         ShelfMember.objects.filter(
-            shelf=shelf, entity_type=entity_type, entity_id=entity_id
+            shelf=shelf, entity_type=entity_type, entity_id=entity_uuid
         ).delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 

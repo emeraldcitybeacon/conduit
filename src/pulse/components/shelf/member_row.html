@@ -1,8 +1,14 @@
+{% load i18n %}
 <li id="shelf-member-{{ entity_id }}" class="flex items-center justify-between py-1">
   <span class="truncate text-sm">{{ entity_type }}: {{ entity_id }}</span>
   <form hx-post="/api/shelves/{{ shelf_id }}/remove/" hx-target="#shelf-member-{{ entity_id }}" hx-swap="outerHTML remove">
     <input type="hidden" name="entity_type" value="{{ entity_type }}" />
     <input type="hidden" name="entity_id" value="{{ entity_id }}" />
-    <button type="submit" class="btn btn-xs btn-ghost" aria-label="Remove">✕</button>
+    <button
+      type="submit"
+      class="btn btn-xs btn-ghost"
+      aria-label="{% trans 'Remove from shelf' %}"
+      title="{% trans 'Remove from shelf' %}"
+    >✕</button>
   </form>
 </li>

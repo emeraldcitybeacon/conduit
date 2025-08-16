@@ -14,6 +14,18 @@ class ShelfDrawer(PulseComponent):
     template_file = "drawer.html"
 
     def get_template_data(self, args, kwargs, slots, context):  # pragma: no cover - data fetch
+        """Assemble template context for the drawer component.
+
+        Args:
+            args: Positional component arguments (unused).
+            kwargs: Keyword component arguments (unused).
+            slots: Named template slots (unused).
+            context: Rendering context expected to contain the request.
+
+        Returns:
+            dict: Mapping with ``shelf`` and ``members`` for template rendering.
+        """
+
         request = context.get("request")
         shelf = (
             Shelf.objects.filter(owner=request.user)
@@ -22,7 +34,7 @@ class ShelfDrawer(PulseComponent):
             if request and request.user.is_authenticated
             else None
         )
-        members = []
+        members: list[dict[str, object]] = []
         if shelf:
             members = [
                 {"entity_type": m.entity_type, "entity_id": m.entity_id}

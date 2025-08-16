@@ -2,7 +2,7 @@
 <div class="drawer drawer-end">
   <input id="shelf-drawer-toggle" type="checkbox" class="drawer-toggle" />
   <div class="drawer-content">
-    <label for="shelf-drawer-toggle" class="btn btn-square btn-ghost" title="Shelf">
+    <label for="shelf-drawer-toggle" class="btn btn-square btn-ghost" title="Shelf" aria-label="{% trans 'Toggle shelf drawer' %}">
       <!-- simple icon -->
       <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" /></svg>
     </label>
@@ -11,7 +11,7 @@
     <label for="shelf-drawer-toggle" class="drawer-overlay"></label>
     <div class="menu p-4 w-80 min-h-full bg-base-200" id="shelf-members">
       <h3 class="font-bold mb-2">{% trans "Shelf" %}</h3>
-      <ul>
+      <ul id="shelf-member-list" aria-live="polite">
         {% for m in members %}
           {% component 'shelf_member_row' shelf_id=shelf.id entity_type=m.entity_type entity_id=m.entity_id %}{% endcomponent %}
         {% empty %}
@@ -19,7 +19,7 @@
         {% endfor %}
       </ul>
       {% if shelf %}
-      <form hx-post="/api/shelves/{{ shelf.id }}/add/" hx-target="#shelf-members ul" hx-swap="beforeend" class="mt-4">
+      <form hx-post="/api/shelves/{{ shelf.id }}/add/" hx-target="#shelf-member-list" hx-swap="beforeend" class="mt-4">
         <div class="join w-full">
           <select name="entity_type" class="select select-bordered select-sm join-item">
             <option value="service">service</option>

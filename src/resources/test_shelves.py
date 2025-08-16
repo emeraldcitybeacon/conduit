@@ -50,3 +50,20 @@ def test_create_and_manage_shelf(client) -> None:
     resp = client.get(f"/api/shelves/{shelf_id}/")
     assert resp.json()["members"] == []
 
+
+@pytest.mark.django_db
+def test_reject_invalid_entity_type(client) -> None:
+    """Adding an invalid entity type returns a 400 error."""
+
+    user = User.objects.create_user(username="bob", password="pw")
+    client.force_login(user)
+
+    shelf_id = client.post("/api/shelves/", {"name": "My Shelf"}).json()["id"]
+
+    resp = client.post(
+        f"/api/shelves/{shelf_id}/add/",
+        {"entity_type": "invalid", "entity_id": str(uuid.uuid4())},
+    )
+    assert resp.status_code == 400
+    assert resp.json()["detail"] == "Invalid entity_type."
+
