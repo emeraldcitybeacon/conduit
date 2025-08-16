@@ -7,6 +7,7 @@ from django.http import QueryDict
 
 from django.shortcuts import get_object_or_404
 from rest_framework import status
+from rest_framework.parsers import FormParser, JSONParser
 from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -23,6 +24,7 @@ class ResourceView(APIView):
     """Retrieve and update composite HSDS resources."""
 
     permission_classes = [IsVolunteer]
+    parser_classes = [JSONParser, FormParser]
 
     def _get_service(self, id: str) -> Service:
         """Return the ``Service`` with its related organization and locations."""

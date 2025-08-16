@@ -1,2 +1,9 @@
 {# Button to trigger a verification event for a field. #}
-<button class="btn btn-xs" data-method="{{ method }}" data-field="{{ field_path }}">{{ label }}</button>
+<button
+  class="btn btn-xs"
+  hx-post="{% url 'resources:resource-verify' resource_id %}?field_path={{ field_path|urlencode }}&method={{ method }}"
+  hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'
+  hx-swap="none"
+>
+  {{ label }}
+</button>

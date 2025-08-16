@@ -8,10 +8,40 @@
   class="space-y-4"
 >
   {% csrf_token %}
-  {% component 'form_field' name='service.url' label=_('Website') value=resource.service.url %}{% endcomponent %}
+  <div class="flex items-center gap-2">
+    {% component 'form_field' name='service.url' label=_('Website') value=resource.service.url %}{% endcomponent %}
+    {% with events=resource.verifications.service.url %}
+      {% if events %}
+        {% component 'freshness_badge' status=events.0.verified_at|timesince %}{% endcomponent %}
+        {% component 'freshness_popover' events=events %}{% endcomponent %}
+      {% else %}
+        {% component 'freshness_badge' status=_('unverified') %}{% endcomponent %}
+      {% endif %}
+    {% endwith %}
+    <div class="join">
+      {% component 'verify_button' label=_('Called') method='called' field_path='service.url' resource_id=resource.service.id %}{% endcomponent %}
+      {% component 'verify_button' label=_('Website') method='website' field_path='service.url' resource_id=resource.service.id %}{% endcomponent %}
+      {% component 'verify_button' label=_('On-site') method='onsite' field_path='service.url' resource_id=resource.service.id %}{% endcomponent %}
+    </div>
+  </div>
   {% component 'validator' field='service.url' %}{% endcomponent %}
 
-  {% component 'form_field' name='service.email' label=_('Email') value=resource.service.email %}{% endcomponent %}
+  <div class="flex items-center gap-2">
+    {% component 'form_field' name='service.email' label=_('Email') value=resource.service.email %}{% endcomponent %}
+    {% with events=resource.verifications.service.email %}
+      {% if events %}
+        {% component 'freshness_badge' status=events.0.verified_at|timesince %}{% endcomponent %}
+        {% component 'freshness_popover' events=events %}{% endcomponent %}
+      {% else %}
+        {% component 'freshness_badge' status=_('unverified') %}{% endcomponent %}
+      {% endif %}
+    {% endwith %}
+    <div class="join">
+      {% component 'verify_button' label=_('Called') method='called' field_path='service.email' resource_id=resource.service.id %}{% endcomponent %}
+      {% component 'verify_button' label=_('Website') method='website' field_path='service.email' resource_id=resource.service.id %}{% endcomponent %}
+      {% component 'verify_button' label=_('On-site') method='onsite' field_path='service.email' resource_id=resource.service.id %}{% endcomponent %}
+    </div>
+  </div>
   {% component 'validator' field='service.email' %}{% endcomponent %}
 
   <button type="submit" class="hidden">{% trans "Save" %}</button>

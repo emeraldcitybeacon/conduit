@@ -14,6 +14,7 @@ class VerifyButton(PulseComponent):
         label: Button text.
         method: Verification method identifier.
         field_path: Dot-path identifying the field being verified.
+        resource_id: UUID of the resource/service.
     """
 
     template_file = "verify_button.html"
@@ -23,4 +24,5 @@ class VerifyButton(PulseComponent):
             "label": kwargs.get("label", "Verify"),
             "method": kwargs.get("method", "called"),
             "field_path": kwargs.get("field_path", ""),
+            "resource_id": kwargs.get("resource_id"),
         }

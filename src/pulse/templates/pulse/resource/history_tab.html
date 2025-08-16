@@ -1,4 +1,2 @@
-{# Placeholder for the history section content. #}
-<div class="p-4">
-  <p class="text-base-content/70">{% trans "History section coming soon" %}</p>
-</div>
+{% load i18n %}
+{% include "pulse/resource/history_panel.html" with events=events %}
