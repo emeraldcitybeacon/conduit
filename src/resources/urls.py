@@ -20,10 +20,12 @@ from resources.views.bulk_ops import (
     BulkOperationCommitView,
     BulkOperationUndoView,
 )
+from resources.views.search import SearchView
 
 app_name = "resources"
 
 urlpatterns = [
+    path("search/", SearchView.as_view(), name="search"),
     path("resource/<uuid:id>/", ResourceView.as_view(), name="resource-detail"),
     path(
         "resource/<uuid:id>/verify/",

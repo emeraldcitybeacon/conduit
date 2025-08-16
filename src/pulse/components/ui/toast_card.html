@@ -1,0 +1,15 @@
+{#
+  Card used within toast notifications to display duplicate hints.
+  Expects ``title``, ``body``, and optional ``href`` in context.
+#}
+<div class="card card-compact bg-base-100 shadow-md">
+  <div class="card-body">
+    <h3 class="card-title text-sm">{{ title }}</h3>
+    <p class="text-xs">{{ body }}</p>
+    {% if href %}
+    <div class="card-actions justify-end">
+      <a href="{{ href }}" class="btn btn-xs btn-primary">View</a>
+    </div>
+    {% endif %}
+  </div>
+</div>
