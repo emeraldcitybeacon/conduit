@@ -1,0 +1,45 @@
+{% comment %}Split-view merge comparison form{% endcomment %}
+<form id="merge-form"
+      hx-post="/api/merge/"
+      hx-target="#merge-form"
+      hx-swap="outerHTML">
+  <input type="hidden" name="left_id" value="{{ left.service.id }}">
+  <input type="hidden" name="right_id" value="{{ right.service.id }}">
+
+  <table class="table table-zebra table-sm">
+    <thead>
+      <tr><th>Field</th><th>Left</th><th>Right</th><th>Use Right?</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Name</td>
+        <td>{{ left.service.name }}</td>
+        <td>{{ right.service.name }}</td>
+        <td class="text-center">
+          <input type="checkbox" name="fields" value="service.name" class="checkbox checkbox-sm" />
+        </td>
+      </tr>
+      <tr>
+        <td>URL</td>
+        <td>{{ left.service.url }}</td>
+        <td>{{ right.service.url }}</td>
+        <td class="text-center">
+          <input type="checkbox" name="fields" value="service.url" class="checkbox checkbox-sm" />
+        </td>
+      </tr>
+      <tr>
+        <td>Email</td>
+        <td>{{ left.service.email }}</td>
+        <td>{{ right.service.email }}</td>
+        <td class="text-center">
+          <input type="checkbox" name="fields" value="service.email" class="checkbox checkbox-sm" />
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="mt-4 flex justify-end">
+    <button type="submit" class="btn btn-primary">Merge</button>
+  </div>
+</form>
+
