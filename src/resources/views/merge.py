@@ -61,7 +61,7 @@ class MergeView(APIView):
             {
                 "service": duplicate,
                 "organization": duplicate.organization,
-                "location": next(iter(duplicate.locations.all()), None),
+                "location": duplicate.locations.first(),
             },
             context={"versions": {}},
         ).data
