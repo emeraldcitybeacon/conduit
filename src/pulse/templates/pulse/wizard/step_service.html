@@ -1,0 +1,31 @@
+{% extends "pulse/base.html" %}
+{% load i18n component_tags %}
+
+{% block title %}{% trans "New Resource – Service" %}{% endblock %}
+
+{% block content %}
+<div class="max-w-xl mx-auto space-y-8">
+  <ul class="steps w-full">
+    <li class="step step-primary">{% trans "Org" %}</li>
+    <li class="step step-primary">{% trans "Location" %}</li>
+    <li class="step step-primary">{% trans "Service" %}</li>
+  </ul>
+  {% if preview %}
+    {% component 'diff' left='' right=payload %}{% endcomponent %}
+    <form method="post" class="text-center">
+      {% csrf_token %}
+      <input type="hidden" name="confirm" value="1" />
+      <button type="submit" class="btn btn-primary">{% trans "Create Draft" %}</button>
+    </form>
+  {% else %}
+    <form method="post" class="space-y-4">
+      {% csrf_token %}
+      <label class="form-control w-full">
+        <div class="label"><span class="label-text">{% trans "Service Name" %}</span></div>
+        <input type="text" name="name" class="input input-bordered" required />
+      </label>
+      <button type="submit" class="btn btn-primary">{% trans "Preview" %}</button>
+    </form>
+  {% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,28 @@
+{% extends "pulse/base.html" %}
+{% load i18n %}
+
+{% block title %}{% trans "New Resource – Location" %}{% endblock %}
+
+{% block content %}
+<form method="post" class="max-w-xl mx-auto space-y-8">
+  {% csrf_token %}
+  <ul class="steps w-full">
+    <li class="step step-primary">{% trans "Org" %}</li>
+    <li class="step step-primary">{% trans "Location" %}</li>
+    <li class="step">{% trans "Service" %}</li>
+  </ul>
+  <div>
+    <label class="form-control w-full">
+      <div class="label"><span class="label-text">{% trans "Location Name" %}</span></div>
+      <input type="text" name="name" class="input input-bordered" required />
+    </label>
+  </div>
+  <div>
+    <label class="form-control w-full">
+      <div class="label"><span class="label-text">{% trans "Address" %}</span></div>
+      <input type="text" name="address" class="input input-bordered" required />
+    </label>
+  </div>
+  <button type="submit" class="btn btn-primary">{% trans "Next" %}</button>
+</form>
+{% endblock %}
