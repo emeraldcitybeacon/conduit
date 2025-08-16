@@ -15,23 +15,21 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 
+import django_components
 from django.contrib import admin
 from django.urls import include, path
 from django.views.generic import TemplateView
 
-import django_components
-
-from hsds.urls import api_router
-
 # Register custom components
 from conduit.components.layout import nav as _nav  # noqa: F401
-from hsds.components.organizations import organization_form as _organization_form  # noqa: F401
-from hsds.components.services import service_form as _service_form  # noqa: F401
-from hsds.components.services import phone_form as _phone_form  # noqa: F401
-from hsds.components.services import schedule_form as _schedule_form  # noqa: F401
+from hsds.components.contacts import contact_form as _contact_form  # noqa: F401
 from hsds.components.locations import address_form as _address_form  # noqa: F401
 from hsds.components.locations import location_form as _location_form  # noqa: F401
-from hsds.components.contacts import contact_form as _contact_form  # noqa: F401
+from hsds.components.organizations import organization_form as _organization_form  # noqa: F401
+from hsds.components.services import phone_form as _phone_form  # noqa: F401
+from hsds.components.services import schedule_form as _schedule_form  # noqa: F401
+from hsds.components.services import service_form as _service_form  # noqa: F401
+from hsds.urls import api_router
 
 django_components.autodiscover()
 

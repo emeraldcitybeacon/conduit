@@ -1,9 +1,9 @@
 """Tests for authentication views."""
 from __future__ import annotations
 
+import pytest
 from django.contrib.auth import get_user_model
 from django.urls import reverse
-import pytest
 
 User = get_user_model()
 
@@ -31,7 +31,7 @@ def test_user_can_log_in(client) -> None:
 @pytest.mark.django_db
 def test_user_can_log_out(client) -> None:
     """Logging out should redirect to the root URL."""
-    user = User.objects.create_user(username="carol", password="secret")
+    User.objects.create_user(username="carol", password="secret")
     client.login(username="carol", password="secret")
     response = client.post(reverse("users:logout"))
     assert response.status_code == 302

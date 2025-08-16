@@ -4,8 +4,8 @@ from __future__ import annotations
 import json
 import uuid
 
-from django.contrib.auth import get_user_model
 import pytest
+from django.contrib.auth import get_user_model
 
 from hsds_ext.models import BulkOperation, Shelf, ShelfMember
 

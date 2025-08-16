@@ -3,40 +3,28 @@ from __future__ import annotations
 
 from typing import Iterable, Mapping, Type
 
+from django import forms
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django import forms
-from django.forms import ModelForm, inlineformset_factory
-from django.http import HttpRequest, HttpResponse
-from django.shortcuts import get_object_or_404, redirect, render
-from django.urls import reverse
-from django.views.generic import DetailView, ListView, TemplateView
 from django.db import models
 from django.db.models import Q
+from django.forms import ModelForm, inlineformset_factory
+from django.http import HttpRequest, HttpResponse
+from django.shortcuts import get_object_or_404, redirect
+from django.urls import reverse
+from django.views.generic import DetailView, ListView, TemplateView
 from rest_framework.exceptions import ValidationError
 from rest_framework.serializers import Serializer
 
+from hsds.components.contacts.contact_form import ContactForm as ContactFormComponent
+from hsds.components.locations.address_form import AddressForm as AddressFormComponent
+from hsds.components.locations.location_form import LocationForm as LocationFormComponent
 from hsds.components.organizations.organization_form import (
     OrganizationForm as OrganizationFormComponent,
 )
-from hsds.components.services.service_form import (
-    ServiceForm as ServiceFormComponent,
-)
-from hsds.components.services.phone_form import (
-    PhoneForm as PhoneFormComponent,
-)
-from hsds.components.services.schedule_form import (
-    ScheduleForm as ScheduleFormComponent,
-)
-from hsds.components.locations.location_form import (
-    LocationForm as LocationFormComponent,
-)
-from hsds.components.locations.address_form import (
-    AddressForm as AddressFormComponent,
-)
-from hsds.components.contacts.contact_form import (
-    ContactForm as ContactFormComponent,
-)
+from hsds.components.services.phone_form import PhoneForm as PhoneFormComponent
+from hsds.components.services.schedule_form import ScheduleForm as ScheduleFormComponent
+from hsds.components.services.service_form import ServiceForm as ServiceFormComponent
 
 from .api import (
     AddressSerializer,

@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import hashlib
 import json
-from typing import Mapping, Dict, Any
+from typing import Dict, Mapping
 
 
 def build_etag_map(versions: Mapping[str, int]) -> Dict[str, str]:

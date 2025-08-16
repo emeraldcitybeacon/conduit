@@ -2,16 +2,16 @@
 from __future__ import annotations
 
 from resources.utils import (
-    get_value,
-    set_value,
-    delete_value,
-    iter_paths,
     apply_patch,
-    diff,
-    inverse,
-    build_etag_map,
-    resource_etag,
     assert_versions,
+    build_etag_map,
+    delete_value,
+    diff,
+    get_value,
+    inverse,
+    iter_paths,
+    resource_etag,
+    set_value,
 )
 
 

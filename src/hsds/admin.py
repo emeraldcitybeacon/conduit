@@ -2,6 +2,7 @@
 from django.contrib import admin
 
 from .models import (
+    URL,
     Accessibility,
     Address,
     Contact,
@@ -11,6 +12,7 @@ from .models import (
     Location,
     Organization,
     OrganizationIdentifier,
+    Phone,
     Program,
     RequiredDocument,
     Schedule,
@@ -18,12 +20,11 @@ from .models import (
     ServiceArea,
     ServiceAtLocation,
     ServiceCapacity,
-    Phone,
-    Unit,
-    URL,
     Taxonomy,
     TaxonomyTerm,
+    Unit,
 )
+
 
 @admin.register(Organization)
 class OrganizationAdmin(admin.ModelAdmin):

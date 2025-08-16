@@ -1,12 +1,12 @@
 """HSDS extension models package."""
+from .bulk_ops import BulkOperation
+from .change_requests import ChangeRequest
+from .drafts import DraftResource
+from .sensitive import SensitiveOverlay
+from .shelves import Shelf, ShelfMember
+from .taxonomy_ext import TaxonomyExtension
 from .verification import VerificationEvent
 from .versions import FieldVersion
-from .sensitive import SensitiveOverlay
-from .drafts import DraftResource
-from .change_requests import ChangeRequest
-from .shelves import Shelf, ShelfMember
-from .bulk_ops import BulkOperation
-from .taxonomy_ext import TaxonomyExtension
 
 __all__ = [
     "VerificationEvent",

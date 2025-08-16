@@ -6,14 +6,14 @@ import uuid
 import pytest
 from django.db import IntegrityError
 
+from hsds_ext.models.bulk_ops import BulkOperation
+from hsds_ext.models.change_requests import ChangeRequest
+from hsds_ext.models.drafts import DraftResource
+from hsds_ext.models.sensitive import SensitiveOverlay
+from hsds_ext.models.shelves import Shelf, ShelfMember
+from hsds_ext.models.taxonomy_ext import TaxonomyExtension
 from hsds_ext.models.verification import VerificationEvent
 from hsds_ext.models.versions import FieldVersion
-from hsds_ext.models.sensitive import SensitiveOverlay
-from hsds_ext.models.drafts import DraftResource
-from hsds_ext.models.change_requests import ChangeRequest
-from hsds_ext.models.shelves import Shelf, ShelfMember
-from hsds_ext.models.bulk_ops import BulkOperation
-from hsds_ext.models.taxonomy_ext import TaxonomyExtension
 
 
 @pytest.mark.django_db

@@ -1,13 +1,14 @@
 """Model translations for HSDS models."""
 from modeltranslation.translator import TranslationOptions, register
+
 from .models import (
+    Accessibility,
+    Contact,
+    CostOption,
+    Location,
     Organization,
     Program,
     Service,
-    Location,
-    Contact,
-    Accessibility,
-    CostOption,
     ServiceArea,
     Taxonomy,
     TaxonomyTerm,

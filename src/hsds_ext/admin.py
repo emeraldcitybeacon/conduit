@@ -3,14 +3,14 @@ from __future__ import annotations
 
 from django.contrib import admin
 
+from .models.bulk_ops import BulkOperation
+from .models.change_requests import ChangeRequest
+from .models.drafts import DraftResource
+from .models.sensitive import SensitiveOverlay
+from .models.shelves import Shelf, ShelfMember
+from .models.taxonomy_ext import TaxonomyExtension
 from .models.verification import VerificationEvent
 from .models.versions import FieldVersion
-from .models.sensitive import SensitiveOverlay
-from .models.drafts import DraftResource
-from .models.change_requests import ChangeRequest
-from .models.shelves import Shelf, ShelfMember
-from .models.bulk_ops import BulkOperation
-from .models.taxonomy_ext import TaxonomyExtension
 
 
 @admin.register(VerificationEvent)
