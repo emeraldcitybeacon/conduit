@@ -3,7 +3,7 @@ from __future__ import annotations
 
 import json
 import secrets
-from typing import Any, List
+from typing import Any
 
 from django.shortcuts import get_object_or_404
 from django.template.loader import render_to_string
