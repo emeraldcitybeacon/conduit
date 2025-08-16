@@ -11,5 +11,5 @@ urlpatterns = [
     path("c/<slug:name>/", component_views.component, name="component"),
     path("r/<uuid:id>/", resource_views.ResourceDetailView.as_view(), name="resource-detail"),
     path("r/<uuid:id>/<slug:name>/", resource_views.section, name="resource-section"),
-    path("", TemplateView.as_view(template_name="pulse/base.html"), name="home"),
+    path("", TemplateView.as_view(template_name="pulse/dashboard.html"), name="home"),
 ]
