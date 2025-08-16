@@ -13,7 +13,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from hsds.models import Service
-from hsds_ext.models import FieldVersion
+from hsds_ext.models import FieldVersion, SensitiveOverlay
 from resources.permissions import IsVolunteer
 from resources.serializers.resource import ResourceSerializer
 from resources.utils.etags import assert_versions, resource_etag
@@ -58,14 +58,30 @@ class ResourceView(APIView):
         )
         return {fv.field_path: fv.version for fv in qs}
 
+    def _overlay(self, service: Service) -> SensitiveOverlay | None:
+        """Return the SensitiveOverlay for ``service`` if it exists."""
+
+        try:
+            return SensitiveOverlay.objects.get(
+                entity_type=SensitiveOverlay.EntityType.SERVICE,
+                entity_id=service.id,
+            )
+        except SensitiveOverlay.DoesNotExist:
+            return None
+
     def get(self, request: Request, id: str) -> Response:
         """Return the composed resource with ETag header."""
 
         service = self._get_service(id)
         versions = self._version_map(service)
+        overlay = self._overlay(service)
         serializer = ResourceSerializer(
-            {"service": service, "organization": service.organization, "location": next(iter(service.locations.all()), None)},
-            context={"versions": versions},
+            {
+                "service": service,
+                "organization": service.organization,
+                "location": next(iter(service.locations.all()), None),
+            },
+            context={"versions": versions, "sensitive_overlay": overlay},
         )
         etag = resource_etag(versions)
         return Response(serializer.data, headers={"ETag": etag})
@@ -96,19 +112,33 @@ class ResourceView(APIView):
         else:
             incoming = request.data
 
+        overlay = self._overlay(service)
         serializer = ResourceSerializer(
-            {"service": service, "organization": service.organization, "location": next(iter(service.locations.all()), None)},
+            {
+                "service": service,
+                "organization": service.organization,
+                "location": next(iter(service.locations.all()), None),
+            },
             data=incoming,
             partial=True,
-            context={"versions": versions, "user": request.user},
+            context={
+                "versions": versions,
+                "user": request.user,
+                "sensitive_overlay": overlay,
+            },
         )
         serializer.is_valid(raise_exception=True)
         serializer.save()
 
         versions = self._version_map(service)
+        overlay = self._overlay(service)
         data = ResourceSerializer(
-            {"service": service, "organization": service.organization, "location": next(iter(service.locations.all()), None)},
-            context={"versions": versions},
+            {
+                "service": service,
+                "organization": service.organization,
+                "location": next(iter(service.locations.all()), None),
+            },
+            context={"versions": versions, "sensitive_overlay": overlay},
         ).data
         new_etag = resource_etag(versions)
         return Response(data, headers={"ETag": new_etag})

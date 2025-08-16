@@ -8,7 +8,7 @@ from django.shortcuts import get_object_or_404, render
 from django.views import View
 
 from hsds.models import Service
-from hsds_ext.models import FieldVersion, VerificationEvent
+from hsds_ext.models import FieldVersion, VerificationEvent, SensitiveOverlay
 from resources.serializers.resource import ResourceSerializer
 
 
@@ -32,13 +32,16 @@ class ResourceDetailView(View):
                 entity_type=FieldVersion.EntityType.SERVICE, entity_id=service.id
             )
         }
+        overlay = SensitiveOverlay.objects.filter(
+            entity_type=SensitiveOverlay.EntityType.SERVICE, entity_id=service.id
+        ).first()
         serializer = ResourceSerializer(
             {
                 "service": service,
                 "organization": service.organization,
                 "location": service.locations.first(),
             },
-            context={"versions": versions},
+            context={"versions": versions, "sensitive_overlay": overlay},
         )
         data: Dict[str, Any] = serializer.data
 

@@ -6,8 +6,9 @@ from typing import Any
 from rest_framework import serializers
 
 from hsds.models import Location, Organization, Service
-from hsds_ext.models import FieldVersion
+from hsds_ext.models import FieldVersion, SensitiveOverlay
 from resources.utils.etags import build_etag_map
+from resources.utils.json_paths import delete_value
 
 
 class OrganizationSerializer(serializers.ModelSerializer):
@@ -46,10 +47,12 @@ class ResourceSerializer(serializers.Serializer):
     REVIEW_REQUIRED_FIELDS = {"name", "description"}
 
     def to_representation(self, instance: dict[str, Any]) -> dict[str, Any]:
-        """Return composed representation with ETag map."""
+        """Return composed representation with ETag map and redactions."""
 
         versions = self.context.get("versions", {})
-        return {
+        overlay: SensitiveOverlay | None = self.context.get("sensitive_overlay")
+
+        data = {
             "service": ServiceSerializer(instance["service"]).data,
             "organization": OrganizationSerializer(instance["organization"]).data,
             "location": (
@@ -59,6 +62,16 @@ class ResourceSerializer(serializers.Serializer):
             ),
             "etags": build_etag_map(versions),
         }
+
+        # Apply read-time redaction rules.
+        if overlay and overlay.sensitive:
+            for path in overlay.visibility_rules.keys():
+                delete_value(data, path)
+            data["sensitive"] = True
+        else:
+            data["sensitive"] = False
+
+        return data
 
     def update(self, instance: dict[str, Any], validated_data: dict[str, Any]) -> dict[str, Any]:
         """Apply validated updates to auto-publish fields and bump versions."""
