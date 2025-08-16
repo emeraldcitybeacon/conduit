@@ -1,4 +1,15 @@
-{# Placeholder for the hours section content. #}
-<div class="p-4">
-  <p class="text-base-content/70">{% trans "Hours section coming soon" %}</p>
-</div>
+{% load i18n component_tags %}
+<form
+  id="hours-form"
+  data-resource-form
+  hx-patch="{% url 'resources:resource-detail' resource.service.id %}"
+  hx-target="this"
+  hx-swap="none"
+  class="space-y-4"
+>
+  {% csrf_token %}
+  {% component 'form_field' name='service.hours' field_type='textarea' label=_('Hours') value='' %}{% endcomponent %}
+  {% component 'validator' field='service.hours' %}{% endcomponent %}
+
+  <button type="submit" class="hidden">{% trans "Save" %}</button>
+</form>

@@ -3,6 +3,8 @@ from __future__ import annotations
 
 from typing import Any, Dict
 
+from django.http import QueryDict
+
 from django.shortcuts import get_object_or_404
 from rest_framework import status
 from rest_framework.request import Request
@@ -14,6 +16,7 @@ from hsds_ext.models import FieldVersion
 from resources.permissions import IsVolunteer
 from resources.serializers.resource import ResourceSerializer
 from resources.utils.etags import assert_versions, resource_etag
+from resources.utils.json_paths import set_value
 
 
 class ResourceView(APIView):
@@ -65,9 +68,18 @@ class ResourceView(APIView):
                 status=status.HTTP_409_CONFLICT,
             )
 
+        incoming: Dict[str, Any]
+        if isinstance(request.data, QueryDict):
+            # Convert dotted keys like ``service.url`` into nested structures.
+            incoming = {}
+            for key, value in request.data.items():
+                set_value(incoming, key, value)
+        else:
+            incoming = request.data
+
         serializer = ResourceSerializer(
             {"service": service, "organization": service.organization, "location": service.locations.first()},
-            data=request.data,
+            data=incoming,
             partial=True,
             context={"versions": versions, "user": request.user},
         )

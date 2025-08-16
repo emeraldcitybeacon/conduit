@@ -1,0 +1,8 @@
+{% load i18n %}
+<div class="label validator" data-field="{{ field }}">
+  {% if messages %}
+    {% for msg in messages %}
+      <span class="label-text-alt text-error">{{ msg }}</span>
+    {% endfor %}
+  {% endif %}
+</div>
