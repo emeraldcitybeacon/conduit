@@ -3,6 +3,8 @@ from __future__ import annotations
 
 import json
 
+from typing import Any
+
 import pytest
 from django.contrib.auth import get_user_model
 
@@ -22,7 +24,7 @@ def user_client(client) -> tuple[User, Any]:
 
 
 @pytest.fixture
-def editor_client(client) -> tuple[User, any]:
+def editor_client(client) -> tuple[User, Any]:
     """Return a logged-in editor client."""
 
     user = User.objects.create_user(
