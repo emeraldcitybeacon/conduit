@@ -9,4 +9,5 @@ component groups can be added here as the UI grows.
 from . import ui  # noqa: F401  (Imported for registration)
 from . import resource  # noqa: F401  (Imported for registration)
 from . import shelf  # noqa: F401  (Imported for registration)
+from . import merge  # noqa: F401  (Imported for registration)
 

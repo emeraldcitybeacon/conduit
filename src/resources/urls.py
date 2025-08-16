@@ -21,6 +21,7 @@ from resources.views.bulk_ops import (
     BulkOperationUndoView,
 )
 from resources.views.search import SearchView
+from resources.views.merge import MergeView
 
 app_name = "resources"
 
@@ -68,4 +69,5 @@ urlpatterns = [
         BulkOperationUndoView.as_view(),
         name="bulk-op-undo",
     ),
+    path("merge/", MergeView.as_view(), name="merge"),
 ]
