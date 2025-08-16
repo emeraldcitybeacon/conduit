@@ -3,6 +3,8 @@ from __future__ import annotations
 
 import json
 
+from typing import Any
+
 import pytest
 from django.contrib.auth import get_user_model
 

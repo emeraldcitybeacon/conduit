@@ -20,6 +20,14 @@ from resources.views.shelves import (
     ShelfMemberAddView,
     ShelfMemberRemoveView,
 )
+from resources.views.bulk_ops import (
+    BulkOperationStageView,
+    BulkOperationPreviewView,
+    BulkOperationCommitView,
+    BulkOperationUndoView,
+)
+from resources.views.search import SearchView
+from resources.views.merge import MergeView
 from resources.views.verify import VerifyFieldView
 
 app_name = "resources"
@@ -68,4 +76,5 @@ urlpatterns = [
         BulkOperationUndoView.as_view(),
         name="bulk-op-undo",
     ),
+    path("merge/", MergeView.as_view(), name="merge"),
 ]

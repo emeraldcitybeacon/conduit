@@ -39,7 +39,7 @@ class BulkOperationStageView(APIView):
         patch_raw: Any = request.data.get("patch")
         if isinstance(patch_raw, str):
             try:
-                patch: List[dict[str, Any]] = json.loads(patch_raw)
+                patch: list[dict[str, Any]] = json.loads(patch_raw)
             except json.JSONDecodeError:
                 return Response(
                     {"detail": "Invalid patch JSON."},
