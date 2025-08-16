@@ -1,0 +1,32 @@
+{% extends "pulse/base.html" %}
+{% load i18n component_tags %}
+{#
+Resource detail page skeleton with tabs and HTMX targets.
+#}
+
+{% block title %}{% trans "Resource" %}{% endblock %}
+
+{% block content %}
+<div class="flex flex-col gap-4" id="resource-root" data-resource-id="{{ resource.service.id }}">
+  <div>
+    <h1 class="text-2xl font-bold">{{ resource.service.name }}</h1>
+    <p class="text-sm text-base-content/70">
+      {% trans "Org" %}: {{ resource.organization.name }}
+    </p>
+  </div>
+
+  <div class="tabs tabs-boxed">
+    <a class="tab" hx-get="{% url 'pulse:resource-section' resource.service.id 'overview' %}" hx-target="#resource-section" hx-swap="innerHTML" hx-trigger="click" hx-push-url="false">{% trans "Overview" %}</a>
+    <a class="tab" hx-get="{% url 'pulse:resource-section' resource.service.id 'contacts' %}" hx-target="#resource-section" hx-swap="innerHTML" hx-push-url="false">{% trans "Contacts" %}</a>
+    <a class="tab" hx-get="{% url 'pulse:resource-section' resource.service.id 'hours' %}" hx-target="#resource-section" hx-swap="innerHTML" hx-push-url="false">{% trans "Hours" %}</a>
+    <a class="tab" hx-get="{% url 'pulse:resource-section' resource.service.id 'access' %}" hx-target="#resource-section" hx-swap="innerHTML" hx-push-url="false">{% trans "Access" %}</a>
+    <a class="tab" hx-get="{% url 'pulse:resource-section' resource.service.id 'eligibility' %}" hx-target="#resource-section" hx-swap="innerHTML" hx-push-url="false">{% trans "Eligibility" %}</a>
+    <a class="tab" hx-get="{% url 'pulse:resource-section' resource.service.id 'notes' %}" hx-target="#resource-section" hx-swap="innerHTML" hx-push-url="false">{% trans "Notes" %}</a>
+    <a class="tab" hx-get="{% url 'pulse:resource-section' resource.service.id 'history' %}" hx-target="#resource-section" hx-swap="innerHTML" hx-push-url="false">{% trans "History" %}</a>
+  </div>
+
+  <div id="resource-section" hx-get="{% url 'pulse:resource-section' resource.service.id 'overview' %}" hx-trigger="load" hx-target="this" hx-swap="innerHTML">
+    <!-- Section content loaded here -->
+  </div>
+</div>
+{% endblock %}
