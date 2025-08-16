@@ -29,6 +29,7 @@ from resources.views.bulk_ops import (
 from resources.views.search import SearchView
 from resources.views.merge import MergeView
 from resources.views.verify import VerifyFieldView
+from resources.views.sensitive import ResourceSensitiveView
 
 app_name = "resources"
 
@@ -39,6 +40,11 @@ urlpatterns = [
         "resource/<uuid:id>/verify/",
         VerifyFieldView.as_view(),
         name="resource-verify",
+    ),
+    path(
+        "resource/<uuid:id>/sensitive/",
+        ResourceSensitiveView.as_view(),
+        name="resource-sensitive",
     ),
     path("resource/", DraftCreateView.as_view(), name="resource-create"),
     path("drafts/", DraftListView.as_view(), name="draft-list"),
