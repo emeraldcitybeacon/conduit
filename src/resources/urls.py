@@ -8,6 +8,12 @@ from resources.views.drafts_review import (
     DraftApproveView,
     DraftRejectView,
 )
+from resources.views.shelves import (
+    ShelfListCreateView,
+    ShelfDetailView,
+    ShelfMemberAddView,
+    ShelfMemberRemoveView,
+)
 
 app_name = "resources"
 
@@ -29,5 +35,13 @@ urlpatterns = [
         "drafts/<uuid:id>/reject/",
         DraftRejectView.as_view(),
         name="draft-reject",
+    ),
+    path("shelves/", ShelfListCreateView.as_view(), name="shelf-list"),
+    path("shelves/<uuid:id>/", ShelfDetailView.as_view(), name="shelf-detail"),
+    path("shelves/<uuid:id>/add/", ShelfMemberAddView.as_view(), name="shelf-add"),
+    path(
+        "shelves/<uuid:id>/remove/",
+        ShelfMemberRemoveView.as_view(),
+        name="shelf-remove",
     ),
 ]
