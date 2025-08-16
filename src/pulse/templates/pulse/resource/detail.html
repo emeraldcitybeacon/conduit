@@ -15,6 +15,8 @@ Resource detail page skeleton with tabs and HTMX targets.
     </p>
   </div>
 
+  {% component 'sensitive_banner' is_sensitive=resource.sensitive %}{% endcomponent %}
+
   <div class="tabs tabs-boxed">
     <a class="tab" hx-get="{% url 'pulse:resource-section' resource.service.id 'overview' %}" hx-target="#resource-section" hx-swap="innerHTML" hx-trigger="click" hx-push-url="false">{% trans "Overview" %}</a>
     <a class="tab" hx-get="{% url 'pulse:resource-section' resource.service.id 'contacts' %}" hx-target="#resource-section" hx-swap="innerHTML" hx-push-url="false">{% trans "Contacts" %}</a>

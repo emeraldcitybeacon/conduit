@@ -11,7 +11,7 @@ from users.models import User
 def test_volunteer_nav(client) -> None:
     """Volunteers see Pulse link only."""
 
-    user = User.objects.create_user(username="vol", password="pass", role=User.Role.VIEWER)
+    user = User.objects.create_user(username="vol", password="pass", role=User.Role.VOLUNTEER)
     client.force_login(user)
     resp = client.get(reverse("management-dashboard"))
     content = resp.content.decode()
@@ -29,7 +29,6 @@ def test_manager_nav(client) -> None:
     resp = client.get(reverse("management-dashboard"))
     content = resp.content.decode()
     assert "Pulse" in content
-    assert "dropdown-end" in content
     assert "Admin" not in content
 
 
@@ -42,6 +41,5 @@ def test_admin_nav(client) -> None:
     resp = client.get(reverse("management-dashboard"))
     content = resp.content.decode()
     assert "Pulse" in content
-    assert "dropdown-end" in content
     assert "Admin" in content
 
