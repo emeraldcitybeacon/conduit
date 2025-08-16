@@ -3,8 +3,8 @@ from __future__ import annotations
 
 import json
 
-from django.contrib.auth import get_user_model
 import pytest
+from django.contrib.auth import get_user_model
 
 from hsds_ext.models import DraftResource
 
@@ -12,7 +12,7 @@ User = get_user_model()
 
 
 @pytest.fixture
-def user_client(client) -> tuple[User, any]:
+def user_client(client) -> tuple[User, Any]:
     """Return a logged-in volunteer client."""
 
     user = User.objects.create_user(username="vol", password="pw")

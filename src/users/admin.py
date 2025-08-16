@@ -15,4 +15,3 @@ class UserAdmin(BaseUserAdmin):
     list_filter = (*BaseUserAdmin.list_filter, "role")
     search_fields = ("username", "email")
     ordering = ("username",)
-

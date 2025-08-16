@@ -12,10 +12,9 @@ def component(request: HttpRequest, name: str) -> HttpResponse:
     requested component is not registered, a 404 is raised.
     """
 
-    try:
-        component_cls = component_registry.registry.get(name)
-    except component_registry.NotRegistered as exc:  # pragma: no cover - simple
-        raise Http404(f"Component '{name}' not found") from exc
+    component_cls = component_registry.registry.get(name)
+    if component_cls is None:
+        raise Http404(f"Component '{name}' not found")
 
     kwargs = request.GET.dict()
     return component_cls.render_to_response(request=request, kwargs=kwargs)

@@ -1,8 +1,8 @@
 """API endpoints for composite Resources."""
 from __future__ import annotations
 
-from typing import Any, Dict
 import json
+from typing import Any, Dict
 
 from django.http import QueryDict
 from django.shortcuts import get_object_or_404
@@ -64,7 +64,7 @@ class ResourceView(APIView):
         service = self._get_service(id)
         versions = self._version_map(service)
         serializer = ResourceSerializer(
-            {"service": service, "organization": service.organization, "location": service.locations.first()},
+            {"service": service, "organization": service.organization, "location": next(iter(service.locations.all()), None)},
             context={"versions": versions},
         )
         etag = resource_etag(versions)
@@ -97,7 +97,7 @@ class ResourceView(APIView):
             incoming = request.data
 
         serializer = ResourceSerializer(
-            {"service": service, "organization": service.organization, "location": service.locations.first()},
+            {"service": service, "organization": service.organization, "location": next(iter(service.locations.all()), None)},
             data=incoming,
             partial=True,
             context={"versions": versions, "user": request.user},
@@ -107,7 +107,7 @@ class ResourceView(APIView):
 
         versions = self._version_map(service)
         data = ResourceSerializer(
-            {"service": service, "organization": service.organization, "location": service.locations.first()},
+            {"service": service, "organization": service.organization, "location": next(iter(service.locations.all()), None)},
             context={"versions": versions},
         ).data
         new_etag = resource_etag(versions)

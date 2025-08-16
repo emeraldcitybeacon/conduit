@@ -1,9 +1,5 @@
-# Development settings
 from .base import *  # noqa
 
-# Enable debug mode for development
-DEBUG = True
-# CSRF_TRUSTED_ORIGINS = []
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
@@ -16,13 +12,16 @@ TEMPLATES = [
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
             ],
-            'loaders':[
-                'django.template.loaders.filesystem.Loader',
-                # Including this is the same as APP_DIRS=True
-                'django.template.loaders.app_directories.Loader',
-                # Components loader
-                'django_components.template_loader.Loader',
-            ],
+            'loaders':[(
+                'django.template.loaders.cached.Loader', [
+                    # Default Django loader
+                    'django.template.loaders.filesystem.Loader',
+                    # Including this is the same as APP_DIRS=True
+                    'django.template.loaders.app_directories.Loader',
+                    # Components loader
+                    'django_components.template_loader.Loader',
+                ]
+            )],
             'builtins': ['django_components.templatetags.component_tags'],
         },
     },

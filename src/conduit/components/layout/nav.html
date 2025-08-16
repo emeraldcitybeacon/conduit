@@ -1,17 +1,19 @@
+
+
 {% load i18n %}
-<nav class="navbar bg-base-100 shadow mb-4">
+<nav class="navbar bg-base-100 shadow-sm">
   <div class="flex-1">
     <a href="/" class="btn btn-ghost text-xl">{% trans "Conduit" %}</a>
   </div>
   {% if user and user.is_authenticated %}
-  <div class="flex-none gap-2">
-    <ul class="menu menu-horizontal px-1 text-sm">
+  <div class="flex-none">
+    <ul class="menu menu-horizontal px-1">
       <li><a href="{% url 'pulse:home' %}">{% trans "Pulse" %}</a></li>
-      {% if user.role != 'viewer' %}
+      {% if user.role == 'editor' or user.role == 'administrator' %}
       <li>
-        <div class="dropdown dropdown-end">
-          <div tabindex="0" role="button" class="btn btn-ghost">{% trans "Management" %}</div>
-          <ul tabindex="0" class="menu dropdown-content z-[1] p-2 shadow bg-base-100 rounded-box w-52">
+        <details>
+          <summary tabindex="0" role="button">{% trans "Management" %}</summary>
+          <ul class="bg-base-100 rounded-t-none p-2">
             <li><a href="{% url 'management-dashboard' %}">{% trans "Dashboard" %}</a></li>
             <li><a href="/">{% trans "Home" %}</a></li>
             <li><a href="{% url 'hsds:organization-list' %}">{% trans "Organizations" %}</a></li>
@@ -24,7 +26,7 @@
               </form>
             </li>
           </ul>
-        </div>
+        </details>
       </li>
       {% endif %}
       {% if user.role == 'administrator' %}
@@ -42,4 +44,3 @@
   </div>
   {% endif %}
 </nav>
-

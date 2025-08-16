@@ -83,7 +83,7 @@ def set_value(data: MutableMapping[str, Any], path: str, value: Any) -> None:
         if idx is not None:
             lst = obj
             while len(lst) <= idx:
-                lst.append({} if next_idx is None else ([] if next_idx is not None else {}))
+                lst.append({} if next_idx is None else [])
             if not isinstance(lst[idx], (MutableMapping, MutableSequence)):
                 lst[idx] = {} if next_idx is None else []
             obj = lst[idx]
