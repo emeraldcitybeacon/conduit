@@ -1,13 +1,11 @@
 """Single shelf member row with remove control."""
 from __future__ import annotations
 
-from django_components import register
-
-from ..ui import PulseComponent
+from django_components import Component, register
 
 
 @register("shelf_member_row")
-class ShelfMemberRow(PulseComponent):
+class ShelfMemberRow(Component):
     """Render a shelf member entry with a remove button."""
 
     template_file = "member_row.html"
@@ -31,4 +29,3 @@ class ShelfMemberRow(PulseComponent):
             "entity_type": kwargs.get("entity_type"),
             "entity_id": kwargs.get("entity_id"),
         }
-

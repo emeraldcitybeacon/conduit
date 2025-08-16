@@ -3,13 +3,11 @@ from __future__ import annotations
 
 from typing import Iterable
 
-from django_components import register
-
-from . import PulseComponent
+from django_components import Component, register
 
 
 @register("validator")
-class Validator(PulseComponent):
+class Validator(Component):
     """Render validation error messages for a specific field."""
 
     template_file = "validator.html"

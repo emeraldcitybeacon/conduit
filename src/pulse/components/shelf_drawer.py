@@ -1,15 +1,13 @@
 """Right-hand shelf drawer listing queued resources."""
 from __future__ import annotations
 
-from django_components import register
+from django_components import Component, register
 
 from hsds_ext.models import Shelf
 
-from ..ui import PulseComponent
-
 
 @register("shelf_drawer")
-class ShelfDrawer(PulseComponent):
+class ShelfDrawer(Component):
     """Render the shelf drawer for the current user."""
 
     template_file = "drawer.html"
@@ -42,4 +40,3 @@ class ShelfDrawer(PulseComponent):
                 for m in shelf.members.order_by("-added_at")
             ]
         return {"shelf": shelf, "members": members}
-

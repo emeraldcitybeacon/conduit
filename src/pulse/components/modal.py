@@ -1,13 +1,11 @@
 """Generic modal dialog component using daisyUI."""
 from __future__ import annotations
 
-from django_components import register
-
-from . import PulseComponent
+from django_components import Component, register
 
 
 @register("modal")
-class Modal(PulseComponent):
+class Modal(Component):
     """Render a modal dialog with optional title and slot content."""
 
     template_file = "modal.html"

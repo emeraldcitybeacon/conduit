@@ -1,13 +1,11 @@
 """Field verification action button."""
 from __future__ import annotations
 
-from django_components import register
-
-from ..ui import PulseComponent
+from django_components import Component, register
 
 
 @register("verify_button")
-class VerifyButton(PulseComponent):
+class VerifyButton(Component):
     """Render a button used to record a verification event.
 
     Parameters via component kwargs:

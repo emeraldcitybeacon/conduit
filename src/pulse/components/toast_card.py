@@ -3,13 +3,11 @@ from __future__ import annotations
 
 from typing import Any, Dict
 
-from django_components import register
-
-from . import PulseComponent
+from django_components import Component, register
 
 
 @register("toast_card")
-class ToastCard(PulseComponent):
+class ToastCard(Component):
     """Render a daisyUI card suitable for use inside a toast container.
 
     Parameters passed to the component via the template tag:

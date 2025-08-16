@@ -1,13 +1,11 @@
 """Timeline popover showing verification events for a field."""
 from __future__ import annotations
 
-from django_components import register
-
-from ..ui import PulseComponent
+from django_components import Component, register
 
 
 @register("freshness_popover")
-class FreshnessPopover(PulseComponent):
+class FreshnessPopover(Component):
     """Render a popover with a timeline of verification events."""
 
     template_file = "freshness_popover.html"

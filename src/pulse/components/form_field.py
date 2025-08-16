@@ -3,13 +3,11 @@ from __future__ import annotations
 
 from typing import Iterable, List, Tuple
 
-from django_components import register
-
-from . import PulseComponent
+from django_components import Component, register
 
 
 @register("form_field")
-class FormField(PulseComponent):
+class FormField(Component):
     """Render a standard form control with label, help text, and error message.
 
     Parameters accepted via component kwargs:
