@@ -5,7 +5,7 @@ from typing import Any
 
 from rest_framework import serializers
 
-from hsds.models import Organization, Location, Service
+from hsds.models import Location, Organization, Service
 from hsds_ext.models import FieldVersion
 from resources.utils.etags import build_etag_map
 

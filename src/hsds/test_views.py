@@ -5,7 +5,7 @@ import pytest
 from django.contrib.auth import get_user_model
 from django.urls import reverse
 
-from hsds.models import Organization, Service, Location, Contact
+from hsds.models import Contact, Location, Organization, Service
 
 User = get_user_model()
 

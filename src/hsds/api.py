@@ -6,6 +6,7 @@ from django_filters import rest_framework as filters
 from rest_framework import serializers, viewsets
 
 from .models import (
+    URL,
     Accessibility,
     Address,
     Contact,
@@ -26,7 +27,6 @@ from .models import (
     Taxonomy,
     TaxonomyTerm,
     Unit,
-    URL,
 )
 
 

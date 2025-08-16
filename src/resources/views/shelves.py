@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import uuid
+
 from django.shortcuts import get_object_or_404
 from django_components import component_registry
 from rest_framework import status

@@ -1,26 +1,26 @@
 """API routes for Resource facade endpoints."""
 from django.urls import path
 
-from resources.views.resource import ResourceView
-from resources.views.verify import VerifyFieldView
+from resources.views.bulk_ops import (
+    BulkOperationCommitView,
+    BulkOperationPreviewView,
+    BulkOperationStageView,
+    BulkOperationUndoView,
+)
 from resources.views.drafts import DraftCreateView, DraftListView
 from resources.views.drafts_review import (
     DraftApproveView,
     DraftRejectView,
 )
+from resources.views.resource import ResourceView
+from resources.views.search import SearchView
 from resources.views.shelves import (
-    ShelfListCreateView,
     ShelfDetailView,
+    ShelfListCreateView,
     ShelfMemberAddView,
     ShelfMemberRemoveView,
 )
-from resources.views.bulk_ops import (
-    BulkOperationStageView,
-    BulkOperationPreviewView,
-    BulkOperationCommitView,
-    BulkOperationUndoView,
-)
-from resources.views.search import SearchView
+from resources.views.verify import VerifyFieldView
 
 app_name = "resources"
 

@@ -1,7 +1,7 @@
 """Validation hint component for inline form errors."""
 from __future__ import annotations
 
-from typing import Iterable, List
+from typing import Iterable
 
 from django_components import register
 

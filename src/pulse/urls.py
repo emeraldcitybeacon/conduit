@@ -4,8 +4,8 @@ from django.views.generic import TemplateView
 
 from .views import components as component_views
 from .views import resource as resource_views
-from .views import wizard as wizard_views
 from .views import review as review_views
+from .views import wizard as wizard_views
 
 app_name = "pulse"
 

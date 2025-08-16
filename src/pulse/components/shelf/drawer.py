@@ -4,6 +4,7 @@ from __future__ import annotations
 from django_components import register
 
 from hsds_ext.models import Shelf
+
 from ..ui import PulseComponent
 
 

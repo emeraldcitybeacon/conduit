@@ -3,8 +3,8 @@ from __future__ import annotations
 
 import uuid
 
-from django.contrib.auth import get_user_model
 import pytest
+from django.contrib.auth import get_user_model
 
 User = get_user_model()
 

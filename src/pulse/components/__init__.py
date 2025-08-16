@@ -6,7 +6,6 @@ component groups can be added here as the UI grows.
 """
 
 # Import UI and resource component packages for side-effect registration.
-from . import ui  # noqa: F401  (Imported for registration)
 from . import resource  # noqa: F401  (Imported for registration)
 from . import shelf  # noqa: F401  (Imported for registration)
-
+from . import ui  # noqa: F401  (Imported for registration)
