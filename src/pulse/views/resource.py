@@ -1,14 +1,14 @@
 """Views for the Pulse Resource detail page and section partials."""
 from __future__ import annotations
 
-from typing import Dict
+from typing import Any, Dict
 
 from django.http import HttpRequest, HttpResponse, Http404
 from django.shortcuts import get_object_or_404, render
 from django.views import View
 
 from hsds.models import Service
-from hsds_ext.models import FieldVersion
+from hsds_ext.models import FieldVersion, VerificationEvent
 from resources.serializers.resource import ResourceSerializer
 
 
@@ -23,8 +23,8 @@ class ResourceDetailView(View):
 
     template_name = "pulse/resource/detail.html"
 
-    def _serialize(self, service: Service) -> Dict[str, object]:
-        """Return serialized resource data for ``service``."""
+    def _serialize(self, service: Service) -> Dict[str, Any]:
+        """Return serialized resource data and verification metadata."""
 
         versions = {
             fv.field_path: fv.version
@@ -40,7 +40,24 @@ class ResourceDetailView(View):
             },
             context={"versions": versions},
         )
-        return serializer.data
+        data: Dict[str, Any] = serializer.data
+
+        events = VerificationEvent.objects.filter(
+            entity_type=VerificationEvent.EntityType.SERVICE, entity_id=service.id
+        ).order_by("-verified_at")
+
+        verifications: Dict[str, Any] = {}
+        for ev in events:
+            parts = ev.field_path.split(".")
+            node = verifications
+            for part in parts[:-1]:
+                node = node.setdefault(part, {})
+            node.setdefault(parts[-1], []).append(
+                {"method": ev.method, "verified_at": ev.verified_at, "field_path": ev.field_path}
+            )
+
+        data["verifications"] = verifications
+        return data
 
     def get(self, request: HttpRequest, id: str) -> HttpResponse:
         service = get_object_or_404(
@@ -59,7 +76,13 @@ def section(request: HttpRequest, id: str, name: str) -> HttpResponse:
     detail = ResourceDetailView()
     data = detail._serialize(service)
 
+    context: Dict[str, Any] = {"resource": data}
+    if name == "history":
+        context["events"] = VerificationEvent.objects.filter(
+            entity_type=VerificationEvent.EntityType.SERVICE, entity_id=service.id
+        ).order_by("-verified_at")
+
     try:
-        return render(request, template, {"resource": data})
+        return render(request, template, context)
     except Exception as exc:  # pragma: no cover - template missing
         raise Http404(f"Unknown section: {name}") from exc

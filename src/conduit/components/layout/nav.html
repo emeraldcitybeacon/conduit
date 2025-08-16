@@ -3,16 +3,43 @@
   <div class="flex-1">
     <a href="/" class="btn btn-ghost text-xl">{% trans "Conduit" %}</a>
   </div>
+  {% if user and user.is_authenticated %}
   <div class="flex-none gap-2">
     <ul class="menu menu-horizontal px-1 text-sm">
-      <li><a href="/">{% trans "Home" %}</a></li>
-      <li><a href="{% url 'hsds:organization-list' %}">{% trans "Organizations" %}</a></li>
-      <li><a href="{% url 'hsds:service-list' %}">{% trans "Services" %}</a></li>
-      <li><a href="{% url 'hsds:location-list' %}">{% trans "Locations" %}</a></li>
-      <li><a href="{% url 'hsds:contact-list' %}">{% trans "Contacts" %}</a></li>
+      <li><a href="{% url 'pulse:home' %}">{% trans "Pulse" %}</a></li>
+      {% if user.role != 'viewer' %}
+      <li>
+        <div class="dropdown dropdown-end">
+          <div tabindex="0" role="button" class="btn btn-ghost">{% trans "Management" %}</div>
+          <ul tabindex="0" class="menu dropdown-content z-[1] p-2 shadow bg-base-100 rounded-box w-52">
+            <li><a href="{% url 'management-dashboard' %}">{% trans "Dashboard" %}</a></li>
+            <li><a href="/">{% trans "Home" %}</a></li>
+            <li><a href="{% url 'hsds:organization-list' %}">{% trans "Organizations" %}</a></li>
+            <li><a href="{% url 'hsds:service-list' %}">{% trans "Services" %}</a></li>
+            <li><a href="{% url 'hsds:location-list' %}">{% trans "Locations" %}</a></li>
+            <li><a href="{% url 'hsds:contact-list' %}">{% trans "Contacts" %}</a></li>
+            <li>
+              <form action="{% url 'hsds:search' %}" method="get">
+                <input type="text" name="q" placeholder="{% trans 'Search...' %}" class="input input-bordered w-full max-w-xs" />
+              </form>
+            </li>
+          </ul>
+        </div>
+      </li>
+      {% endif %}
+      {% if user.role == 'administrator' %}
+      <li><a href="{% url 'admin:index' %}">{% trans "Admin" %}</a></li>
+      {% endif %}
+      <li>
+        <a href="{% url 'users:logout' %}" class="btn btn-ghost btn-circle" title="{% trans 'Logout' %}">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6A2.25 2.25 0 005.25 5.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15" />
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 9l3 3m0 0l-3 3m3-3H3" />
+          </svg>
+        </a>
+      </li>
     </ul>
-    <form action="{% url 'hsds:search' %}" method="get" class="hidden sm:block">
-      <input type="text" name="q" placeholder="{% trans 'Search...' %}" class="input input-bordered w-full max-w-xs" />
-    </form>
   </div>
+  {% endif %}
 </nav>
+

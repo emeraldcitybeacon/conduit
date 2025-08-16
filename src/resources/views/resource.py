@@ -2,9 +2,12 @@
 from __future__ import annotations
 
 from typing import Any, Dict
+import json
 
+from django.http import QueryDict
 from django.shortcuts import get_object_or_404
 from rest_framework import status
+from rest_framework.parsers import BaseParser, FormParser, JSONParser, MultiPartParser
 from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -14,12 +17,30 @@ from hsds_ext.models import FieldVersion
 from resources.permissions import IsVolunteer
 from resources.serializers.resource import ResourceSerializer
 from resources.utils.etags import assert_versions, resource_etag
+from resources.utils.json_paths import set_value
+
+
+class OctetStreamParser(BaseParser):
+    """Parse ``application/octet-stream`` bodies into a ``QueryDict``."""
+
+    media_type = "application/octet-stream"
+
+    def parse(self, stream, media_type=None, parser_context=None):  # pragma: no cover - simple
+        raw = stream.read().decode()
+        # Django's test client sends dict repr for octet-stream bodies
+        if raw.strip().startswith("{"):
+            try:
+                return json.loads(raw.replace("'", '"'))
+            except Exception:  # pragma: no cover - defensive
+                return {}
+        return QueryDict(raw)
 
 
 class ResourceView(APIView):
     """Retrieve and update composite HSDS resources."""
 
     permission_classes = [IsVolunteer]
+    parser_classes = [JSONParser, FormParser, MultiPartParser, OctetStreamParser]
 
     def _get_service(self, id: str) -> Service:
         """Return the ``Service`` with its related organization and locations."""
@@ -65,9 +86,19 @@ class ResourceView(APIView):
                 status=status.HTTP_409_CONFLICT,
             )
 
+        incoming: Dict[str, Any]
+        if isinstance(request.data, (QueryDict, dict)):
+            # Convert dotted keys like ``service.url`` into nested structures.
+            incoming = {}
+            items = request.data.items() if isinstance(request.data, QueryDict) else request.data.items()
+            for key, value in items:
+                set_value(incoming, key, value)
+        else:
+            incoming = request.data
+
         serializer = ResourceSerializer(
             {"service": service, "organization": service.organization, "location": service.locations.first()},
-            data=request.data,
+            data=incoming,
             partial=True,
             context={"versions": versions, "user": request.user},
         )

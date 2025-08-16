@@ -1,4 +1,30 @@
-{# Placeholder for the hours section content. #}
-<div class="p-4">
-  <p class="text-base-content/70">{% trans "Hours section coming soon" %}</p>
-</div>
+{% load i18n component_tags %}
+<form
+  id="hours-form"
+  data-resource-form
+  hx-patch="{% url 'resources:resource-detail' resource.service.id %}"
+  hx-target="this"
+  hx-swap="none"
+  class="space-y-4"
+>
+  {% csrf_token %}
+  <div class="flex items-center gap-2">
+    {% component 'form_field' name='service.hours' field_type='textarea' label=_('Hours') value='' %}{% endcomponent %}
+    {% with events=resource.verifications.service.hours %}
+      {% if events %}
+        {% component 'freshness_badge' status=events.0.verified_at|timesince %}{% endcomponent %}
+        {% component 'freshness_popover' events=events %}{% endcomponent %}
+      {% else %}
+        {% component 'freshness_badge' status=_('unverified') %}{% endcomponent %}
+      {% endif %}
+    {% endwith %}
+    <div class="join">
+      {% component 'verify_button' label=_('Called') method='called' field_path='service.hours' resource_id=resource.service.id %}{% endcomponent %}
+      {% component 'verify_button' label=_('Website') method='website' field_path='service.hours' resource_id=resource.service.id %}{% endcomponent %}
+      {% component 'verify_button' label=_('On-site') method='onsite' field_path='service.hours' resource_id=resource.service.id %}{% endcomponent %}
+    </div>
+  </div>
+  {% component 'validator' field='service.hours' %}{% endcomponent %}
+
+  <button type="submit" class="hidden">{% trans "Save" %}</button>
+</form>

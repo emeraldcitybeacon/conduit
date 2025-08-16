@@ -1,5 +1,5 @@
 {% extends "pulse/base.html" %}
-{% load i18n component_tags %}
+{% load i18n component_tags static %}
 {#
 Resource detail page skeleton with tabs and HTMX targets.
 #}
@@ -29,4 +29,8 @@ Resource detail page skeleton with tabs and HTMX targets.
     <!-- Section content loaded here -->
   </div>
 </div>
+{% component 'modal' id='diff-modal' title=_('Review changes') %}
+  {% component 'diff' left='' right='' %}{% endcomponent %}
+{% endcomponent %}
+<script src="{% static 'pulse/js/keys.js' %}"></script>
 {% endblock %}
