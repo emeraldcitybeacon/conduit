@@ -1,5 +1,5 @@
 {% extends "pulse/base.html" %}
-{% load i18n %}
+{% load i18n component_tags %}
 
 {% block title %}{% trans "New Resource – Location" %}{% endblock %}
 
@@ -11,18 +11,8 @@
     <li class="step step-primary">{% trans "Location" %}</li>
     <li class="step">{% trans "Service" %}</li>
   </ul>
-  <div>
-    <label class="form-control w-full">
-      <div class="label"><span class="label-text">{% trans "Location Name" %}</span></div>
-      <input type="text" name="name" class="input input-bordered" required />
-    </label>
-  </div>
-  <div>
-    <label class="form-control w-full">
-      <div class="label"><span class="label-text">{% trans "Address" %}</span></div>
-      <input type="text" name="address" class="input input-bordered" required />
-    </label>
-  </div>
+  {% component 'form_field' name='name' label=_('Location Name') %}{% endcomponent %}
+  {% component 'form_field' name='address' label=_('Address') required=True %}{% endcomponent %}
   <button type="submit" class="btn btn-primary">{% trans "Next" %}</button>
 </form>
 {% endblock %}

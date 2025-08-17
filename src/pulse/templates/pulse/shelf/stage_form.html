@@ -1,0 +1,8 @@
+{% comment %}Modal form for staging a shelf bulk operation{% endcomment %}
+{% load component_tags %}
+<form hx-post="/api/bulk-ops/" hx-target="#bulk-modal" hx-swap="outerHTML" class="p-4 space-y-4">
+  <input type="hidden" name="scope" value="shelf">
+  <input type="hidden" name="shelf_id" value="{{ shelf_id }}">
+  {% component 'form_field' name='patch' field_type='textarea' label='JSON Patch' help_text='[{"op":"replace","path":"/name","value":"New"}]' css_class='h-40' %}{% endcomponent %}
+  <button type="submit" class="btn btn-primary">Preview</button>
+</form>
