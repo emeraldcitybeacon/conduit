@@ -121,7 +121,7 @@ document.body.addEventListener('htmx:responseError', function (evt) {
     for (const path in data.current) {
       const container = document.querySelector('.merge-chip-container[data-field="' + path + '"]');
       if (container) {
-        const url = '/pulse/c/merge_chip/?path=' + encodeURIComponent(path) + '&current=' + encodeURIComponent(data.current[path]);
+        const url = '/pulse/c/merge_chip/?path=' + encodeURIComponent(path) + '&current=' + encodeURIComponent(safeStringForUrl(data.current[path]));
         htmx.ajax('GET', url, {target: container, swap: 'innerHTML'});
       }
     }
