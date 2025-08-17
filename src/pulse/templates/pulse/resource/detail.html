@@ -37,7 +37,7 @@ Resource detail page skeleton with tabs and HTMX targets.
       hx-swap="innerHTML"
       hx-trigger="click"
       hx-push-url="false"
-      hx-on:click="document.querySelectorAll('[role=tab]').forEach(el=>el.setAttribute('aria-selected','false'));this.setAttribute('aria-selected','true');document.getElementById('resource-section').setAttribute('aria-labelledby', this.id);"
+      hx-on:click="handleTabClick(this)"
     >{% trans "Overview" %}</button>
     <button
       id="tab-contacts"
@@ -49,7 +49,7 @@ Resource detail page skeleton with tabs and HTMX targets.
       hx-target="#resource-section"
       hx-swap="innerHTML"
       hx-push-url="false"
-      hx-on:click="document.querySelectorAll('[role=tab]').forEach(el=>el.setAttribute('aria-selected','false'));this.setAttribute('aria-selected','true');document.getElementById('resource-section').setAttribute('aria-labelledby', this.id);"
+      hx-on:click="handleTabClick(this)"
     >{% trans "Contacts" %}</button>
     <button
       id="tab-hours"
@@ -61,7 +61,7 @@ Resource detail page skeleton with tabs and HTMX targets.
       hx-target="#resource-section"
       hx-swap="innerHTML"
       hx-push-url="false"
-      hx-on:click="document.querySelectorAll('[role=tab]').forEach(el=>el.setAttribute('aria-selected','false'));this.setAttribute('aria-selected','true');document.getElementById('resource-section').setAttribute('aria-labelledby', this.id);"
+      hx-on:click="handleTabClick(this)"
     >{% trans "Hours" %}</button>
     <button
       id="tab-access"
@@ -73,7 +73,7 @@ Resource detail page skeleton with tabs and HTMX targets.
       hx-target="#resource-section"
       hx-swap="innerHTML"
       hx-push-url="false"
-      hx-on:click="document.querySelectorAll('[role=tab]').forEach(el=>el.setAttribute('aria-selected','false'));this.setAttribute('aria-selected','true');document.getElementById('resource-section').setAttribute('aria-labelledby', this.id);"
+      hx-on:click="handleTabClick(this)"
     >{% trans "Access" %}</button>
     <button
       id="tab-eligibility"
@@ -85,7 +85,7 @@ Resource detail page skeleton with tabs and HTMX targets.
       hx-target="#resource-section"
       hx-swap="innerHTML"
       hx-push-url="false"
-      hx-on:click="document.querySelectorAll('[role=tab]').forEach(el=>el.setAttribute('aria-selected','false'));this.setAttribute('aria-selected','true');document.getElementById('resource-section').setAttribute('aria-labelledby', this.id);"
+      hx-on:click="handleTabClick(this)"
     >{% trans "Eligibility" %}</button>
     <button
       id="tab-notes"
@@ -97,7 +97,7 @@ Resource detail page skeleton with tabs and HTMX targets.
       hx-target="#resource-section"
       hx-swap="innerHTML"
       hx-push-url="false"
-      hx-on:click="document.querySelectorAll('[role=tab]').forEach(el=>el.setAttribute('aria-selected','false'));this.setAttribute('aria-selected','true');document.getElementById('resource-section').setAttribute('aria-labelledby', this.id);"
+      hx-on:click="handleTabClick(this)"
     >{% trans "Notes" %}</button>
     <button
       id="tab-history"
@@ -109,7 +109,7 @@ Resource detail page skeleton with tabs and HTMX targets.
       hx-target="#resource-section"
       hx-swap="innerHTML"
       hx-push-url="false"
-      hx-on:click="document.querySelectorAll('[role=tab]').forEach(el=>el.setAttribute('aria-selected','false'));this.setAttribute('aria-selected','true');document.getElementById('resource-section').setAttribute('aria-labelledby', this.id);"
+      hx-on:click="handleTabClick(this)"
     >{% trans "History" %}</button>
   </div>
 
