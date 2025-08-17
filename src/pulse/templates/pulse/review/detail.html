@@ -1,0 +1,18 @@
+{% extends "pulse/base.html" %}
+
+{% block content %}
+<h1 class="text-xl font-bold mb-4">Change Request Review</h1>
+
+{% component "diff" changes=changes %}{% endcomponent %}
+
+<div class="mt-4 space-x-2">
+  <form hx-post="{% url 'resources:change-request-approve' change_request.id %}" hx-swap="none" method="post" class="inline">
+    {% csrf_token %}
+    <button class="btn btn-primary">Approve</button>
+  </form>
+  <form hx-post="{% url 'resources:change-request-reject' change_request.id %}" hx-swap="none" method="post" class="inline">
+    {% csrf_token %}
+    <button class="btn btn-secondary">Reject</button>
+  </form>
+</div>
+{% endblock %}

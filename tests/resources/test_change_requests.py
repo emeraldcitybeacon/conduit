@@ -3,7 +3,7 @@ import pytest
 from django.urls import reverse
 
 from hsds.models import Organization, Service
-from hsds_ext.models import ChangeRequest
+from hsds_ext.models import ChangeRequest, FieldVersion, VerificationEvent
 from users.models import User
 
 
@@ -53,4 +53,70 @@ def test_list_change_requests(client):
     assert resp.status_code == 200
     data = resp.json()
     assert data[0]["note"] == "n"
+
+
+@pytest.mark.django_db
+def test_approve_change_request(client):
+    org = Organization.objects.create(name="Org", description="d")
+    service = Service.objects.create(
+        organization=org, name="Svc", status=Service.Status.ACTIVE
+    )
+    cr = ChangeRequest.objects.create(
+        target_entity_type=ChangeRequest.EntityType.SERVICE,
+        target_entity_id=service.id,
+        patch=[{"op": "replace", "path": "/service/name", "value": "New"}],
+        submitted_by=User.objects.create_user(
+            username="vol", password="pw", role=User.Role.VOLUNTEER
+        ),
+    )
+    editor = User.objects.create_user(
+        username="ed", password="pw", role=User.Role.EDITOR
+    )
+    client.force_login(editor)
+
+    url = reverse("resources:change-request-approve", args=[cr.id])
+    resp = client.post(url)
+    assert resp.status_code == 200
+    service.refresh_from_db()
+    assert service.name == "New"
+    cr.refresh_from_db()
+    assert cr.status == ChangeRequest.Status.APPROVED
+    assert FieldVersion.objects.filter(
+        entity_type=FieldVersion.EntityType.SERVICE,
+        entity_id=service.id,
+        field_path="service.name",
+    ).exists()
+    assert VerificationEvent.objects.filter(
+        entity_type=VerificationEvent.EntityType.SERVICE,
+        entity_id=service.id,
+        field_path="service.name",
+    ).exists()
+
+
+@pytest.mark.django_db
+def test_reject_change_request(client):
+    org = Organization.objects.create(name="Org", description="d")
+    service = Service.objects.create(
+        organization=org, name="Svc", status=Service.Status.ACTIVE
+    )
+    cr = ChangeRequest.objects.create(
+        target_entity_type=ChangeRequest.EntityType.SERVICE,
+        target_entity_id=service.id,
+        patch=[{"op": "replace", "path": "/service/name", "value": "New"}],
+        submitted_by=User.objects.create_user(
+            username="vol", password="pw", role=User.Role.VOLUNTEER
+        ),
+    )
+    editor = User.objects.create_user(
+        username="ed", password="pw", role=User.Role.EDITOR
+    )
+    client.force_login(editor)
+
+    url = reverse("resources:change-request-reject", args=[cr.id])
+    resp = client.post(url)
+    assert resp.status_code == 200
+    service.refresh_from_db()
+    assert service.name == "Svc"
+    cr.refresh_from_db()
+    assert cr.status == ChangeRequest.Status.REJECTED
 

@@ -1,4 +1,22 @@
-<div class="mockup-code">
-  <pre data-prefix="-"><code>{{ left }}</code></pre>
-  <pre data-prefix="+"><code>{{ right }}</code></pre>
-</div>
+<table class="table w-full">
+  <thead>
+    <tr>
+      <th>Field</th>
+      <th>Current</th>
+      <th>Proposed</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for change in changes %}
+    <tr>
+      <td>{{ change.field }}</td>
+      <td class="text-error">{{ change.before }}</td>
+      <td class="text-success">{{ change.after }}</td>
+    </tr>
+    {% empty %}
+    <tr>
+      <td colspan="3">No changes</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
