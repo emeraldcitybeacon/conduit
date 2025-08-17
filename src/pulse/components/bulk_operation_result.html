@@ -1,0 +1,16 @@
+{% load i18n %}
+<div id="bulk-modal" class="p-4 space-y-4">
+  <h3 class="font-bold text-lg">{% trans "Bulk Operation Committed" %}</h3>
+  <p>{{ operation.preview|length }} {% trans "resources updated." %}</p>
+  {% if operation.status == 'committed' %}
+  <form hx-post="/api/bulk-ops/{{ operation.id }}/undo/"
+        hx-vals='{"undo_token":"{{ operation.undo_token }}"}'
+        hx-target="#bulk-modal"
+        hx-swap="outerHTML">
+    <button type="submit" class="btn btn-outline">
+      {% trans "Undo" %}
+    </button>
+  </form>
+  {% endif %}
+</div>
+

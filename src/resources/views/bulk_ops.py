@@ -6,8 +6,8 @@ import secrets
 from typing import Any
 
 from django.shortcuts import get_object_or_404
-from django.template.loader import render_to_string
 from django.utils import timezone
+from django_components import component_registry
 from rest_framework import status
 from rest_framework.parsers import FormParser, JSONParser, MultiPartParser
 from rest_framework.request import Request
@@ -75,8 +75,10 @@ class BulkOperationStageView(APIView):
             preview=preview,
         )
 
-        html = render_to_string(
-            "pulse/shelf/preview.html", {"operation": op}, request=request
+        component_cls = component_registry.registry.get("bulk_operation_preview")
+        html = component_cls.render(
+            kwargs={"operation": op},
+            request=request,
         )
         return Response(html, status=status.HTTP_201_CREATED)
 
@@ -88,8 +90,10 @@ class BulkOperationPreviewView(APIView):
 
     def get(self, request: Request, id: str) -> Response:
         op = get_object_or_404(BulkOperation, id=id, initiated_by=request.user)
-        html = render_to_string(
-            "pulse/shelf/preview.html", {"operation": op}, request=request
+        component_cls = component_registry.registry.get("bulk_operation_preview")
+        html = component_cls.render(
+            kwargs={"operation": op},
+            request=request,
         )
         return Response(html)
 
@@ -112,8 +116,10 @@ class BulkOperationCommitView(APIView):
         op.undo_token = secrets.token_urlsafe(32)
         op.save(update_fields=["status", "committed_at", "undo_token"])
 
-        html = render_to_string(
-            "pulse/shelf/commit_result.html", {"operation": op}, request=request
+        component_cls = component_registry.registry.get("bulk_operation_result")
+        html = component_cls.render(
+            kwargs={"operation": op},
+            request=request,
         )
         return Response(html)
 
