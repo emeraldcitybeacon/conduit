@@ -16,13 +16,15 @@ from django.views.generic import DetailView, ListView, TemplateView
 from rest_framework.exceptions import ValidationError
 from rest_framework.serializers import Serializer
 
-from hsds.components import address_form as AddressFormComponent
-from hsds.components import contact_form as ContactFormComponent
-from hsds.components import location_form as LocationFormComponent
-from hsds.components import organization_form as OrganizationFormComponent
-from hsds.components import phone_form as PhoneFormComponent
-from hsds.components import schedule_form as ScheduleFormComponent
-from hsds.components import service_form as ServiceFormComponent
+from hsds.components import (
+    address_form as AddressFormComponent,
+    contact_form as ContactFormComponent,
+    location_form as LocationFormComponent,
+    phone_form as PhoneFormComponent,
+    schedule_form as ScheduleFormComponent,
+    service_form as ServiceFormComponent,
+)
+from django_components import component_registry
 
 from .api import (
     AddressSerializer,
@@ -175,7 +177,8 @@ def organization_create_view(request: HttpRequest) -> HttpResponse:
                 "form": form,
                 "action": reverse("hsds:organization-create"),
             }
-            return OrganizationFormComponent.render_to_response(
+            component_cls = component_registry.registry.get("organization_form")
+            return component_cls.render_to_response(
                 kwargs=context,
                 request=request,
                 status=400,
@@ -192,7 +195,8 @@ def organization_create_view(request: HttpRequest) -> HttpResponse:
         "form": form,
         "action": reverse("hsds:organization-create"),
     }
-    return OrganizationFormComponent.render_to_response(
+    component_cls = component_registry.registry.get("organization_form")
+    return component_cls.render_to_response(
         kwargs=context,
         request=request,
     )
@@ -218,7 +222,8 @@ def organization_edit_view(request: HttpRequest, pk: str) -> HttpResponse:
                 "form": form,
                 "action": reverse("hsds:organization-edit", args=[organization.pk]),
             }
-            return OrganizationFormComponent.render_to_response(
+            component_cls = component_registry.registry.get("organization_form")
+            return component_cls.render_to_response(
                 kwargs=context,
                 request=request,
                 status=400,
@@ -235,7 +240,8 @@ def organization_edit_view(request: HttpRequest, pk: str) -> HttpResponse:
         "form": form,
         "action": reverse("hsds:organization-edit", args=[organization.pk]),
     }
-    return OrganizationFormComponent.render_to_response(
+    component_cls = component_registry.registry.get("organization_form")
+    return component_cls.render_to_response(
         kwargs=context,
         request=request,
     )

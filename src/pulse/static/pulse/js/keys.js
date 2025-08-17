@@ -32,6 +32,15 @@ document.addEventListener('keydown', function (e) {
     return;
   }
 
+  if ((e.metaKey || e.ctrlKey) && key === 'k') {
+    e.preventDefault();
+    const picker = document.getElementById('worklist-picker');
+    if (picker && typeof picker.showModal === 'function') {
+      picker.showModal();
+    }
+    return;
+  }
+
   if (goPrefix) {
     if (key === 'o' || key === 'l') {
       e.preventDefault();

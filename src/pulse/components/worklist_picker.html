@@ -1,0 +1,15 @@
+<!-- Modal command palette for quick-open -->
+<dialog id="worklist-picker" class="modal">
+  <div class="modal-box">
+    <input
+      type="text"
+      name="q"
+      placeholder="Search resources..."
+      class="input input-bordered w-full"
+      hx-get="/api/worklists/search/"
+      hx-trigger="keyup changed delay:300ms"
+      hx-target="#worklist-picker-results"
+    />
+    <ul id="worklist-picker-results" class="menu bg-base-100 rounded-box mt-4"></ul>
+  </div>
+</dialog>
