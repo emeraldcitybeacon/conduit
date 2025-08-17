@@ -1,0 +1,27 @@
+{% load i18n %}
+<div id="siblings-nav"
+     {% if prev_id %}data-prev="{{ prev_id }}"{% endif %}
+     {% if next_id %}data-next="{{ next_id }}"{% endif %}
+     {% if first_loc %}data-first-loc="{{ first_loc }}"{% endif %}
+     {% if first_org %}data-first-org="{{ first_org }}"{% endif %}>
+  {% if loc_siblings %}
+  <div class="mb-4">
+    <h3 class="text-sm font-semibold mb-1">{% trans "Services at this location" %}</h3>
+    <ul class="menu menu-compact">
+      {% for s in loc_siblings %}
+        <li><a href="{% url 'pulse:resource-detail' s.id %}">{{ s.name }}</a></li>
+      {% endfor %}
+    </ul>
+  </div>
+  {% endif %}
+  {% if org_siblings %}
+  <div>
+    <h3 class="text-sm font-semibold mb-1">{% trans "Services in this organization" %}</h3>
+    <ul class="menu menu-compact">
+      {% for s in org_siblings %}
+        <li><a href="{% url 'pulse:resource-detail' s.id %}">{{ s.name }}</a></li>
+      {% endfor %}
+    </ul>
+  </div>
+  {% endif %}
+</div>

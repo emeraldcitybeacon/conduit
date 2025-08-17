@@ -8,7 +8,7 @@ from django_components import Component, register
 class ShelfMemberRow(Component):
     """Render a shelf member entry with a remove button."""
 
-    template_file = "member_row.html"
+    template_file = "shelf_member.html"
 
     def get_template_data(self, args, kwargs, slots, context):  # pragma: no cover - trivial
         """Provide template variables for a single shelf member row.
@@ -21,7 +21,7 @@ class ShelfMemberRow(Component):
             context: Rendering context (unused).
 
         Returns:
-            dict: Values inserted into ``member_row.html``.
+            dict: Values inserted into ``shelf_member.html``.
         """
 
         return {

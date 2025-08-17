@@ -15,12 +15,56 @@ function flattenErrors(obj, prefix) {
   return res;
 }
 
+let goPrefix = false;
+
 document.addEventListener('keydown', function (e) {
-  if ((e.metaKey || e.ctrlKey) && e.key === 's') {
+  const tag = e.target.tagName.toLowerCase();
+  if (tag === 'input' || tag === 'textarea') return;
+
+  const key = e.key.toLowerCase();
+
+  if ((e.metaKey || e.ctrlKey) && key === 's') {
     e.preventDefault();
     const modal = document.getElementById('diff-modal');
     if (modal && typeof modal.showModal === 'function') {
       modal.showModal();
+    }
+    return;
+  }
+
+  if (goPrefix) {
+    if (key === 'o' || key === 'l') {
+      e.preventDefault();
+      const nav = document.getElementById('siblings-nav');
+      if (nav) {
+        const target = key === 'o' ? nav.dataset.firstOrg : nav.dataset.firstLoc;
+        if (target) {
+          window.location.href = '/pulse/r/' + target + '/';
+        }
+      }
+    }
+    goPrefix = false;
+    return;
+  }
+
+  if (key === 'g') {
+    goPrefix = true;
+    setTimeout(function () { goPrefix = false; }, 1000);
+    return;
+  }
+
+  const nav = document.getElementById('siblings-nav');
+  if (!nav) return;
+
+  if (key === '[' || key === 'k') {
+    const prev = nav.dataset.prev;
+    if (prev) {
+      window.location.href = '/pulse/r/' + prev + '/';
+    }
+  } else if (key === ']' || key === 'j') {
+    const next = nav.dataset.next;
+    if (next) {
+      window.location.href = '/pulse/r/' + next + '/';
     }
   }
 });
