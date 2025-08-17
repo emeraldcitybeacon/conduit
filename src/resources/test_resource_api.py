@@ -103,6 +103,26 @@ def test_patch_review_required_field_rejected(user_client, service):
 
 
 @pytest.mark.django_db
+def test_editor_can_patch_review_required_field(client, service):
+    """Editors may update review-required fields directly."""
+
+    user = User.objects.create_user(username="ed", password="pw", role=User.Role.EDITOR)
+    client.force_login(user)
+    response = client.get(f"/api/resource/{service.id}/")
+    etag = response.headers["ETag"]
+    data = {"service": {"name": "New"}}
+    response = client.patch(
+        f"/api/resource/{service.id}/",
+        data=json.dumps(data),
+        content_type="application/json",
+        HTTP_IF_MATCH=etag,
+    )
+    assert response.status_code == 200
+    service.refresh_from_db()
+    assert service.name == "New"
+
+
+@pytest.mark.django_db
 def test_patch_version_mismatch_returns_conflict(user_client, service):
     user, client = user_client
     FieldVersion.objects.create(

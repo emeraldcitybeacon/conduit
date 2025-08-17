@@ -22,7 +22,7 @@ def test_volunteer_nav(client) -> None:
 
 @pytest.mark.django_db
 def test_manager_nav(client) -> None:
-    """Managers see Management menu but not Admin link."""
+    """Editors see Management menu but not Admin link."""
 
     user = User.objects.create_user(username="mgr", password="pass", role=User.Role.EDITOR)
     client.force_login(user)
@@ -34,9 +34,9 @@ def test_manager_nav(client) -> None:
 
 @pytest.mark.django_db
 def test_admin_nav(client) -> None:
-    """Administrators see both Management menu and Admin link."""
+    """Admins see both Management menu and Admin link."""
 
-    user = User.objects.create_user(username="adm", password="pass", role=User.Role.ADMINISTRATOR)
+    user = User.objects.create_user(username="adm", password="pass", role=User.Role.ADMIN)
     client.force_login(user)
     resp = client.get(reverse("management-dashboard"))
     content = resp.content.decode()

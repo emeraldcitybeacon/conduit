@@ -16,7 +16,7 @@ from users.models import User
 def draft_list(request: HttpRequest) -> HttpResponse:
     """Render a table of drafts awaiting review."""
 
-    if request.user.role not in {User.Role.EDITOR, User.Role.ADMINISTRATOR}:
+    if request.user.role not in {User.Role.EDITOR, User.Role.ADMIN}:
         return HttpResponseForbidden()
     drafts = (
         DraftResource.objects.filter(status=DraftResource.Status.DRAFT)
@@ -30,7 +30,7 @@ def draft_list(request: HttpRequest) -> HttpResponse:
 def change_request_queue(request: HttpRequest) -> HttpResponse:
     """Render pending ChangeRequests for review."""
 
-    if request.user.role not in {User.Role.EDITOR, User.Role.ADMINISTRATOR}:
+    if request.user.role not in {User.Role.EDITOR, User.Role.ADMIN}:
         return HttpResponseForbidden()
     requests = (
         ChangeRequest.objects.filter(status=ChangeRequest.Status.PENDING)
@@ -44,7 +44,7 @@ def change_request_queue(request: HttpRequest) -> HttpResponse:
 def change_request_detail(request: HttpRequest, id: str) -> HttpResponse:
     """Render a single ``ChangeRequest`` with a field-level diff."""
 
-    if request.user.role not in {User.Role.EDITOR, User.Role.ADMINISTRATOR}:
+    if request.user.role not in {User.Role.EDITOR, User.Role.ADMIN}:
         return HttpResponseForbidden()
     cr = get_object_or_404(ChangeRequest, id=id)
     service = get_object_or_404(Service, id=cr.target_entity_id)
