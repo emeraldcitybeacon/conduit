@@ -76,7 +76,9 @@ LOADERS = [
     "django_components.template_loader.Loader",
 ]
 
-if os.getenv("CACHING_ENABLED", "").lower() == "true" and not DEBUG:
+ENABLE_CACHING = os.getenv("ENABLE_CACHING", "False").lower() in ("true", "1", "yes")
+
+if os.getenv("ENABLE_CACHING", "").lower() == "true" and not DEBUG:
     TEMPLATE_LOADERS: list[Any] | list[tuple[str, list[str]]] = [
         ("django.template.loaders.cached.Loader", LOADERS)
     ]

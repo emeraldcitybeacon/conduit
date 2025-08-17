@@ -13,7 +13,7 @@ class User(AbstractUser):
     class Role(models.TextChoices):
         """Enumeration of available user roles."""
 
-        ADMIN = "admin", "Admin"
+        ADMIN = "administrator", "Admin"
         EDITOR = "editor", "Editor"
         VOLUNTEER = "volunteer", "Volunteer"
 

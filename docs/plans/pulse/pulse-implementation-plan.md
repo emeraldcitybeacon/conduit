@@ -2,7 +2,7 @@
 
 ## Phase 0 — Project wiring & scaffolding
 
-* [ ] Step 0.1: Add new apps and settings
+* [x] Step 0.1: Add new apps and settings
 
   * **Task**: Create `hsds_ext`, `resources`, and `pulse` apps; register in settings; wire URLs. Create base templates/layout for Pulse. Ensure `django-components` is enabled and set up a component registry pattern under `src/[app]/components/…`.
   * **Files**:
@@ -34,7 +34,7 @@
 
 ## Phase 1 — Extension schema (no HSDS changes)
 
-* [ ] Step 1.1: Extension models (verification, versions, overlays)
+* [*] Step 1.1: Extension models (verification, versions, overlays)
 
   * **Task**: Implement `VerificationEvent`, `FieldVersion`, `SensitiveOverlay` models + indexes/uniques exactly as spec; admin stubs.
   * **Files**:
@@ -47,7 +47,7 @@
   * **Step Dependencies**: Phase 0
   * **User Instructions**: Run migrations.
 
-* [ ] Step 1.2: Extension models (drafts, change-requests, shelves, bulk ops, taxonomy ext)
+* [*] Step 1.2: Extension models (drafts, change-requests, shelves, bulk ops, taxonomy ext)
 
   * **Task**: Implement `DraftResource`, `ChangeRequest`, `Shelf`, `ShelfMember`, `BulkOperation`, optional `TaxonomyExtension`.
   * **Files**:
@@ -63,7 +63,7 @@
 
 ## Phase 2 — Resource façade & serializers
 
-* [ ] Step 2.1: JSON utilities & field-path versioning
+* [*] Step 2.1: JSON utilities & field-path versioning
 
   * **Task**: Add helpers for canonical HSDS JSON assembly/splitting, JSON Patch (`jsonpatch`), and field-path version operations.
   * **Files**:
@@ -75,7 +75,7 @@
   * **Step Dependencies**: Phase 1
   * **User Instructions**: Install deps in your container if not vendored.
 
-* [ ] Step 2.2: Composite ResourceSerializer & façade views
+* [*] Step 2.2: Composite ResourceSerializer & façade views
 
   * **Task**: Implement `ResourceSerializer` (compose/decompose HSDS + overlays + field freshness). Implement `GET /api/resource/{id}` and `PATCH /api/resource/{id}` with `If-Match` and `assert_versions` contract; map auto-publish vs review-required fields.
   * **Files**:
@@ -91,7 +91,7 @@
 
 ## Phase 3 — Pulse shell & django-components foundation
 
-* [ ] Step 3.1: Component base classes & registration
+* [*] Step 3.1: Component base classes & registration
 
   * **Task**: Set up `django-components` scaffolding, with a pattern to register components at URLs for HTMX (`/pulse/c/<component>`). Include a daisyUI form control wrapper and a diff viewer placeholder.
   * **Files**:
@@ -105,7 +105,7 @@
   * **Step Dependencies**: Phase 2
   * **User Instructions**: None
 
-* [ ] Step 3.2: Unified Resource Pane skeleton (tabs/sections)
+* [*] Step 3.2: Unified Resource Pane skeleton (tabs/sections)
 
   * **Task**: Create the Resource detail page with daisy `navbar`, `tabs`, and stubbed sections. Wire HTMX targets and partial endpoints.
   * **Files**:
@@ -120,7 +120,7 @@
 
 ## Phase 4 — Always-on validation & save/diff flow
 
-* [ ] Step 4.1: Inline edit forms + serializer error mapping
+* [*] Step 4.1: Inline edit forms + serializer error mapping
 
   * **Task**: For Contacts and Hours tabs, implement edit forms that `hx-patch` to façade, show errors via component `validator` hints, and show diff modal before commit.
   * **Files**:
@@ -133,7 +133,7 @@
   * **Step Dependencies**: Phase 3
   * **User Instructions**: Test edits to phones/hours; confirm errors appear inline.
 
-* [ ] Step 4.2: Provenance & verification events
+* [*] Step 4.2: Provenance & verification events
 
   * **Task**: Add verify buttons (`Called`, `Website`, `On-site`) writing `VerificationEvent`; freshness chips next to labels with tooltips/timeline popover.
   * **Files**:
@@ -146,7 +146,7 @@
 
 ## Phase 5 — Create Wizard & Drafts
 
-* [ ] Step 5.1: Wizard UI (Org → Location → Service)
+* [*] Step 5.1: Wizard UI (Org → Location → Service)
 
   * **Task**: daisy `steps` with sibling-prefill banners and validation per step; final diff preview. Saves a `DraftResource`.
   * **Files**:
@@ -160,7 +160,7 @@
     * `src/resources/views/drafts.py`: `POST /api/resource` (create draft), list drafts
   * **Step Dependencies**: Phase 4
 
-* [ ] Step 5.2: Draft approval path
+* [*] Step 5.2: Draft approval path
 
   * **Task**: Implement editor-only approve/reject endpoints that write canonical HSDS via serializers, set draft status, and log versions/provenance.
   * **Files**:
@@ -173,7 +173,7 @@
 
 ## Phase 6 — Shelf & Bulk Apply
 
-* [ ] Step 6.1: Shelf model UI + add/remove from shelf
+* [*] Step 6.1: Shelf model UI + add/remove from shelf
 
   * **Task**: Right-hand `drawer` with list of resources, add/remove controls, plus server endpoints.
   * **Files**:
@@ -184,7 +184,7 @@
     * `src/pulse/components/shelf/member_row.py` + `member_row.html`
   * **Step Dependencies**: Phase 5
 
-* [ ] Step 6.2: Stage/preview/commit/undo bulk operations
+* [*] Step 6.2: Stage/preview/commit/undo bulk operations
 
   * **Task**: Modal to build a patch for phones/hours/etc. Preview table with per-target result and diff; commit + time-limited undo with inverse patches.
   * **Files**:
@@ -198,7 +198,7 @@
 
 ## Phase 7 — Dedupe & Merge
 
-* [ ] Step 7.1: Live duplicate hints
+* [*] Step 7.1: Live duplicate hints
 
   * **Task**: On name/phone/address edits, show toast with candidate duplicates from search endpoint.
   * **Files**:
@@ -207,7 +207,7 @@
     * `src/pulse/components/ui/toast_card.py` + `toast_card.html`
   * **Step Dependencies**: Phase 6
 
-* [ ] Step 7.2: Split-view merge flow
+* [*] Step 7.2: Split-view merge flow
 
   * **Task**: Two-column comparison, checkbox-per-field; server computes final patch and applies to survivor.
   * **Files**:
@@ -219,7 +219,7 @@
 
 ## Phase 8 — Sensitive Mode (review-required)
 
-* [ ] Step 8.1: Sensitive overlay endpoints + UI
+* [*] Step 8.1: Sensitive overlay endpoints + UI
 
   * **Task**: Toggle requires review; on approval, apply `SensitiveOverlay`. Read-time redaction in façade.
   * **Files**:
@@ -231,7 +231,7 @@
 
 ## Phase 9 — Navigation, Worklists, Quick-open
 
-* [ ] Step 9.1: Sibling switchers + hotkeys
+* [*] Step 9.1: Sibling switchers + hotkeys
 
   * **Task**: Add sibling lists (“services at this location/org”) and keyboard shortcuts (`g o`, `g l`, `[`/`]`, `J/K`).
   * **Files**:
@@ -241,7 +241,7 @@
     * `src/resources/views/siblings.py`: helper endpoints if needed
   * **Step Dependencies**: Phase 8
 
-* [ ] Step 9.2: Worklists & ⌘K quick-open
+* [*] Step 9.2: Worklists & ⌘K quick-open
 
   * **Task**: Ad-hoc, shareable saved searches; ⌘K fuzzy search (pg\_trgm) across name/phone/street/tag.
   * **Files**:
@@ -253,7 +253,7 @@
 
 ## Phase 10 — Moderation & Review Queue (review-required fields)
 
-* [ ] Step 10.1: ChangeRequest submission & queue list
+* [*] Step 10.1: ChangeRequest submission & queue list
 
   * **Task**: From Resource pane, review-required edits become `ChangeRequest` (stores patch + note). Build reviewer list UI.
   * **Files**:
@@ -263,7 +263,7 @@
     * `src/pulse/components/review/request_row.py` + `request_row.html`
   * **Step Dependencies**: Phase 9
 
-* [ ] Step 10.2: Approve/reject with human-readable diffs
+* [*] Step 10.2: Approve/reject with human-readable diffs
 
   * **Task**: Diff panel, apply patch to HSDS upon approval, log versions/provenance.
   * **Files**:
@@ -275,7 +275,7 @@
 
 ## Phase 11 — Concurrency & optimistic locking polish
 
-* [ ] Step 11.1: Merge chips & ETag drift handling
+* [*] Step 11.1: Merge chips & ETag drift handling
 
   * **Task**: On `412 Precondition Failed` or version mismatch, surface “merge chips” inline; allow re-apply from current value.
   * **Files**:
@@ -287,7 +287,7 @@
 
 ## Phase 12 — Data Health tiles (lite)
 
-* [ ] Step 12.1: Tiles & filters
+* [*] Step 12.1: Tiles & filters
 
   * **Task**: In-app dashboard showing “No phone,” “No hours,” “Not geocoded,” “Stale fields,” with links to worklists.
   * **Files**:
@@ -299,7 +299,7 @@
 
 ## Phase 13 — Keyboard overlay & checklist
 
-* [ ] Step 13.1: Keyboard overlay
+* [z] Step 13.1: Keyboard overlay
 
   * **Task**: `?` opens `modal` with key bindings rendered from a small JSON registry (scope-aware).
   * **Files**:

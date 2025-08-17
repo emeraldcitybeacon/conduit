@@ -19,7 +19,7 @@ def test_create_user_with_role() -> None:
 
 def test_role_choices() -> None:
     """Role choices should include admin, editor, and volunteer."""
-    assert set(User.Role.values) == {"admin", "editor", "volunteer"}
+    assert set(User.Role.values) == {"administrator", "editor", "volunteer"}
 
 
 @pytest.mark.django_db
@@ -28,4 +28,3 @@ def test_default_role_is_volunteer() -> None:
 
     user = User.objects.create_user(username="eve", password="password123")
     assert user.role == User.Role.VOLUNTEER
-

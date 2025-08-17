@@ -2,11 +2,12 @@
 from __future__ import annotations
 
 import pytest
+from axe_playwright_python.sync_playwright import Axe
 from django.urls import reverse
+from playwright.sync_api import sync_playwright
+
 from hsds.models import Organization, Service
 from users.models import User
-from playwright.sync_api import sync_playwright
-from axe_playwright_python.sync_playwright import Axe
 
 
 @pytest.mark.django_db
@@ -30,6 +31,5 @@ def test_resource_detail_has_no_axe_violations(live_server, client) -> None:
         page.goto(live_server.url + reverse("pulse:resource-detail", args=[service.id]))
         axe = Axe()
         results = axe.run(page)
-        assert results.violations_count >= 0
+        assert results.violations_count == 0
         browser.close()
-
