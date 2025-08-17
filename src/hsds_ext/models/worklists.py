@@ -17,7 +17,7 @@ class Worklist(models.Model):
         related_name="worklists",
     )
     name = models.TextField()
-    query = models.TextField(help_text="Raw search string for this worklist")
+    query = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
     is_shared = models.BooleanField(default=False)
 

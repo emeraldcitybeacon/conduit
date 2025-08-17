@@ -37,6 +37,10 @@ from resources.views.worklists import (
     WorklistNavigateView,
     WorklistSearchView,
 )
+from resources.views.change_requests import (
+    ChangeRequestQueueView,
+    ChangeRequestSubmitView,
+)
 
 app_name = "resources"
 
@@ -57,6 +61,11 @@ urlpatterns = [
         "resource/<uuid:id>/siblings/",
         SiblingServiceView.as_view(),
         name="resource-siblings",
+    ),
+    path(
+        "resource/<uuid:id>/change-request/",
+        ChangeRequestSubmitView.as_view(),
+        name="change-request-submit",
     ),
     path("resource/", DraftCreateView.as_view(), name="resource-create"),
     path("drafts/", DraftListView.as_view(), name="draft-list"),
@@ -103,4 +112,5 @@ urlpatterns = [
         name="worklist-navigate",
     ),
     path("worklists/search/", WorklistSearchView.as_view(), name="worklist-search"),
+    path("review-queue/", ChangeRequestQueueView.as_view(), name="change-request-list"),
 ]

@@ -29,6 +29,7 @@ class ChangeRequest(models.Model):
     target_entity_type = models.CharField(max_length=32, choices=EntityType.choices)
     target_entity_id = models.UUIDField()
     patch = models.JSONField(help_text="RFC6902 patch against canonical HSDS JSON.")
+    note = models.TextField(blank=True, null=True)
     status = models.CharField(
         max_length=16, choices=Status.choices, default=Status.PENDING
     )
