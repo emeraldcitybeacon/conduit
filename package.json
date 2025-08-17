@@ -19,9 +19,11 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "watch": "npx @tailwindcss/cli --input assets/tailwind/input.css --config assets/tailwind/tailwind.config.js --output dist/site.css --watch"
+    "watch": "npx @tailwindcss/cli --input assets/tailwind/input.css --config assets/tailwind/tailwind.config.js --output dist/site.css --watch",
+    "test:e2e": "playwright test -c e2e/pulse/playwright.config.ts"
   },
   "devDependencies": {
+    "@playwright/test": "^1.45.0",
     "@tailwindcss/cli": "^4.1.12",
     "@tailwindcss/forms": "^0.5.10",
     "daisyui": "^5.0.50",
