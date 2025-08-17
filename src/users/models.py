@@ -11,7 +11,9 @@ class User(AbstractUser):
     """Custom user model that uses UUID primary key and includes a role field."""
 
     class Role(models.TextChoices):
-        ADMINISTRATOR = "administrator", "Administrator"
+        """Enumeration of available user roles."""
+
+        ADMIN = "admin", "Admin"
         EDITOR = "editor", "Editor"
         VOLUNTEER = "volunteer", "Volunteer"
 

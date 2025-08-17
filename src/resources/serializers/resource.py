@@ -7,8 +7,10 @@ from rest_framework import serializers
 
 from hsds.models import Location, Organization, Service
 from hsds_ext.models import FieldVersion, SensitiveOverlay
+from resources.permissions import AUTO_PUBLISH_FIELDS
 from resources.utils.etags import build_etag_map
 from resources.utils.json_paths import delete_value
+from users.models import User
 
 
 class OrganizationSerializer(serializers.ModelSerializer):
@@ -43,9 +45,6 @@ class ResourceSerializer(serializers.Serializer):
     location = LocationSerializer(required=False, allow_null=True)
     etags = serializers.DictField(read_only=True)
 
-    AUTO_PUBLISH_FIELDS = {"url", "email"}
-    REVIEW_REQUIRED_FIELDS = {"name", "description"}
-
     def to_representation(self, instance: dict[str, Any]) -> dict[str, Any]:
         """Return composed representation with ETag map and redactions."""
 
@@ -79,15 +78,21 @@ class ResourceSerializer(serializers.Serializer):
         service: Service = instance["service"]
         service_data = validated_data.get("service", {})
 
-        forbidden = self.REVIEW_REQUIRED_FIELDS.intersection(service_data.keys())
-        if forbidden:
-            raise serializers.ValidationError(
-                {field: "review-required" for field in forbidden}
-            )
+        user: User = self.context.get("user")
+        paths = {f"service.{key}" for key in service_data.keys()}
+        if user.role == User.Role.VOLUNTEER:
+            forbidden = paths - AUTO_PUBLISH_FIELDS
+            if forbidden:
+                raise serializers.ValidationError(
+                    {
+                        path.split(".", 1)[1]: "review-required"
+                        for path in sorted(forbidden)
+                    }
+                )
 
         changed_fields: list[str] = []
-        for field in self.AUTO_PUBLISH_FIELDS & service_data.keys():
-            setattr(service, field, service_data[field])
+        for field, value in service_data.items():
+            setattr(service, field, value)
             changed_fields.append(field)
         if changed_fields:
             service.save(update_fields=changed_fields)
