@@ -1,4 +1,6 @@
-{# Placeholder for the overview section content. #}
-<div class="p-4">
+{# Overview section containing verification checklist. #}
+{% load i18n component_tags %}
+<div class="p-4 space-y-4">
+  {% component 'verify_checklist' resource_id=resource.service.id %}{% endcomponent %}
   <p class="text-base-content/70">{% trans "Overview section coming soon" %}</p>
 </div>
