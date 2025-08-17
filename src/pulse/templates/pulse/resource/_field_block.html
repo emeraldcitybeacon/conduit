@@ -1,0 +1,7 @@
+{% load component_tags %}
+<div class="flex items-center gap-2">
+  {% component 'form_field' name=name label=label value=value field_type=field_type %}{% endcomponent %}
+  <span class="merge-chip-container" data-field="{{ name }}"></span>
+  {% block extras %}{% endblock %}
+</div>
+{% component 'validator' field=name %}{% endcomponent %}

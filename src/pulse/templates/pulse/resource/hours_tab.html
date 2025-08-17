@@ -8,9 +8,10 @@
   class="space-y-4"
 >
   {% csrf_token %}
-  <div class="flex items-center gap-2">
-    {% component 'form_field' name='service.hours' field_type='textarea' label=_('Hours') value=resource.service.hours %}{% endcomponent %}
-    {% with events=resource.verifications.service.hours %}
+    <div class="flex items-center gap-2">
+      {% component 'form_field' name='service.hours' field_type='textarea' label=_('Hours') value=resource.service.hours %}{% endcomponent %}
+      <span class="merge-chip-container" data-field="service.hours"></span>
+      {% with events=resource.verifications.service.hours %}
       {% if events %}
         {% component 'freshness_badge' status=events.0.verified_at|timesince %}{% endcomponent %}
         {% component 'freshness_popover' events=events %}{% endcomponent %}

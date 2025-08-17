@@ -8,9 +8,10 @@
   class="space-y-4"
 >
   {% csrf_token %}
-  <div class="flex items-center gap-2">
-    {% component 'form_field' name='service.url' label=_('Website') value=resource.service.url %}{% endcomponent %}
-    {% with events=resource.verifications.service.url %}
+    <div class="flex items-center gap-2">
+      {% component 'form_field' name='service.url' label=_('Website') value=resource.service.url %}{% endcomponent %}
+      <span class="merge-chip-container" data-field="service.url"></span>
+      {% with events=resource.verifications.service.url %}
       {% if events %}
         {% component 'freshness_badge' status=events.0.verified_at|timesince %}{% endcomponent %}
         {% component 'freshness_popover' events=events %}{% endcomponent %}
@@ -26,9 +27,10 @@
   </div>
   {% component 'validator' field='service.url' %}{% endcomponent %}
 
-  <div class="flex items-center gap-2">
-    {% component 'form_field' name='service.email' label=_('Email') value=resource.service.email %}{% endcomponent %}
-    {% with events=resource.verifications.service.email %}
+    <div class="flex items-center gap-2">
+      {% component 'form_field' name='service.email' label=_('Email') value=resource.service.email %}{% endcomponent %}
+      <span class="merge-chip-container" data-field="service.email"></span>
+      {% with events=resource.verifications.service.email %}
       {% if events %}
         {% component 'freshness_badge' status=events.0.verified_at|timesince %}{% endcomponent %}
         {% component 'freshness_popover' events=events %}{% endcomponent %}
