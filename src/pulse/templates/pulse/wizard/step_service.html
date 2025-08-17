@@ -20,10 +20,7 @@
   {% else %}
     <form method="post" class="space-y-4">
       {% csrf_token %}
-      <label class="form-control w-full">
-        <div class="label"><span class="label-text">{% trans "Service Name" %}</span></div>
-        <input type="text" name="name" class="input input-bordered" required />
-      </label>
+      {% component 'form_field' name='name' label=_('Service Name') required=True %}{% endcomponent %}
       <button type="submit" class="btn btn-primary">{% trans "Preview" %}</button>
     </form>
   {% endif %}
