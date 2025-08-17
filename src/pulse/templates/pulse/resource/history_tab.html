@@ -1,2 +1,5 @@
 {% load i18n %}
-{% include "pulse/resource/history_panel.html" with events=events %}
+<div role="region" aria-labelledby="history-heading">
+  <h2 id="history-heading" class="sr-only">{% trans "History" %}</h2>
+  {% include "pulse/resource/history_panel.html" with events=events %}
+</div>

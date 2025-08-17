@@ -1,7 +1,7 @@
 {% load i18n static %}
 <div class="p-4">
   {% if events %}
-    <ul class="timeline timeline-vertical timeline-compact">
+    <ul class="timeline timeline-vertical timeline-compact" role="list">
       {% for ev in events %}
         <li>
           <div class="timeline-start text-xs">{{ ev.verified_at|date:"Y-m-d H:i" }}</div>

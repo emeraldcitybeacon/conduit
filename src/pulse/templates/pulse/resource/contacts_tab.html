@@ -6,8 +6,11 @@
   hx-target="this"
   hx-swap="none"
   class="space-y-4"
+  role="region"
+  aria-labelledby="contacts-heading"
 >
   {% csrf_token %}
+  <h2 id="contacts-heading" class="sr-only">{% trans "Contacts" %}</h2>
     <div class="flex items-center gap-2">
       {% component 'form_field' name='service.url' label=_('Website') value=resource.service.url %}{% endcomponent %}
       <span class="merge-chip-container" data-field="service.url"></span>
