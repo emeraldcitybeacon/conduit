@@ -19,6 +19,7 @@ urlpatterns = [
     path("new/location/", wizard_views.LocationStepView.as_view(), name="wizard-location"),
     path("new/service/", wizard_views.ServiceStepView.as_view(), name="wizard-service"),
     path("review/drafts/", review_views.draft_list, name="draft-review-list"),
+    path("review/queue/", review_views.change_request_queue, name="change-request-queue"),
     path(
         "worklists/",
         worklist_views.WorklistIndexView.as_view(),

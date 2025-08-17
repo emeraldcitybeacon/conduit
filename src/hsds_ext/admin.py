@@ -77,7 +77,7 @@ class ChangeRequestAdmin(admin.ModelAdmin):
         "submitted_at",
     )
     list_filter = ("status", "target_entity_type")
-    search_fields = ("target_entity_id",)
+    search_fields = ("target_entity_id", "note")
 
 
 @admin.register(Shelf)
