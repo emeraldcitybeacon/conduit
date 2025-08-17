@@ -4,7 +4,7 @@ services:
       context: .
       dockerfile: Dockerfile.dev
     # Use Django dev server for development
-    command: python manage.py runserver 0.0.0.0:8000
+    command: python manage.py runserver_plus 0.0.0.0:8000
     volumes:
       - ./:/app # Mounts your local project root to /app inside the container
     env_file:
@@ -22,7 +22,7 @@ services:
       - SECRET_KEY=${SECRET_KEY}
       - DEBUG=${DEBUG:-True}
       - DJANGO_LOG_LEVEL=${DJANGO_LOG_LEVEL:-INFO}
-      - DJANGO_SETTINGS_MODULE=${DJANGO_SETTINGS_MODULE:-lllreptile.settings.dev}
+      - DJANGO_SETTINGS_MODULE=${DJANGO_SETTINGS_MODULE:-conduit.settings.dev}
       - DJANGO_SUPERUSER_EMAIL=${DJANGO_SUPERUSER_EMAIL}
       - DJANGO_SUPERUSER_PASSWORD=${DJANGO_SUPERUSER_PASSWORD}
       - REDIS_HOST=${REDIS_HOST:-redis}
