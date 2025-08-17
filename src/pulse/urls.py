@@ -21,6 +21,11 @@ urlpatterns = [
     path("review/drafts/", review_views.draft_list, name="draft-review-list"),
     path("review/queue/", review_views.change_request_queue, name="change-request-queue"),
     path(
+        "review/queue/<uuid:id>/",
+        review_views.change_request_detail,
+        name="change-request-detail",
+    ),
+    path(
         "worklists/",
         worklist_views.WorklistIndexView.as_view(),
         name="worklists-index",

@@ -41,6 +41,10 @@ from resources.views.change_requests import (
     ChangeRequestQueueView,
     ChangeRequestSubmitView,
 )
+from resources.views.change_requests_review import (
+    ChangeRequestApproveView,
+    ChangeRequestRejectView,
+)
 
 app_name = "resources"
 
@@ -113,4 +117,14 @@ urlpatterns = [
     ),
     path("worklists/search/", WorklistSearchView.as_view(), name="worklist-search"),
     path("review-queue/", ChangeRequestQueueView.as_view(), name="change-request-list"),
+    path(
+        "review-queue/<uuid:id>/approve/",
+        ChangeRequestApproveView.as_view(),
+        name="change-request-approve",
+    ),
+    path(
+        "review-queue/<uuid:id>/reject/",
+        ChangeRequestRejectView.as_view(),
+        name="change-request-reject",
+    ),
 ]

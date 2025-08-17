@@ -1,5 +1,9 @@
 <tr>
-  <td>{{ change_request.target_entity_id }}</td>
+  <td>
+    <a class="link" href="{% url 'pulse:change-request-detail' change_request.id %}">
+      {{ change_request.target_entity_id }}
+    </a>
+  </td>
   <td>{{ change_request.submitted_by.username }}</td>
   <td>{{ change_request.note|default:"" }}</td>
   <td>{{ change_request.submitted_at }}</td>
