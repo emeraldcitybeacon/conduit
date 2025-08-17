@@ -10,7 +10,9 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 
+import os
 from pathlib import Path
+from typing import Any
 
 from django.utils.translation import gettext_lazy as _
 
@@ -67,6 +69,39 @@ MIDDLEWARE = [
 ROOT_URLCONF = "conduit.urls"
 
 WSGI_APPLICATION = "conduit.wsgi.application"
+
+LOADERS = [
+    "django.template.loaders.filesystem.Loader",
+    "django.template.loaders.app_directories.Loader",
+    "django_components.template_loader.Loader",
+]
+
+if os.getenv("CACHING_ENABLED", "").lower() == "true" and not DEBUG:
+    TEMPLATE_LOADERS: list[Any] | list[tuple[str, list[str]]] = [
+        ("django.template.loaders.cached.Loader", LOADERS)
+    ]
+else:
+    TEMPLATE_LOADERS = LOADERS
+
+TEMPLATES: list[dict[str, Any]] = [
+    {
+        "BACKEND": "django.template.backends.django.DjangoTemplates",
+        "DIRS": [
+            BASE_DIR / "templates",
+            BASE_DIR.parent.parent / "templates",
+        ],
+        "OPTIONS": {
+            "context_processors": [
+                "django.template.context_processors.request",
+                "django.template.context_processors.i18n",
+                "django.contrib.auth.context_processors.auth",
+                "django.contrib.messages.context_processors.messages",
+            ],
+            'loaders': TEMPLATE_LOADERS,
+            'builtins': ['django_components.templatetags.component_tags'],
+        },
+    },
+]
 
 
 # Database
