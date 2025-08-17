@@ -11,11 +11,11 @@ from hsds.models import Location, Organization, Service, ServiceAtLocation
 
 @pytest.mark.django_db
 def test_home_view(client) -> None:
-    """The Pulse dashboard loads successfully."""
+    """The data health dashboard loads successfully."""
 
     resp = client.get(reverse("pulse:home"))
     assert resp.status_code == 200
-    assert b"Pulse Dashboard" in resp.content
+    assert b"Data Health" in resp.content
 
 
 @pytest.mark.django_db

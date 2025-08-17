@@ -45,6 +45,7 @@ from resources.views.change_requests_review import (
     ChangeRequestApproveView,
     ChangeRequestRejectView,
 )
+from resources.views.health import HealthStatsView
 
 app_name = "resources"
 
@@ -127,4 +128,5 @@ urlpatterns = [
         ChangeRequestRejectView.as_view(),
         name="change-request-reject",
     ),
+    path("health/", HealthStatsView.as_view(), name="health-stats"),
 ]
