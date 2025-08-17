@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% load static i18n %}
+{% get_current_language as LANGUAGE_CODE %}
+{% block content %}
+  {% block pulse_content %}
+  {% endblock %}
+  {% component 'shelf_drawer' %}{% endcomponent %}
+  {% component 'worklist_picker' %}{% endcomponent %}
+  {% block key_overlay %}{% component 'key_overlay' scope='global' %}{% endcomponent %}{% endblock %}
+  <script>
+    document.body.addEventListener("htmx:configRequest", (event) => {
+      const token = document.querySelector('meta[name="csrf-token"]').content;
+      event.detail.headers["X-CSRFToken"] = token;
+    });
+  </script>
+  <script src="{% static 'pulse/js/keys.js' %}"></script>
+  <script src="{% static 'pulse/js/tabs.js' %}"></script>
+{% endblock %}

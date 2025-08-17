@@ -1,11 +1,13 @@
 """URL routes for Pulse pages."""
 from django.urls import path
+from django.views.generic import TemplateView
+
 from .views import components as component_views
 from .views import health as health_views
 from .views import resource as resource_views
 from .views import review as review_views
-from .views import worklists as worklist_views
 from .views import wizard as wizard_views
+from .views import worklists as worklist_views
 
 app_name = "pulse"
 
@@ -29,6 +31,6 @@ urlpatterns = [
         worklist_views.WorklistIndexView.as_view(),
         name="worklists-index",
     ),
-    path("", health_views.HealthIndexView.as_view(), name="home"),
+    path("", TemplateView.as_view(template_name="pulse/dashboard.html"), name="dashboard"),
     path("health/", health_views.HealthIndexView.as_view(), name="health-index"),
 ]

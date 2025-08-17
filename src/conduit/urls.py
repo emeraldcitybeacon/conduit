@@ -32,10 +32,9 @@ urlpatterns = [
     path("accounts/", include("users.urls")),
     path("accounts/", include("django.contrib.auth.urls")),
     path("pulse/", include("pulse.urls")),
-    path("management/", TemplateView.as_view(template_name="management/dashboard.html"), name="management-dashboard"),
+    path("hsds/", include("hsds.urls")),
     path("api/v1/", include(api_router.urls)),
     path("api/", include("resources.urls")),
     path("", login_required(TemplateView.as_view(template_name="home.html")), name="home"),
-    path("", include("hsds.urls")),
     path("", include("django_components.urls")),
 ]

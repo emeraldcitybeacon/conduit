@@ -13,7 +13,7 @@ def test_volunteer_nav(client) -> None:
 
     user = User.objects.create_user(username="vol", password="pass", role=User.Role.VOLUNTEER)
     client.force_login(user)
-    resp = client.get(reverse("management-dashboard"))
+    resp = client.get(reverse("hsds:dashboard"))
     content = resp.content.decode()
     assert "Pulse" in content
     assert "dropdown-end" not in content
@@ -26,7 +26,7 @@ def test_manager_nav(client) -> None:
 
     user = User.objects.create_user(username="mgr", password="pass", role=User.Role.EDITOR)
     client.force_login(user)
-    resp = client.get(reverse("management-dashboard"))
+    resp = client.get(reverse("hsds:dashboard"))
     content = resp.content.decode()
     assert "Pulse" in content
     assert "Admin" not in content
@@ -38,8 +38,7 @@ def test_admin_nav(client) -> None:
 
     user = User.objects.create_user(username="adm", password="pass", role=User.Role.ADMIN)
     client.force_login(user)
-    resp = client.get(reverse("management-dashboard"))
+    resp = client.get(reverse("hsds:dashboard"))
     content = resp.content.decode()
     assert "Pulse" in content
     assert "Admin" in content
-
