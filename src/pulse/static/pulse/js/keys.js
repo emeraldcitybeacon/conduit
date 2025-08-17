@@ -134,7 +134,7 @@ document.body.addEventListener('click', function (evt) {
   if (!chip) return;
   const field = chip.dataset.field;
   const value = chip.dataset.value;
-  const input = document.querySelector('[name="' + field + '"]');
+  const input = document.querySelector('[name="' + CSS.escape(field) + '"]');
   if (input) {
     input.value = value;
     input.dispatchEvent(new Event('input', { bubbles: true }));
