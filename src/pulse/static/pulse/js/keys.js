@@ -104,15 +104,40 @@ document.body.addEventListener('htmx:responseError', function (evt) {
   } catch (err) {
     return;
   }
+  // Update validation errors
   const flat = flattenErrors(data);
   for (const path in flat) {
     const el = document.querySelector('.validator[data-field="' + path + '"]');
     if (el) {
-      el.textContent = ''; // Clear previous content
+      el.textContent = '';
       const span = document.createElement('span');
       span.className = 'label-text-alt text-error';
       span.textContent = flat[path];
       el.appendChild(span);
     }
   }
+  // Insert merge chips for current server values on version mismatches
+  if (data.current) {
+    for (const path in data.current) {
+      const container = document.querySelector('.merge-chip-container[data-field="' + path + '"]');
+      if (container) {
+        const url = '/pulse/c/merge_chip/?path=' + encodeURIComponent(path) + '&current=' + encodeURIComponent(data.current[path]);
+        htmx.ajax('GET', url, {target: container, swap: 'innerHTML'});
+      }
+    }
+  }
+});
+
+// Delegate click handling for merge chips to apply server values
+document.body.addEventListener('click', function (evt) {
+  const chip = evt.target.closest('.merge-chip');
+  if (!chip) return;
+  const field = chip.dataset.field;
+  const value = chip.dataset.value;
+  const input = document.querySelector('[name="' + field + '"]');
+  if (input) {
+    input.value = value;
+    input.dispatchEvent(new Event('input', { bubbles: true }));
+  }
+  chip.remove();
 });

@@ -17,7 +17,7 @@ from hsds_ext.models import FieldVersion, SensitiveOverlay
 from resources.permissions import IsVolunteer
 from resources.serializers.resource import ResourceSerializer
 from resources.utils.etags import assert_versions, resource_etag
-from resources.utils.json_paths import set_value
+from resources.utils.json_paths import get_value, iter_paths, set_value
 
 
 class OctetStreamParser(BaseParser):
@@ -93,12 +93,50 @@ class ResourceView(APIView):
         versions = self._version_map(service)
         current_etag = resource_etag(versions)
         if request.headers.get("If-Match") != current_etag:
-            return Response({"detail": "Precondition Failed"}, status=status.HTTP_412_PRECONDITION_FAILED)
+            overlay = self._overlay(service)
+            data = ResourceSerializer(
+                {
+                    "service": service,
+                    "organization": service.organization,
+                    "location": next(iter(service.locations.all()), None),
+                },
+                context={"versions": versions, "sensitive_overlay": overlay},
+            ).data
+            fields = []
+            if isinstance(request.data, QueryDict):
+                for key in request.data.keys():
+                    if key in {"assert_versions", "csrfmiddlewaretoken"}:
+                        continue
+                    fields.append(key)
+            else:
+                for path in iter_paths(request.data):
+                    if not path.startswith("assert_versions"):
+                        fields.append(path)
+            current = {path: get_value(data, path) for path in fields}
+            return Response(
+                {"detail": "Precondition Failed", "etags": data["etags"], "current": current},
+                status=status.HTTP_412_PRECONDITION_FAILED,
+            )
 
         mismatches = assert_versions(versions, request.data.get("assert_versions", {}))
         if mismatches:
+            overlay = self._overlay(service)
+            data = ResourceSerializer(
+                {
+                    "service": service,
+                    "organization": service.organization,
+                    "location": next(iter(service.locations.all()), None),
+                },
+                context={"versions": versions, "sensitive_overlay": overlay},
+            ).data
+            current = {path: get_value(data, path) for path in mismatches}
             return Response(
-                {"detail": "Version mismatch", "mismatches": mismatches},
+                {
+                    "detail": "Version mismatch",
+                    "mismatches": mismatches,
+                    "etags": data["etags"],
+                    "current": current,
+                },
                 status=status.HTTP_409_CONFLICT,
             )
 
