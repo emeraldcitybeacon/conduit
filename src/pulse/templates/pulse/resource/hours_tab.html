@@ -6,8 +6,11 @@
   hx-target="this"
   hx-swap="none"
   class="space-y-4"
+  role="region"
+  aria-labelledby="hours-heading"
 >
   {% csrf_token %}
+  <h2 id="hours-heading" class="sr-only">{% trans "Hours" %}</h2>
     <div class="flex items-center gap-2">
       {% component 'form_field' name='service.hours' field_type='textarea' label=_('Hours') value=resource.service.hours %}{% endcomponent %}
       <span class="merge-chip-container" data-field="service.hours"></span>

@@ -25,17 +25,104 @@ Resource detail page skeleton with tabs and HTMX targets.
 
   {% component 'sensitive_banner' is_sensitive=resource.sensitive %}{% endcomponent %}
 
-  <div class="tabs tabs-boxed">
-    <a class="tab" hx-get="{% url 'pulse:resource-section' resource.service.id 'overview' %}" hx-target="#resource-section" hx-swap="innerHTML" hx-trigger="click" hx-push-url="false">{% trans "Overview" %}</a>
-    <a class="tab" hx-get="{% url 'pulse:resource-section' resource.service.id 'contacts' %}" hx-target="#resource-section" hx-swap="innerHTML" hx-push-url="false">{% trans "Contacts" %}</a>
-    <a class="tab" hx-get="{% url 'pulse:resource-section' resource.service.id 'hours' %}" hx-target="#resource-section" hx-swap="innerHTML" hx-push-url="false">{% trans "Hours" %}</a>
-    <a class="tab" hx-get="{% url 'pulse:resource-section' resource.service.id 'access' %}" hx-target="#resource-section" hx-swap="innerHTML" hx-push-url="false">{% trans "Access" %}</a>
-    <a class="tab" hx-get="{% url 'pulse:resource-section' resource.service.id 'eligibility' %}" hx-target="#resource-section" hx-swap="innerHTML" hx-push-url="false">{% trans "Eligibility" %}</a>
-    <a class="tab" hx-get="{% url 'pulse:resource-section' resource.service.id 'notes' %}" hx-target="#resource-section" hx-swap="innerHTML" hx-push-url="false">{% trans "Notes" %}</a>
-    <a class="tab" hx-get="{% url 'pulse:resource-section' resource.service.id 'history' %}" hx-target="#resource-section" hx-swap="innerHTML" hx-push-url="false">{% trans "History" %}</a>
+  <div class="tabs tabs-boxed" role="tablist">
+    <button
+      id="tab-overview"
+      class="tab"
+      role="tab"
+      aria-selected="true"
+      aria-controls="resource-section"
+      hx-get="{% url 'pulse:resource-section' resource.service.id 'overview' %}"
+      hx-target="#resource-section"
+      hx-swap="innerHTML"
+      hx-trigger="click"
+      hx-push-url="false"
+      hx-on:click="document.querySelectorAll('[role=tab]').forEach(el=>el.setAttribute('aria-selected','false'));this.setAttribute('aria-selected','true');document.getElementById('resource-section').setAttribute('aria-labelledby', this.id);"
+    >{% trans "Overview" %}</button>
+    <button
+      id="tab-contacts"
+      class="tab"
+      role="tab"
+      aria-selected="false"
+      aria-controls="resource-section"
+      hx-get="{% url 'pulse:resource-section' resource.service.id 'contacts' %}"
+      hx-target="#resource-section"
+      hx-swap="innerHTML"
+      hx-push-url="false"
+      hx-on:click="document.querySelectorAll('[role=tab]').forEach(el=>el.setAttribute('aria-selected','false'));this.setAttribute('aria-selected','true');document.getElementById('resource-section').setAttribute('aria-labelledby', this.id);"
+    >{% trans "Contacts" %}</button>
+    <button
+      id="tab-hours"
+      class="tab"
+      role="tab"
+      aria-selected="false"
+      aria-controls="resource-section"
+      hx-get="{% url 'pulse:resource-section' resource.service.id 'hours' %}"
+      hx-target="#resource-section"
+      hx-swap="innerHTML"
+      hx-push-url="false"
+      hx-on:click="document.querySelectorAll('[role=tab]').forEach(el=>el.setAttribute('aria-selected','false'));this.setAttribute('aria-selected','true');document.getElementById('resource-section').setAttribute('aria-labelledby', this.id);"
+    >{% trans "Hours" %}</button>
+    <button
+      id="tab-access"
+      class="tab"
+      role="tab"
+      aria-selected="false"
+      aria-controls="resource-section"
+      hx-get="{% url 'pulse:resource-section' resource.service.id 'access' %}"
+      hx-target="#resource-section"
+      hx-swap="innerHTML"
+      hx-push-url="false"
+      hx-on:click="document.querySelectorAll('[role=tab]').forEach(el=>el.setAttribute('aria-selected','false'));this.setAttribute('aria-selected','true');document.getElementById('resource-section').setAttribute('aria-labelledby', this.id);"
+    >{% trans "Access" %}</button>
+    <button
+      id="tab-eligibility"
+      class="tab"
+      role="tab"
+      aria-selected="false"
+      aria-controls="resource-section"
+      hx-get="{% url 'pulse:resource-section' resource.service.id 'eligibility' %}"
+      hx-target="#resource-section"
+      hx-swap="innerHTML"
+      hx-push-url="false"
+      hx-on:click="document.querySelectorAll('[role=tab]').forEach(el=>el.setAttribute('aria-selected','false'));this.setAttribute('aria-selected','true');document.getElementById('resource-section').setAttribute('aria-labelledby', this.id);"
+    >{% trans "Eligibility" %}</button>
+    <button
+      id="tab-notes"
+      class="tab"
+      role="tab"
+      aria-selected="false"
+      aria-controls="resource-section"
+      hx-get="{% url 'pulse:resource-section' resource.service.id 'notes' %}"
+      hx-target="#resource-section"
+      hx-swap="innerHTML"
+      hx-push-url="false"
+      hx-on:click="document.querySelectorAll('[role=tab]').forEach(el=>el.setAttribute('aria-selected','false'));this.setAttribute('aria-selected','true');document.getElementById('resource-section').setAttribute('aria-labelledby', this.id);"
+    >{% trans "Notes" %}</button>
+    <button
+      id="tab-history"
+      class="tab"
+      role="tab"
+      aria-selected="false"
+      aria-controls="resource-section"
+      hx-get="{% url 'pulse:resource-section' resource.service.id 'history' %}"
+      hx-target="#resource-section"
+      hx-swap="innerHTML"
+      hx-push-url="false"
+      hx-on:click="document.querySelectorAll('[role=tab]').forEach(el=>el.setAttribute('aria-selected','false'));this.setAttribute('aria-selected','true');document.getElementById('resource-section').setAttribute('aria-labelledby', this.id);"
+    >{% trans "History" %}</button>
   </div>
 
-  <div id="resource-section" hx-get="{% url 'pulse:resource-section' resource.service.id 'overview' %}" hx-trigger="load" hx-target="this" hx-swap="innerHTML">
+  <div
+    id="resource-section"
+    role="tabpanel"
+    aria-labelledby="tab-overview"
+    tabindex="0"
+    hx-get="{% url 'pulse:resource-section' resource.service.id 'overview' %}"
+    hx-trigger="load"
+    hx-target="this"
+    hx-swap="innerHTML"
+  >
     <!-- Section content loaded here -->
   </div>
 </div>

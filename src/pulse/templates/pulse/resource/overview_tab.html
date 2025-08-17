@@ -1,6 +1,7 @@
 {# Overview section containing verification checklist. #}
 {% load i18n component_tags %}
-<div class="p-4 space-y-4">
+<div class="p-4 space-y-4" role="region" aria-labelledby="overview-heading">
+  <h2 id="overview-heading" class="sr-only">{% trans "Overview" %}</h2>
   {% component 'verify_checklist' resource_id=resource.service.id %}{% endcomponent %}
   <p class="text-base-content/70">{% trans "Overview section coming soon" %}</p>
 </div>
