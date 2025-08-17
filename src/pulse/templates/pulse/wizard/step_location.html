@@ -12,7 +12,7 @@
     <li class="step">{% trans "Service" %}</li>
   </ul>
   {% component 'form_field' name='name' label=_('Location Name') %}{% endcomponent %}
-  {% component 'form_field' name='address' label=_('Address') %}{% endcomponent %}
+  {% component 'form_field' name='address' label=_('Address') required=True %}{% endcomponent %}
   <button type="submit" class="btn btn-primary">{% trans "Next" %}</button>
 </form>
 {% endblock %}
