@@ -134,7 +134,12 @@ class ResourceView(APIView):
                 },
                 context={"versions": versions, "sensitive_overlay": overlay},
             ).data
-            current = {path: get_value(data, path) for path in mismatches}
+            def safe_get_value(data, path):
+                try:
+                    return get_value(data, path)
+                except Exception:
+                    return None
+            current = {path: safe_get_value(data, path) for path in mismatches}
             return Response(
                 {
                     "detail": "Version mismatch",
