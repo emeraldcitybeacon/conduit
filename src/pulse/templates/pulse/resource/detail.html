@@ -42,5 +42,8 @@ Resource detail page skeleton with tabs and HTMX targets.
 {% component 'modal' id='diff-modal' title=_('Review changes') %}
   {% component 'diff' left='' right='' %}{% endcomponent %}
 {% endcomponent %}
-<script src="{% static 'pulse/js/keys.js' %}"></script>
+{% endblock %}
+
+{% block key_overlay %}
+  {% component 'key_overlay' scope='resource' %}{% endcomponent %}
 {% endblock %}

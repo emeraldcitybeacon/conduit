@@ -41,6 +41,15 @@ document.addEventListener('keydown', function (e) {
     return;
   }
 
+  if (key === '?') {
+    e.preventDefault();
+    const overlay = document.getElementById('key-overlay');
+    if (overlay && typeof overlay.showModal === 'function') {
+      overlay.showModal();
+    }
+    return;
+  }
+
   if (goPrefix) {
     if (key === 'o' || key === 'l') {
       e.preventDefault();
