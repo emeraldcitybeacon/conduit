@@ -15,6 +15,14 @@ Resource detail page skeleton with tabs and HTMX targets.
     </p>
   </div>
 
+  {% component 'siblings_nav'
+      org_siblings=siblings.organization
+      loc_siblings=siblings.location
+      prev_id=siblings.prev_id
+      next_id=siblings.next_id
+      first_loc=siblings.first_loc
+      first_org=siblings.first_org %}{% endcomponent %}
+
   {% component 'sensitive_banner' is_sensitive=resource.sensitive %}{% endcomponent %}
 
   <div class="tabs tabs-boxed">

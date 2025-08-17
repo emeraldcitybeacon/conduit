@@ -10,7 +10,7 @@ from hsds_ext.models import Shelf
 class ShelfDrawer(Component):
     """Render the shelf drawer for the current user."""
 
-    template_file = "drawer.html"
+    template_file = "shelf_drawer.html"
 
     def get_template_data(self, args, kwargs, slots, context):  # pragma: no cover - data fetch
         """Assemble template context for the drawer component.

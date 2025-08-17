@@ -30,6 +30,7 @@ from resources.views.search import SearchView
 from resources.views.merge import MergeView
 from resources.views.verify import VerifyFieldView
 from resources.views.sensitive import ResourceSensitiveView
+from resources.views.siblings import SiblingServiceView
 
 app_name = "resources"
 
@@ -45,6 +46,11 @@ urlpatterns = [
         "resource/<uuid:id>/sensitive/",
         ResourceSensitiveView.as_view(),
         name="resource-sensitive",
+    ),
+    path(
+        "resource/<uuid:id>/siblings/",
+        SiblingServiceView.as_view(),
+        name="resource-siblings",
     ),
     path("resource/", DraftCreateView.as_view(), name="resource-create"),
     path("drafts/", DraftListView.as_view(), name="draft-list"),
