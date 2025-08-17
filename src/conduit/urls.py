@@ -17,6 +17,7 @@ Including another URLconf
 
 import django_components
 from django.contrib import admin
+from django.contrib.auth.decorators import login_required
 from django.urls import include, path
 from django.views.generic import TemplateView
 
@@ -34,6 +35,7 @@ urlpatterns = [
     path("management/", TemplateView.as_view(template_name="management/dashboard.html"), name="management-dashboard"),
     path("api/v1/", include(api_router.urls)),
     path("api/", include("resources.urls")),
+    path("", login_required(TemplateView.as_view(template_name="home.html")), name="home"),
     path("", include("hsds.urls")),
     path("", include("django_components.urls")),
 ]

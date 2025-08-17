@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block content %}
+<div class="grid gap-8 md:grid-cols-3">
+  <a href="{% url 'pulse:home' %}" class="card bg-base-100 shadow-lg hover:shadow-xl">
+    <div class="card-body">
+      <h2 class="card-title">{% trans "Pulse" %}</h2>
+    </div>
+  </a>
+  {% if user.role == 'editor' or user.role == 'admin' %}
+  <a href="{% url 'management-dashboard' %}" class="card bg-base-100 shadow-lg hover:shadow-xl">
+    <div class="card-body">
+      <h2 class="card-title">{% trans "Management" %}</h2>
+    </div>
+  </a>
+  {% endif %}
+  {% if user.role == 'admin' %}
+  <a href="{% url 'admin:index' %}" class="card bg-base-100 shadow-lg hover:shadow-xl">
+    <div class="card-body">
+      <h2 class="card-title">{% trans "Admin" %}</h2>
+    </div>
+  </a>
+  {% endif %}
+</div>
+{% endblock %}
