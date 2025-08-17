@@ -31,6 +31,12 @@ from resources.views.merge import MergeView
 from resources.views.verify import VerifyFieldView
 from resources.views.sensitive import ResourceSensitiveView
 from resources.views.siblings import SiblingServiceView
+from resources.views.worklists import (
+    WorklistDetailView,
+    WorklistListCreateView,
+    WorklistNavigateView,
+    WorklistSearchView,
+)
 
 app_name = "resources"
 
@@ -89,4 +95,12 @@ urlpatterns = [
         name="bulk-op-undo",
     ),
     path("merge/", MergeView.as_view(), name="merge"),
+    path("worklists/", WorklistListCreateView.as_view(), name="worklist-list"),
+    path("worklists/<uuid:id>/", WorklistDetailView.as_view(), name="worklist-detail"),
+    path(
+        "worklists/<uuid:id>/<slug:direction>/",
+        WorklistNavigateView.as_view(),
+        name="worklist-navigate",
+    ),
+    path("worklists/search/", WorklistSearchView.as_view(), name="worklist-search"),
 ]

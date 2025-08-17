@@ -20,11 +20,11 @@ from hsds.components import (
     address_form as AddressFormComponent,
     contact_form as ContactFormComponent,
     location_form as LocationFormComponent,
-    organization_form as OrganizationFormComponent,
     phone_form as PhoneFormComponent,
     schedule_form as ScheduleFormComponent,
     service_form as ServiceFormComponent,
 )
+from django_components import component_registry
 
 from .api import (
     AddressSerializer,
@@ -177,7 +177,8 @@ def organization_create_view(request: HttpRequest) -> HttpResponse:
                 "form": form,
                 "action": reverse("hsds:organization-create"),
             }
-            return OrganizationFormComponent.render_to_response(
+            component_cls = component_registry.registry.get("organization_form")
+            return component_cls.render_to_response(
                 kwargs=context,
                 request=request,
                 status=400,
@@ -194,7 +195,8 @@ def organization_create_view(request: HttpRequest) -> HttpResponse:
         "form": form,
         "action": reverse("hsds:organization-create"),
     }
-    return OrganizationFormComponent.render_to_response(
+    component_cls = component_registry.registry.get("organization_form")
+    return component_cls.render_to_response(
         kwargs=context,
         request=request,
     )
@@ -220,7 +222,8 @@ def organization_edit_view(request: HttpRequest, pk: str) -> HttpResponse:
                 "form": form,
                 "action": reverse("hsds:organization-edit", args=[organization.pk]),
             }
-            return OrganizationFormComponent.render_to_response(
+            component_cls = component_registry.registry.get("organization_form")
+            return component_cls.render_to_response(
                 kwargs=context,
                 request=request,
                 status=400,
@@ -237,7 +240,8 @@ def organization_edit_view(request: HttpRequest, pk: str) -> HttpResponse:
         "form": form,
         "action": reverse("hsds:organization-edit", args=[organization.pk]),
     }
-    return OrganizationFormComponent.render_to_response(
+    component_cls = component_registry.registry.get("organization_form")
+    return component_cls.render_to_response(
         kwargs=context,
         request=request,
     )

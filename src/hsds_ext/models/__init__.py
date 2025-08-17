@@ -4,6 +4,7 @@ from .change_requests import ChangeRequest
 from .drafts import DraftResource
 from .sensitive import SensitiveOverlay
 from .shelves import Shelf, ShelfMember
+from .worklists import Worklist
 from .taxonomy_ext import TaxonomyExtension
 from .verification import VerificationEvent
 from .versions import FieldVersion
@@ -16,6 +17,7 @@ __all__ = [
     "ChangeRequest",
     "Shelf",
     "ShelfMember",
+    "Worklist",
     "BulkOperation",
     "TaxonomyExtension",
 ]

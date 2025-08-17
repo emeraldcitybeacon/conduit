@@ -8,6 +8,7 @@ from .models.change_requests import ChangeRequest
 from .models.drafts import DraftResource
 from .models.sensitive import SensitiveOverlay
 from .models.shelves import Shelf, ShelfMember
+from .models.worklists import Worklist
 from .models.taxonomy_ext import TaxonomyExtension
 from .models.verification import VerificationEvent
 from .models.versions import FieldVersion
@@ -101,6 +102,15 @@ class ShelfMemberAdmin(admin.ModelAdmin):
     )
     list_filter = ("entity_type",)
     search_fields = ("entity_id",)
+
+
+@admin.register(Worklist)
+class WorklistAdmin(admin.ModelAdmin):
+    """Admin configuration for worklists."""
+
+    list_display = ("name", "owner", "query", "is_shared", "created_at")
+    list_filter = ("is_shared",)
+    search_fields = ("name", "query")
 
 
 @admin.register(BulkOperation)
