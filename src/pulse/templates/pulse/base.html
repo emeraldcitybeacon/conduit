@@ -36,5 +36,7 @@
     </div>
     {% component 'shelf_drawer' %}{% endcomponent %}
     {% component 'worklist_picker' %}{% endcomponent %}
+    {% block key_overlay %}{% component 'key_overlay' scope='global' %}{% endcomponent %}{% endblock %}
+    <script src="{% static 'pulse/js/keys.js' %}"></script>
   </body>
 </html>

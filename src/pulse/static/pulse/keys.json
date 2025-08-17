@@ -1,0 +1,13 @@
+{
+  "global": [
+    {"keys": ["\u2318", "S"], "description": "Save changes"},
+    {"keys": ["\u2318", "K"], "description": "Open quick search"},
+    {"keys": ["?"], "description": "Show keyboard shortcuts"}
+  ],
+  "resource": [
+    {"keys": ["G", "O"], "description": "Go to organization", "join": " "},
+    {"keys": ["G", "L"], "description": "Go to location", "join": " "},
+    {"keys": ["[", "K"], "description": "Previous sibling", "join": " or "},
+    {"keys": ["]", "J"], "description": "Next sibling", "join": " or "}
+  ]
+}
