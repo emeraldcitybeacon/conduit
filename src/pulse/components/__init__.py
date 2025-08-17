@@ -1,2 +1,2 @@
 """Component registrations for the Pulse app."""
-from . import health  # noqa: F401
+from . import health, resource  # noqa: F401

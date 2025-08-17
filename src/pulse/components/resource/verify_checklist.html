@@ -1,0 +1,37 @@
+{# Checklist for quickly verifying key resource attributes. #}
+{% load i18n %}
+<div class="flex gap-4">
+  <label class="label cursor-pointer gap-2">
+    <input
+      type="checkbox"
+      class="checkbox checkbox-sm"
+      hx-post="{% url 'resources:resource-verify' resource_id %}?item=phone"
+      hx-trigger="change"
+      hx-on:change="if(!this.checked) return false"
+      hx-swap="none"
+    />
+    <span class="label-text">{% trans "Phone" %}</span>
+  </label>
+  <label class="label cursor-pointer gap-2">
+    <input
+      type="checkbox"
+      class="checkbox checkbox-sm"
+      hx-post="{% url 'resources:resource-verify' resource_id %}?item=hours"
+      hx-trigger="change"
+      hx-on:change="if(!this.checked) return false"
+      hx-swap="none"
+    />
+    <span class="label-text">{% trans "Hours" %}</span>
+  </label>
+  <label class="label cursor-pointer gap-2">
+    <input
+      type="checkbox"
+      class="checkbox checkbox-sm"
+      hx-post="{% url 'resources:resource-verify' resource_id %}?item=intake"
+      hx-trigger="change"
+      hx-on:change="if(!this.checked) return false"
+      hx-swap="none"
+    />
+    <span class="label-text">{% trans "Intake" %}</span>
+  </label>
+</div>
