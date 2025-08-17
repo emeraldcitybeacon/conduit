@@ -75,7 +75,7 @@ class ServiceStepView(View):
                 payload=payload,
             )
             request.session.pop("wizard", None)
-            return redirect("pulse:home")
+            return redirect("pulse:dashboard")
 
         wizard["service"] = {"name": request.POST.get("name", "")}
         request.session.modified = True
