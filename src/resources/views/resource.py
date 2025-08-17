@@ -112,7 +112,12 @@ class ResourceView(APIView):
                 for path in iter_paths(request.data):
                     if not path.startswith("assert_versions"):
                         fields.append(path)
-            current = {path: get_value(data, path) for path in fields}
+            current = {}
+            for path in fields:
+                try:
+                    current[path] = get_value(data, path)
+                except Exception:
+                    current[path] = None
             return Response(
                 {"detail": "Precondition Failed", "etags": data["etags"], "current": current},
                 status=status.HTTP_412_PRECONDITION_FAILED,
