@@ -20,7 +20,7 @@
   {% else %}
     <form method="post" class="space-y-4">
       {% csrf_token %}
-      {% component 'form_field' name='name' label=_('Service Name') %}{% endcomponent %}
+      {% component 'form_field' name='name' label=_('Service Name') required=True %}{% endcomponent %}
       <button type="submit" class="btn btn-primary">{% trans "Preview" %}</button>
     </form>
   {% endif %}
