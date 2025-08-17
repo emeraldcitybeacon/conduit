@@ -10,6 +10,7 @@ from django.views import View
 from hsds.models import Service
 from hsds_ext.models import FieldVersion, VerificationEvent, SensitiveOverlay
 from resources.serializers.resource import ResourceSerializer
+from resources.views.siblings import build_sibling_context
 
 
 class ResourceDetailView(View):
@@ -67,7 +68,10 @@ class ResourceDetailView(View):
             Service.objects.select_related("organization").prefetch_related("locations"),
             id=id,
         )
-        context = {"resource": self._serialize(service)}
+        context = {
+            "resource": self._serialize(service),
+            "siblings": build_sibling_context(service),
+        }
         return render(request, self.template_name, context)
 
 
