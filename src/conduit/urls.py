@@ -21,16 +21,6 @@ from django.urls import include, path
 from django.views.generic import TemplateView
 
 # Register custom components
-from conduit.components import nav as _nav  # noqa: F401
-from hsds.components import (
-    address_form as _address_form,
-    contact_form as _contact_form,
-    location_form as _location_form,
-    organization_form as _organization_form,
-    phone_form as _phone_form,
-    schedule_form as _schedule_form,
-    service_form as _service_form,
-)  # noqa: F401
 from hsds.urls import api_router
 
 django_components.autodiscover()

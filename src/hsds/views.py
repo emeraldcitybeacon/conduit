@@ -16,15 +16,13 @@ from django.views.generic import DetailView, ListView, TemplateView
 from rest_framework.exceptions import ValidationError
 from rest_framework.serializers import Serializer
 
-from hsds.components import (
-    address_form as AddressFormComponent,
-    contact_form as ContactFormComponent,
-    location_form as LocationFormComponent,
-    organization_form as OrganizationFormComponent,
-    phone_form as PhoneFormComponent,
-    schedule_form as ScheduleFormComponent,
-    service_form as ServiceFormComponent,
-)
+from hsds.components import address_form as AddressFormComponent
+from hsds.components import contact_form as ContactFormComponent
+from hsds.components import location_form as LocationFormComponent
+from hsds.components import organization_form as OrganizationFormComponent
+from hsds.components import phone_form as PhoneFormComponent
+from hsds.components import schedule_form as ScheduleFormComponent
+from hsds.components import service_form as ServiceFormComponent
 
 from .api import (
     AddressSerializer,
