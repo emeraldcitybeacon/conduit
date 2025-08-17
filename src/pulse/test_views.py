@@ -13,7 +13,7 @@ from hsds.models import Location, Organization, Service, ServiceAtLocation
 def test_home_view(client) -> None:
     """The data health dashboard loads successfully."""
 
-    resp = client.get(reverse("pulse:home"))
+    resp = client.get(reverse("pulse:dashboard"))
     assert resp.status_code == 200
     assert b"Data Health" in resp.content
 

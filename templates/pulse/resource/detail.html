@@ -6,7 +6,7 @@ Resource detail page skeleton with tabs and HTMX targets.
 
 {% block title %}{% trans "Resource" %}{% endblock %}
 
-{% block content %}
+{% block pulse_content %}
 <div class="flex flex-col gap-4" id="resource-root" data-resource-id="{{ resource.service.id }}">
   <div>
     <h1 class="text-2xl font-bold">{{ resource.service.name }}</h1>

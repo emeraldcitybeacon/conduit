@@ -23,7 +23,7 @@
     "test:e2e": "playwright test -c e2e/pulse/playwright.config.ts"
   },
   "devDependencies": {
-    "@playwright/test": "^1.45.0",
+    "@playwright/test": "^1.54.0",
     "@tailwindcss/cli": "^4.1.12",
     "@tailwindcss/forms": "^0.5.10",
     "daisyui": "^5.0.50",

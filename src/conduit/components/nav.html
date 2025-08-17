@@ -8,14 +8,13 @@
   {% if user and user.is_authenticated %}
   <div class="flex-none">
     <ul class="menu menu-horizontal px-1">
-      <li><a href="{% url 'pulse:home' %}">{% trans "Pulse" %}</a></li>
+      <li><a href="{% url 'pulse:dashboard' %}">{% trans "Pulse" %}</a></li>
       {% if user.role == 'editor' or user.role == 'administrator' %}
       <li>
-        <details>
+        <details class="dropdown">
           <summary tabindex="0" role="button">{% trans "Management" %}</summary>
-          <ul class="bg-base-100 rounded-t-none p-2">
-            <li><a href="{% url 'management-dashboard' %}">{% trans "Dashboard" %}</a></li>
-            <li><a href="/">{% trans "Home" %}</a></li>
+          <ul class="dropdown-content z-50 bg-base-100 rounded-t-none p-2">
+            <li><a href="{% url 'hsds:dashboard' %}">{% trans "Dashboard" %}</a></li
             <li><a href="{% url 'hsds:organization-list' %}">{% trans "Organizations" %}</a></li>
             <li><a href="{% url 'hsds:service-list' %}">{% trans "Services" %}</a></li>
             <li><a href="{% url 'hsds:location-list' %}">{% trans "Locations" %}</a></li>

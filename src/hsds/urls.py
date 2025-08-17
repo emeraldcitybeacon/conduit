@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 from django.urls import path
+from django.views.generic import TemplateView
 from rest_framework.routers import DefaultRouter
 
 from .api import (
@@ -101,4 +102,5 @@ urlpatterns = [
     path("manage/contacts/create/", contact_create_view, name="contact-create"),
     path("manage/contacts/<uuid:pk>/", ContactDetailView.as_view(), name="contact-detail"),
     path("manage/contacts/<uuid:pk>/edit/", contact_edit_view, name="contact-edit"),
+    path("", TemplateView.as_view(template_name="hsds/dashboard.html"), name="dashboard")
 ]

@@ -7,7 +7,7 @@ import json
 import pytest
 from django.core.management import call_command
 
-from hsds.models import Organization
+from hsds.models import Location, Organization, Service, ServiceAtLocation
 
 
 @pytest.mark.django_db
@@ -32,3 +32,15 @@ def test_export_hsds_csv(tmp_path) -> None:
     assert csv_file.exists()
     rows = list(csv.DictReader(csv_file.open()))
     assert rows[0]["name"] == "Org"
+
+
+@pytest.mark.django_db
+def test_seed_examples_creates_resources() -> None:
+    """Command seeds full HSDS resource records."""
+
+    call_command("seed_examples")
+
+    assert Organization.objects.count() == 3
+    assert Location.objects.count() == 3
+    assert Service.objects.count() == 3
+    assert ServiceAtLocation.objects.count() == 3
