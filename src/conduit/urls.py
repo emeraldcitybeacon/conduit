@@ -22,13 +22,15 @@ from django.views.generic import TemplateView
 
 # Register custom components
 from conduit.components import nav as _nav  # noqa: F401
-from hsds.components.contacts import contact_form as _contact_form  # noqa: F401
-from hsds.components.locations import address_form as _address_form  # noqa: F401
-from hsds.components.locations import location_form as _location_form  # noqa: F401
-from hsds.components.organizations import organization_form as _organization_form  # noqa: F401
-from hsds.components.services import phone_form as _phone_form  # noqa: F401
-from hsds.components.services import schedule_form as _schedule_form  # noqa: F401
-from hsds.components.services import service_form as _service_form  # noqa: F401
+from hsds.components import (
+    address_form as _address_form,
+    contact_form as _contact_form,
+    location_form as _location_form,
+    organization_form as _organization_form,
+    phone_form as _phone_form,
+    schedule_form as _schedule_form,
+    service_form as _service_form,
+)  # noqa: F401
 from hsds.urls import api_router
 
 django_components.autodiscover()
